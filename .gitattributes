@@ -62,7 +62,7 @@
 *.exr lfs-file
 
 # Documents
-*.pdf lfs-file
+
 
 # Image formats
 *.afdesign lfs-file
