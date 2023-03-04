@@ -8,86 +8,107 @@ public class Movement : MonoBehaviour
 {
     Vector2 movementVector;
     Rigidbody2D rigidbody2d;
-
+    Vector2 jump = Vector2.up;
+    Vector2 tempVector = Vector2.zero;
     [Header("Movement Settings")]
-    [SerializeField] float moveSpeed = 5f;
-    [SerializeField] float jumpPower = 1f;
-    [SerializeField] float inAirMovementSpeed = .5f;
+    [SerializeField] float moveSpeed;
+    [SerializeField] float jumpPower;
+    [SerializeField] float inAirMovementSpeed;
 
     [Header("Bools")]
-    bool isGrounded = false;
+    public bool isGrounded = true;
     bool isMoving = false;
+    public bool doubleJumping = false;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        //cache components on start to avoid lag
+        moveSpeed = 5f;
+        jumpPower = 1.5f;
+        inAirMovementSpeed = .15f;
+        // Cache components on start to avoid lag
         rigidbody2d = GetComponent<Rigidbody2D>();
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        //context.performed is whenever the input changes to a non-zero value
+        
+        // context.performed is whenever the input changes to a non-zero value
         if (context.performed)
         {
-            // read the value for the "move" action each event call
-            //*original code*
-            //movementVector = new Vector2(context.ReadValue<Vector2>().x, 0f);
-            //*after slight optimization to avoid creating vectors every movement*
+            // Read the value for the "move" action each event call
             movementVector.x = context.ReadValue<Vector2>().x;
-            //set isMoving to true
             isMoving = true;
-            //change of values located in FixedUpdate() which is called on physics updates (50 per second)
+            // Change of values located in FixedUpdate() which is called on physics updates (50 per second)
         }
-        //context.canceled is whenever the input goes back to default state, called once
-        //has to be "else if" because there is also context.started
+        // context.canceled is whenever the input goes back to default state, called once
+        // has to be "else if" because there is also context.started
         else if (context.canceled) 
         {
-            //change the isMoving false, but only if the object is on the ground
-            if (isGrounded)
-                isMoving = false;
+            print("Canceled");
+            // Set isMoving to false
+            isMoving = false;
         }
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (isGrounded)
+        if ((isGrounded || !doubleJumping) && context.performed)
         {
-            rigidbody2d.AddForce(new Vector2(0f, jumpPower), ForceMode2D.Impulse);
+            jump.y = jumpPower; // ! Remove before release
+            tempVector.x = rigidbody2d.velocity.x;
+            tempVector.y = 0f;
+            if (((int)(movementVector.x * 10) ^ (int)(rigidbody2d.velocity.x * 10)) < 0)
+                tempVector.x = 0f;
+            rigidbody2d.velocity = tempVector;
+            rigidbody2d.AddForce(jump, ForceMode2D.Impulse);
+            doubleJumping = !isGrounded;
             isGrounded = false;
+            
         }
 
     }
     void OnCollisionEnter2D(Collision2D other)
     {
-        //when it comes in contact with the ground
-        //TODO: add conditional to make sure it is the ground, and not the side of something else
+        // When it comes in contact with the ground
+        // TODO: add conditional to make sure it is the ground, and not the side of something else
+        doubleJumping = false;
         isGrounded = true;
     }
 
     public void FixedUpdate()
     {
-        //this is the same as the code below, Just wanted to use the ternary operator for funsies
-        rigidbody2d.velocity = !isMoving ? Vector2.zero : 
-            isGrounded ? movementVector * moveSpeed : 
-            rigidbody2d.velocity + (movementVector * inAirMovementSpeed);
-        /*
-        if (!isMoving)
-            rigidbody2d.velocity = Vector2.zero;
-        else if (isGrounded)
+
+        // If the player is not giving movement input, and is on the ground
+        // change x velocity to 0
+        if(!isMoving && isGrounded)
         {
-            //if grounded, set movement velocity to
-            //the direction of movement multiplied by the default movement speed
-            rigidbody2d.velocity = movementVector * moveSpeed;
+            movementVector.x = 0f;
         }
-        //if in the air, change the current velocity by
-        //direction multiplied by the default in air movement speed
-        else
-            rigidbody2d.velocity += movementVector * inAirMovementSpeed;
-        */
+        if (isGrounded)
+        {
+            // If grounded, set movement velocity to
+            // the direction of movement multiplied by the default movement speed
+            movementVector.x *= moveSpeed;
+            rigidbody2d.velocity = movementVector;
+            movementVector.x /= moveSpeed;
+        }
+        // If in the air, and velocity + anticipated movement is less than set movement speed
+        // change the current velocity by direction multiplied
+        // by the default in air movement speed multiplier
+        else 
+        {
+            movementVector.x *= inAirMovementSpeed;
+            if (Mathf.Abs(rigidbody2d.velocity.x + movementVector.x) <= moveSpeed)
+            {
+                rigidbody2d.velocity += movementVector;
+            }
+            movementVector.x /= inAirMovementSpeed;
+        }
         
-        
+
+
     }
 
 }
