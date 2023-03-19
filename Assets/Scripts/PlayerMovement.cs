@@ -4,10 +4,10 @@ using UnityEngine.InputSystem;
 // This script is designed to have the OnMove and
 // OnJump methods called by a PlayerInput component
 
-public class Movement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     
-    Rigidbody2D rigidbody2d;
+    Rigidbody2D rb;
     Vector2 jump = Vector2.up;
     Vector2 tempVector = Vector2.zero;
     [Header("Movement Settings")]
@@ -34,7 +34,7 @@ public class Movement : MonoBehaviour
         inAirMoveSpeed = 4.25f;
         decelSpeed = 50f;
         // Cache components on start to avoid lag
-        rigidbody2d = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -65,12 +65,12 @@ public class Movement : MonoBehaviour
         if ((isGrounded || !doubleJumping) && context.performed)
         {
             jump.y = jumpPower; // ! Remove before release
-            tempVector.x = rigidbody2d.velocity.x;
+            tempVector.x = rb.velocity.x;
             tempVector.y = 0f;
-            if (((int)(movementVector.x * 10) ^ (int)(rigidbody2d.velocity.x * 10)) < 0)
+            if (((int)(movementVector.x * 10) ^ (int)(rb.velocity.x * 10)) < 0)
                 tempVector.x = 0f;
-            rigidbody2d.velocity = tempVector;
-            rigidbody2d.AddForce(jump, ForceMode2D.Impulse);
+            rb.velocity = tempVector;
+            rb.AddForce(jump, ForceMode2D.Impulse);
             doubleJumping = !isGrounded;
             isGrounded = false;
             
@@ -99,7 +99,7 @@ public class Movement : MonoBehaviour
             // If grounded, set movement velocity to
             // the direction of movement multiplied by the default movement speed
             movementVector.x *= moveSpeed;
-            rigidbody2d.velocity = movementVector;
+            rb.velocity = movementVector;
             movementVector.x /= moveSpeed;
         }
         // If in the air, and velocity + anticipated movement is less than set movement speed
@@ -110,18 +110,18 @@ public class Movement : MonoBehaviour
         else 
         {
             movementVector.x *= inAirMovementMultiplier;
-            if (Mathf.Abs(rigidbody2d.velocity.x) > inAirMoveSpeed)
+            if (Mathf.Abs(rb.velocity.x) > inAirMoveSpeed)
             {
-                tempVector.x = Mathf.Sign(rigidbody2d.velocity.x) * inAirMoveSpeed;
-                tempVector.y = rigidbody2d.velocity.y;
+                tempVector.x = Mathf.Sign(rb.velocity.x) * inAirMoveSpeed;
+                tempVector.y = rb.velocity.y;
 
-                rigidbody2d.velocity = Vector2.Lerp(rigidbody2d.velocity, tempVector, (moveSpeed - inAirMoveSpeed)/decelSpeed);
+                rb.velocity = Vector2.Lerp(rb.velocity, tempVector, (moveSpeed - inAirMoveSpeed)/decelSpeed);
 
                 
             }
-            if (Mathf.Abs(rigidbody2d.velocity.x + movementVector.x) <= inAirMoveSpeed)
+            if (Mathf.Abs(rb.velocity.x + movementVector.x) <= inAirMoveSpeed)
             {
-                rigidbody2d.velocity += movementVector;
+                rb.velocity += movementVector;
             }
             movementVector.x /= inAirMovementMultiplier;
         }
