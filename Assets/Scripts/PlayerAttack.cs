@@ -8,11 +8,14 @@ public class PlayerAttack : MonoBehaviour
     Rigidbody2D rb;
     Animator anim;
     PlayerInput pI;
+    PlayerMovement pM;
     Vector2 attackDir;
     Vector2 prevDir;
     float attackType;
-    public bool isAttacking;
-    public bool attackHeld;
+    // Keep the isAttacking_ bool from being changed in other scripts
+    public bool isAttacking => isAttacking_;
+    bool isAttacking_ = false;
+    // public bool attackHeld;
 
     // Start is called before the first frame update
     void Start()
@@ -20,30 +23,34 @@ public class PlayerAttack : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         pI = GetComponent<PlayerInput>();
+        pM = GetComponent<PlayerMovement>();
 
     }
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (context.performed && isAttacking == false)
+        // Attack only if not attacking and not dashing
+        if (context.performed && !isAttacking_ && !pM.isDashing_)
         {
             attackDir = GetDir();
+            isAttacking_ = true;
             anim.SetInteger("AttackX", (int)attackDir.x);
             anim.SetInteger("AttackY", (int)attackDir.y);
             anim.SetTrigger("attackTrigger");
-            isAttacking = true;
+            anim.SetBool("isAttacking", isAttacking_);
         }
         if (context.canceled)
         {
-            isAttacking = false;
+            isAttacking_ = false;
         }
-        anim.SetBool("isAttacking", isAttacking);
+        
 
     }
 
     private Vector2 GetDir()
     {
-        // Player Movement already has current stick vector, so take it from that
+        // PlayerInput "move" action tracks left stick
+        // so take it from that
         Vector2 attackDir = pI.actions["Move"].ReadValue<Vector2>();
         
         float x = Mathf.Abs(attackDir.x);
