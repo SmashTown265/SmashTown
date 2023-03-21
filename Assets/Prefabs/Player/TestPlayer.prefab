@@ -102,7 +102,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 2.6788998
+  m_Mass: 0.80367005
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -110,7 +110,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &1468236329494031448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,7 +155,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 0.6}
   m_EdgeRadius: 0
 --- !u!114 &1468236329494031445
 MonoBehaviour:
@@ -291,6 +291,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662b34e265521ab45ae73afa6c64e21f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAttacking: 0
+  attackHeld: 0
 --- !u!95 &2242133325842634775
 Animator:
   serializedVersion: 5

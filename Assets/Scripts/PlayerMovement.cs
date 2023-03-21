@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,8 +9,15 @@ public class PlayerMovement : MonoBehaviour
 {
     
     Rigidbody2D rb;
+    Animator anim;
+    Transform t;
+    BoxCollider2D bc2d;
+    SpriteRenderer sr;
+    PlayerAttack pa;
+    Vector3 scaleFlip = new(-1, 1, 1); 
     Vector2 jump = Vector2.up;
     Vector2 tempVector = Vector2.zero;
+    int Xdir;
     [Header("Movement Settings")]
     [SerializeField] float moveSpeed;
     [SerializeField] float jumpPower;
@@ -18,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float decelSpeed;
 
     [Header("Bools")]
-    public bool isGrounded = true;
+    public bool isGrounded = false;
     bool isMoving = false;
     public bool doubleJumping = false;
 
@@ -28,13 +36,18 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        moveSpeed = 5f;
-        jumpPower = 1.5f;
+        moveSpeed = 10f;
+        jumpPower = 4.5f;
         inAirMovementMultiplier = .15f;
-        inAirMoveSpeed = 4.25f;
-        decelSpeed = 50f;
+        inAirMoveSpeed = 6f;
+        decelSpeed = 75f;
         // Cache components on start to avoid lag
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        t = GetComponent<Transform>();
+        bc2d = GetComponent<BoxCollider2D>();
+        sr = GetComponent<SpriteRenderer>();
+        pa = GetComponent<PlayerAttack>();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -45,8 +58,11 @@ public class PlayerMovement : MonoBehaviour
         {
             // Read the value for the "move" action each event call
             movementVector.x = context.ReadValue<Vector2>().x;
-                if(Mathf.Abs(movementVector.x) > .98f)
-                    movementVector.x = Mathf.Sign(movementVector.x);
+            if(Mathf.Abs(movementVector.x) > .98f)
+               movementVector.x = Mathf.Sign(movementVector.x);
+            if(Mathf.Abs(movementVector.x) > .1f)
+                Xdir = (int)Mathf.Sign(movementVector.x);
+               
             isMoving = true;
             // Change of values located in FixedUpdate() which is called on physics updates (50 per second)
         }
@@ -81,8 +97,20 @@ public class PlayerMovement : MonoBehaviour
     {
         // When it comes in contact with the ground
         // TODO: add conditional to make sure it is the ground, and not the side of something else
-        doubleJumping = false;
-        isGrounded = true;
+        if (other.gameObject.tag is "Ground" or "Platform")
+        {
+            doubleJumping = false;
+            isGrounded = true;
+        }
+    }
+    void OnCollisionExit2D(Collision2D other)
+    {
+        // When it comes in contact with the ground
+        // TODO: add conditional to make sure it is the ground, and not the side of something else
+        if (other.gameObject.tag is "Ground" or "Platform")
+        {
+            isGrounded = false;
+        }
     }
 
     public void FixedUpdate()
@@ -90,10 +118,7 @@ public class PlayerMovement : MonoBehaviour
 
         // If the player is not giving movement input, and is on the ground
         // change x velocity to 0
-        if(!isMoving && isGrounded)
-        {
-            movementVector.x = 0f;
-        }
+        
         if (isGrounded)
         {
             // If grounded, set movement velocity to
@@ -101,12 +126,18 @@ public class PlayerMovement : MonoBehaviour
             movementVector.x *= moveSpeed;
             rb.velocity = movementVector;
             movementVector.x /= moveSpeed;
+
+            if (!isMoving || (pa.isAttacking && !pa.attackHeld))
+            {
+                anim.SetTrigger("stopAttack");
+                rb.velocity = Vector2.zero;
+            }
+
         }
         // If in the air, and velocity + anticipated movement is less than set movement speed
         // change the current velocity by direction multiplied
         // by the default in air movement speed multiplier
 
-        // TODO: rewrite all this
         else 
         {
             movementVector.x *= inAirMovementMultiplier;
@@ -119,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
 
                 
             }
-            if (Mathf.Abs(rb.velocity.x + movementVector.x) <= inAirMoveSpeed)
+            if (Mathf.Abs(rb.velocity.x + movementVector.x) <= inAirMoveSpeed || Mathf.Abs(rb.velocity.x + movementVector.x) <= Mathf.Abs(rb.velocity.x))
             {
                 rb.velocity += movementVector;
             }
@@ -128,6 +159,27 @@ public class PlayerMovement : MonoBehaviour
         
 
 
+    }
+    public void Update()
+    {
+        // Set animation state machine parameters
+        anim.SetBool("isGrounded", isGrounded);
+        anim.SetBool("isMoving", isMoving);
+        anim.SetBool("doubleJumping", doubleJumping);
+        anim.SetInteger("Ydir", (int)Mathf.Sign(rb.velocity.y));
+        // If the direction of input doesn't match the direction facing, switch the direction facing
+        if ((Xdir*t.localScale.x) < 0)
+        {
+            scaleFlip.x *= t.localScale.x;
+            scaleFlip.y *= t.localScale.y;
+            scaleFlip.z *= t.localScale.z;
+            t.localScale = scaleFlip;
+            scaleFlip.Set(-1, 1, 1);
+        }
+        anim.SetFloat("RunSpeed", Mathf.Abs(movementVector.x));
+
+        // Set the size of the collider to the size of the rendered sprite
+        bc2d.size = sr.sprite.bounds.size;
     }
 
 }

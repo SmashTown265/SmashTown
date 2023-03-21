@@ -102,7 +102,7 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""e77afc88-d3eb-4379-a4e0-b9880336b19f"",
                     ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": ""Tap"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Jump"",
@@ -242,48 +242,15 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Attack"",
-                    ""id"": ""19c17b12-3491-4a08-96eb-9e8429b1eb51"",
-                    ""path"": ""Attack(PressedWithinNumberOfSeconds=0.1)"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Attack"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""attackButtonPrimary"",
-                    ""id"": ""9ffaf802-b28a-4146-b619-01947a5725ea"",
+                    ""name"": """",
+                    ""id"": ""4d373cf4-4038-4938-8026-6382d74528eb"",
                     ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Attack"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""attackButtonAlternate"",
-                    ""id"": ""2d8a05f0-24ab-4c1d-9d17-e34457097caa"",
-                    ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Attack"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""attackDirection"",
-                    ""id"": ""4b05171b-f39b-4ac5-ade4-8712c703a0ae"",
-                    ""path"": ""<Gamepad>/leftStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Attack"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
                 }
             ]
         },
