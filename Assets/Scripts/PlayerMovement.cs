@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 {
     
     Rigidbody2D rb;
+    bool fastFall;
     Animator anim;
     Transform t;
     BoxCollider2D bc2d;
@@ -62,6 +63,9 @@ public class PlayerMovement : MonoBehaviour
                movementVector.x = Mathf.Sign(movementVector.x);
             if(Mathf.Abs(movementVector.x) > .1f)
                 Xdir = (int)Mathf.Sign(movementVector.x);
+            if (context.ReadValue<Vector2>().y < 0)
+                fastFall = true;
+            
                
             isMoving = true;
             // Change of values located in FixedUpdate() which is called on physics updates (50 per second)
@@ -89,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(jump, ForceMode2D.Impulse);
             doubleJumping = !isGrounded;
             isGrounded = false;
-            
+            fastFall = false;
         }
 
     }
@@ -101,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
         {
             doubleJumping = false;
             isGrounded = true;
+            fastFall = false;
         }
     }
     void OnCollisionExit2D(Collision2D other)
@@ -155,7 +160,11 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity += movementVector;
             }
             movementVector.x /= inAirMovementMultiplier;
+            if (fastFall && rb.velocity.y <= 0)
+                rb.gravityScale = 2;
         }
+        if (!fastFall)
+            rb.gravityScale = 1;
         
 
 
