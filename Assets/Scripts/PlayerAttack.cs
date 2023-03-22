@@ -12,9 +12,10 @@ public class PlayerAttack : MonoBehaviour
     Vector2 attackDir;
     Vector2 prevDir;
     float attackType;
+    int attackCounter = 0;
     // Keep the isAttacking_ bool from being changed in other scripts
     public bool isAttacking => isAttacking_;
-    bool isAttacking_ = false;
+    [SerializeField] bool isAttacking_ = false;
     // public bool attackHeld;
 
     // Start is called before the first frame update
@@ -34,16 +35,9 @@ public class PlayerAttack : MonoBehaviour
         {
             attackDir = GetDir();
             isAttacking_ = true;
-            anim.SetInteger("AttackX", (int)attackDir.x);
-            anim.SetInteger("AttackY", (int)attackDir.y);
             anim.SetTrigger("attackTrigger");
-            anim.SetBool("isAttacking", isAttacking_);
+            attackCounter = 0;
         }
-        if (context.canceled)
-        {
-            isAttacking_ = false;
-        }
-        
 
     }
 
@@ -70,7 +64,14 @@ public class PlayerAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // do I need this for anything? Probably in the future...
+        anim.SetInteger("AttackX", (int)attackDir.x);
+        anim.SetInteger("AttackY", (int)attackDir.y);
+        anim.SetBool("isAttacking", isAttacking_);
+        if (attackCounter++ > 24)
+        {
+            isAttacking_ = false;
+        }
+        
     }
 
 }

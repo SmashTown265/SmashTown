@@ -1,4 +1,6 @@
 using JetBrains.Annotations;
+using System;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,14 +17,18 @@ public class PlayerMovement : MonoBehaviour
     BoxCollider2D bc2d;
     SpriteRenderer sr;
     PlayerAttack pa;
-    Vector3 scaleFlip = new(-1, 1, 1); 
+    PlayerInput pI;
+
+
+    Vector3 scaleFlip = new(-1, 1, 1);
+    Vector3 airDodgePos = Vector3.one;
     Vector2 jump = Vector2.up;
     Vector2 tempVector = Vector2.zero;
-    float defaultGravityScale;
+    Vector3 stickPos = Vector3.zero;
     int Xdir;
     int count;
     int dashDir;
-    
+    int dodgeCounter;
 
     [Header("Character Specific Movement Settings")]
     [Header("Multipliers")]
@@ -33,11 +39,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float attackSlowMultiplier;
     [SerializeField] float inAirDeceleractionMultiplier;
     [SerializeField] float fastFallMultiplier;
-    [SerializeField] int dashLengthMultiplier;
+    
     [Header("Constants")]
     [SerializeField] float maxWalkSpeed;
     [SerializeField] float maxInAirMoveSpeed;
-    
+    [SerializeField] int dashLength;
+    [SerializeField] int dodgeDistance;
 
 
     [Header("Bools")]
@@ -47,6 +54,9 @@ public class PlayerMovement : MonoBehaviour
     public bool isFastFalling = false;
     public bool isDashing_ = false;
     public bool hasDashed = false;
+    public bool cancelledWhileDashing = false;
+    public bool isHoldingJump = false;
+    public bool isAirDodging = false;
 
 
 
@@ -67,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
         bc2d = GetComponent<BoxCollider2D>();
         sr = GetComponent<SpriteRenderer>();
         pa = GetComponent<PlayerAttack>();
+        pI = GetComponent<PlayerInput>();
         // Initialize all serialized variables so they don't change every time we try something new
         moveSpeedMultiplier = 10f;
         jumpPowerMultiplier = 4.5f;
@@ -74,40 +85,52 @@ public class PlayerMovement : MonoBehaviour
         maxInAirMoveSpeed = 6f;
         inAirDeceleractionMultiplier = 75f;
         maxWalkSpeed = .50f;
-        dashLengthMultiplier = 25;
+        dashLength = 15;
         count = 0;
         dashSpeedMultiplier = 1.2f;
         attackSlowMultiplier = 2f;
         fastFallMultiplier = 2f;
-        defaultGravityScale = rb.gravityScale;
+        dodgeDistance = 30;
+        
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        
+        // Get stickPos for non-deadzone/movement related stuff
+        stickPos = context.ReadValue<Vector2>();
+        // Read the X value only for the "move" action each event call
+        // Set it to 0f if not greater than stick deadzone
+        movementVector.x = Mathf.Abs(context.ReadValue<Vector2>().x) > .05f ? context.ReadValue<Vector2>().x : 0f;
+        // Fastfall
+        if (context.ReadValue<Vector2>().y < -.5f && rb.velocity.y < 0.5f && !isGrounded && !isAirDodging)
+            {
+                isFastFalling = true;
+            }
         // context.performed is whenever the input changes to a non-zero value
-        if (context.performed && !isDashing_)
+        if (context.performed && Mathf.Abs(movementVector.x) > .05f)
         {
-            // Read the X value only for the "move" action each event call
-            movementVector.x = context.ReadValue<Vector2>().x;
+            
 
             if (Mathf.Abs(movementVector.x) > .975f)
             {
                 movementVector.x = Mathf.Sign(movementVector.x);
             }
+            
             if (Mathf.Abs(movementVector.x) > .1f)
             {
                 Xdir = (int)Mathf.Sign(movementVector.x);
             }
-            if (context.ReadValue<Vector2>().y < 0)
-            {
-                isFastFalling = true;
-            }
+            
 
             // Initial Dash Logic
-            if (Mathf.Abs(movementVector.x) > maxWalkSpeed && !hasDashed)
+            if ((Mathf.Abs(movementVector.x) > maxWalkSpeed && isGrounded) && ((movementVector.x * dashDir < 0 && isDashing_) || !hasDashed))
             {
+                if (isDashing_)
+                {
+                    count = 0;
+                }
                 isDashing_ = true;
+                hasDashed = true;
                 dashDir = (int)Mathf.Sign(movementVector.x);
             }
             
@@ -119,15 +142,13 @@ public class PlayerMovement : MonoBehaviour
         // has to be "else if" because there is also context.started
         else if (context.canceled) 
         {
-            print("Canceled");
-            // Set isMoving to false
-            // Set hasDashed to false
-            // If input is both cancelled and not still dashing
-            if (!isDashing_)
+            // Update the Phase to cancelled if still dashing
+            if (isDashing_)
             {
-                hasDashed = false;
-                //isMoving = false;
+                cancelledWhileDashing = true;
             }
+            hasDashed = false;
+            isMoving = false;
         }
     }
 
@@ -135,7 +156,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if ((isGrounded || !doubleJumping) && context.performed)
         {
-            // 
+            // Set jump vector y value to jumpPowerMultiplier
+            isHoldingJump = true;
             jump.y = jumpPowerMultiplier;
             if (rb.velocity.x * movementVector.x < 0)
             {
@@ -151,8 +173,31 @@ public class PlayerMovement : MonoBehaviour
             doubleJumping = !isGrounded;
             isGrounded = false;
             isFastFalling = false;
+            cancelledWhileDashing = false;
+            isDashing_ = false;
+            hasDashed = false;
+        }
+        if (context.canceled)
+        {
+            isHoldingJump = false;
         }
 
+    }
+    public void OnAirDodge(InputAction.CallbackContext context)
+    {
+        if (context.performed && !isAirDodging)
+        {
+            airDodgePos = stickPos * 2;
+            rb.gravityScale = 0f;
+            isAirDodging = true;
+        }
+    }
+    public void OnFastFall(InputAction.CallbackContext context)
+    {
+        if(context.performed && rb.velocity.y < 3f && !isGrounded)
+        {
+            isFastFalling = true;
+        }
     }
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -176,24 +221,22 @@ public class PlayerMovement : MonoBehaviour
     }
     public void FixedUpdate()
     {
-
-        // Is there movement in the X direction?
-        isMoving = rb.velocity.x == 0;
-        
-
         // **Dash Movement**
 
         // Is the dash done yet?
-        if (count >= dashLengthMultiplier)
+        if (count >= dashLength)
         {
             count = 0;
             isDashing_ = false;
         }
-        // If the dash isn't, and player is on the ground
-        if (isDashing_ && count < dashLengthMultiplier && isGrounded)
+        if (!isDashing_ && cancelledWhileDashing)
         {
-            // update the movementVector X value to be the same as the direction being dashed in, for other scripts logic
-            movementVector.x = ((movementVector.x * dashDir) <= 0) ? movementVector.x * dashDir : movementVector.x;
+            hasDashed = false;
+            cancelledWhileDashing = false;
+        }
+        // If dashing and on the ground
+        if (isDashing_ && count < dashLength && isGrounded)
+        {
             // Update the velocity to the direction the player is dashing, at the normal moveSpeed with a multiplication modifier of the dash speed
             rb.velocity = dashDir * moveSpeedMultiplier * dashSpeedMultiplier * Vector2.right;
             count++;
@@ -203,24 +246,24 @@ public class PlayerMovement : MonoBehaviour
 
         // Stick input should only affect velocity in the X direction
         // therefore all velocity changes with respect to magnitude of movement input should leave Y value alone
-        else if (isGrounded && !isDashing_)
+        else if (isGrounded && !isDashing_ && isMoving && !pa.isAttacking)
         {
             // If grounded and not dashing,
             // interpolate the velocity to the movementVector multiplied by
             // the movement speed over ten fixed updates
 
-            rb.velocity.Set(Mathf.Lerp(rb.velocity.x, movementVector.x * moveSpeedMultiplier, 10), rb.velocity.y);
+            //rb.velocity.Set(Mathf.Lerp(rb.velocity.x, movementVector.x * moveSpeedMultiplier, 10), rb.velocity.y);
             movementVector.x *= moveSpeedMultiplier;
-            rb.velocity = Vector2.Lerp(rb.velocity, movementVector, 10);
+            rb.velocity = movementVector;
             movementVector.x /= moveSpeedMultiplier;
 
             if (!isMoving)
             {
-                rb.velocity = Vector2.Lerp(rb.velocity, Vector2.zero, 10);
+                //rb.velocity = Vector2.zero;
             }
             else if (pa.isAttacking)
             {
-                rb.velocity /= attackSlowMultiplier;
+                //rb.velocity /= attackSlowMultiplier;
             }
 
         }
@@ -229,6 +272,15 @@ public class PlayerMovement : MonoBehaviour
 
         else 
         {
+            if (isAirDodging)
+            {
+                t.position = Vector3.Lerp(t.position, (t.position + airDodgePos), dodgeDistance);
+            }
+            if(isHoldingJump && rb.velocity.y > 0f)
+            {
+               // rb.AddForce(new Vector2(0f, 5f), ForceMode2D.Force);
+            }
+
             // If in the air, and velocity + anticipated movement is less than set movement speed
             // change the current velocity by direction multiplied
             // by the default in air movement speed multiplier
@@ -248,33 +300,45 @@ public class PlayerMovement : MonoBehaviour
             }
             movementVector.x /= inAirSpeedChangeMultiplier;
             // If input is triggered for fast fall, and the player is moving down, double gravity scale
-            if (isFastFalling && rb.velocity.y <= 0)
-            {
-                rb.gravityScale = defaultGravityScale * fastFallMultiplier;
-            }
+            
         }
         // If not fast falling, reset gravity scale
-        if (!isFastFalling)
+        if (isFastFalling && rb.velocity.y <= 0 && rb.velocity.y > -10f)
         {
-            rb.gravityScale = defaultGravityScale / fastFallMultiplier;
+
+            rb.AddForce(new Vector2(0f,-3f), ForceMode2D.Impulse);
+            //rb.velocity.Set(rb.velocity.x, -100f);
+            print("Fast Fall");
+            //rb.gravityScale = defaultGravityScale * fastFallMultiplier;
         }
+        else
+        {
+            //rb.gravityScale = defaultGravityScale;
+        }
+        
+        
+        
 
     }
     public void Update()
     {
         // Set animation state machine parameters
         anim.SetBool("isGrounded", isGrounded);
-        anim.SetBool("isMoving", isMoving);
+        anim.SetBool("isMoving", isMoving || isDashing_);
         anim.SetBool("doubleJumping", doubleJumping);
         anim.SetInteger("Ydir", (int)Mathf.Sign(rb.velocity.y));
-        anim.SetFloat("RunSpeed", Mathf.Abs(movementVector.x));
+        anim.SetFloat("RunSpeed", Mathf.Abs(rb.velocity.x) / moveSpeedMultiplier);
 
         // Set sprite direction
-        if ((Xdir * t.localScale.x) < 0 || (isDashing_ && (dashDir * t.localScale.x) < 0))
+        if (((Xdir * t.localScale.x) < 0  && !isDashing_ ) || (isDashing_ && (t.localScale.x * dashDir) < 0))
         {
             // If the direction of input doesn't match the direction facing, switch the direction facing
             // Unless dashing
-            t.localScale.Scale(scaleFlip);
+            scaleFlip.x *= t.localScale.x;
+            scaleFlip.y *= t.localScale.y;
+            scaleFlip.z *= t.localScale.z;
+            t.localScale = scaleFlip;
+            scaleFlip.Set(-1, 1, 1);
         }
         // Set the size of the collider to the size of the rendered sprite
         // ! TODO: make a better collider system, the swords and capes shouldn't be considered in hitboxes

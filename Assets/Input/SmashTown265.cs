@@ -62,6 +62,24 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FastFall"",
+                    ""type"": ""Button"",
+                    ""id"": ""7438f3e0-2c58-4f55-b8e1-484f7dfb8437"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AirDodge"",
+                    ""type"": ""Button"",
+                    ""id"": ""32deae9e-b4b4-4897-a32a-c0649604b2ba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -245,10 +263,43 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""4d373cf4-4038-4938-8026-6382d74528eb"",
                     ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": ""Tap"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b5f28150-9715-46ca-88ef-32dd645956e3"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""FastFall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6a39694-4ef3-41eb-aff6-0d399b707cbe"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""AirDodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bd488970-c887-41cb-b07d-9f14f41998a0"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""AirDodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -840,6 +891,8 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_FastFall = m_Player.FindAction("FastFall", throwIfNotFound: true);
+        m_Player_AirDodge = m_Player.FindAction("AirDodge", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -917,6 +970,8 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_FastFall;
+    private readonly InputAction m_Player_AirDodge;
     public struct PlayerActions
     {
         private @SmashTown265 m_Wrapper;
@@ -925,6 +980,8 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @FastFall => m_Wrapper.m_Player_FastFall;
+        public InputAction @AirDodge => m_Wrapper.m_Player_AirDodge;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -946,6 +1003,12 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @FastFall.started += instance.OnFastFall;
+            @FastFall.performed += instance.OnFastFall;
+            @FastFall.canceled += instance.OnFastFall;
+            @AirDodge.started += instance.OnAirDodge;
+            @AirDodge.performed += instance.OnAirDodge;
+            @AirDodge.canceled += instance.OnAirDodge;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -962,6 +1025,12 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @FastFall.started -= instance.OnFastFall;
+            @FastFall.performed -= instance.OnFastFall;
+            @FastFall.canceled -= instance.OnFastFall;
+            @AirDodge.started -= instance.OnAirDodge;
+            @AirDodge.performed -= instance.OnAirDodge;
+            @AirDodge.canceled -= instance.OnAirDodge;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1148,6 +1217,8 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnFastFall(InputAction.CallbackContext context);
+        void OnAirDodge(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

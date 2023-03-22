@@ -102,14 +102,14 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 0.80367005
+  m_Mass: 0.675
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &1468236329494031448
 MonoBehaviour:
@@ -123,13 +123,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fe0936850f3ce0499f2c6b0e03af31a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  jumpPower: 0
-  inAirMovementMultiplier: 0
-  inAirMoveSpeed: 0
-  decelSpeed: 0
+  moveSpeedMultiplier: 0
+  jumpPowerMultiplier: 0
+  inAirSpeedChangeMultiplier: 0
+  dashSpeedMultiplier: 0
+  attackSlowMultiplier: 0
+  inAirDeceleractionMultiplier: 0
+  fastFallMultiplier: 0
+  maxWalkSpeed: 0
+  maxInAirMoveSpeed: 0
+  dashLength: 0
   isGrounded: 1
+  isMoving: 0
   doubleJumping: 0
+  isFastFalling: 0
+  isDashing_: 0
+  hasDashed: 0
+  cancelledWhileDashing: 0
   movementVector: {x: -0.11005664, y: 0}
 --- !u!61 &1468236329494031446
 BoxCollider2D:
@@ -291,8 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662b34e265521ab45ae73afa6c64e21f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAttacking: 0
-  attackHeld: 0
+  isAttacking_: 0
 --- !u!95 &2242133325842634775
 Animator:
   serializedVersion: 5

@@ -40,6 +40,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "FastFall",
+                    "type": "Button",
+                    "id": "7438f3e0-2c58-4f55-b8e1-484f7dfb8437",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "AirDodge",
+                    "type": "Button",
+                    "id": "32deae9e-b4b4-4897-a32a-c0649604b2ba",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -223,10 +241,43 @@
                     "name": "",
                     "id": "4d373cf4-4038-4938-8026-6382d74528eb",
                     "path": "<Gamepad>/buttonSouth",
-                    "interactions": "Press",
+                    "interactions": "Tap",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b5f28150-9715-46ca-88ef-32dd645956e3",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "FastFall",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e6a39694-4ef3-41eb-aff6-0d399b707cbe",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "AirDodge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bd488970-c887-41cb-b07d-9f14f41998a0",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "AirDodge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
