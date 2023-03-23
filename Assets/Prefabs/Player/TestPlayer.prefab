@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 1468236329494031452}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.04, y: -1.56, z: 10}
-  m_LocalScale: {x: 1.5, y: 1.7859333, z: 3.2865908}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -106,7 +106,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 4ee4440c239a79345b7c828ecbfdc446, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -123,7 +123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fe0936850f3ce0499f2c6b0e03af31a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeedMultiplier: 0
   jumpPowerMultiplier: 0
   inAirSpeedChangeMultiplier: 0
   dashSpeedMultiplier: 0
@@ -133,6 +132,8 @@ MonoBehaviour:
   maxWalkSpeed: 0
   maxInAirMoveSpeed: 0
   dashLength: 0
+  dodgeDistance: 0
+  maxMoveSpeed: 0
   isGrounded: 1
   isMoving: 0
   doubleJumping: 0
@@ -140,7 +141,11 @@ MonoBehaviour:
   isDashing_: 0
   hasDashed: 0
   cancelledWhileDashing: 0
-  movementVector: {x: -0.11005664, y: 0}
+  isHoldingJump: 0
+  isAirDodging: 0
+  count: 0
+  dodgeCounter: 0
+  movementVector: {x: 0, y: 0}
 --- !u!61 &1468236329494031446
 BoxCollider2D:
   m_ObjectHideFlags: 0

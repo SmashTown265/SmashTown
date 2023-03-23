@@ -1,51 +1,48 @@
-using JetBrains.Annotations;
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
 // This Script has the OnMove and OnJump methods, as well as all animation parameters associated with movement
 
 public class PlayerMovement : MonoBehaviour
 {
-    
+
     Rigidbody2D rb;
     Animator anim;
     Transform t;
     BoxCollider2D bc2d;
     SpriteRenderer sr;
     PlayerAttack pa;
-    PlayerInput pI;
-
 
     Vector3 scaleFlip = new(-1, 1, 1);
     Vector3 airDodgePos = Vector3.one;
     Vector2 jump = Vector2.up;
     Vector2 tempVector = Vector2.zero;
     Vector3 stickPos = Vector3.zero;
+    float gravityScale;
     int Xdir;
-    int count;
     int dashDir;
-    int dodgeCounter;
+    
 
     [Header("Character Specific Movement Settings")]
     [Header("Multipliers")]
-    [SerializeField] float moveSpeedMultiplier;
     [SerializeField] float jumpPowerMultiplier;
     [SerializeField] float inAirSpeedChangeMultiplier;
     [SerializeField] float dashSpeedMultiplier;
     [SerializeField] float attackSlowMultiplier;
     [SerializeField] float inAirDeceleractionMultiplier;
     [SerializeField] float fastFallMultiplier;
+    [SerializeField] float airDodgeDistance = 2f;
     
     [Header("Constants")]
     [SerializeField] float maxWalkSpeed;
     [SerializeField] float maxInAirMoveSpeed;
     [SerializeField] int dashLength;
-    [SerializeField] int dodgeDistance;
-
+    [SerializeField] int dodgeSpeed;
+    [SerializeField] float maxMoveSpeed;
 
     [Header("Bools")]
     public bool isGrounded = false;
@@ -58,11 +55,15 @@ public class PlayerMovement : MonoBehaviour
     public bool isHoldingJump = false;
     public bool isAirDodging = false;
 
+    [Header("Counters")]
+    public int count;
+    public int dodgeCounter;
+
 
 
 
     [Header("Current Input after processing")]
-    public Vector2 movementVector;
+    public Vector2 movementVector = Vector2.zero;
 
     // Keeps other scripts from changing it
     public bool isDashing => isDashing_;
@@ -77,20 +78,23 @@ public class PlayerMovement : MonoBehaviour
         bc2d = GetComponent<BoxCollider2D>();
         sr = GetComponent<SpriteRenderer>();
         pa = GetComponent<PlayerAttack>();
-        pI = GetComponent<PlayerInput>();
+        
         // Initialize all serialized variables so they don't change every time we try something new
-        moveSpeedMultiplier = 10f;
+        maxMoveSpeed = 10f;
         jumpPowerMultiplier = 4.5f;
         inAirSpeedChangeMultiplier = .15f;
         maxInAirMoveSpeed = 6f;
         inAirDeceleractionMultiplier = 75f;
         maxWalkSpeed = .50f;
-        dashLength = 15;
+        dashLength = 5;
         count = 0;
         dashSpeedMultiplier = 1.2f;
         attackSlowMultiplier = 2f;
         fastFallMultiplier = 2f;
-        dodgeDistance = 30;
+        dodgeSpeed = 30;
+        count = 0;
+        dodgeCounter = 0;
+        gravityScale = rb.gravityScale;
         
     }
 
@@ -156,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if ((isGrounded || !doubleJumping) && context.performed)
         {
-            // Set jump vector y value to jumpPowerMultiplier
+            /* Set jump vector y value to jumpPowerMultiplier
             isHoldingJump = true;
             jump.y = jumpPowerMultiplier;
             if (rb.velocity.x * movementVector.x < 0)
@@ -175,7 +179,8 @@ public class PlayerMovement : MonoBehaviour
             isFastFalling = false;
             cancelledWhileDashing = false;
             isDashing_ = false;
-            hasDashed = false;
+            hasDashed = false;*/
+            StartCoroutine(JumpRoutine());
         }
         if (context.canceled)
         {
@@ -185,9 +190,11 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnAirDodge(InputAction.CallbackContext context)
     {
-        if (context.performed && !isAirDodging)
+        if (context.performed && !isAirDodging && !isGrounded)
         {
-            airDodgePos = stickPos * 2;
+            dodgeCounter = 0;
+            airDodgePos = t.position + (stickPos * airDodgeDistance);
+            rb.velocity = Vector2.zero;
             rb.gravityScale = 0f;
             isAirDodging = true;
         }
@@ -238,7 +245,7 @@ public class PlayerMovement : MonoBehaviour
         if (isDashing_ && count < dashLength && isGrounded)
         {
             // Update the velocity to the direction the player is dashing, at the normal moveSpeed with a multiplication modifier of the dash speed
-            rb.velocity = dashDir * moveSpeedMultiplier * dashSpeedMultiplier * Vector2.right;
+            rb.velocity = dashDir * maxMoveSpeed * dashSpeedMultiplier * Vector2.right;
             count++;
         }
 
@@ -253,9 +260,9 @@ public class PlayerMovement : MonoBehaviour
             // the movement speed over ten fixed updates
 
             //rb.velocity.Set(Mathf.Lerp(rb.velocity.x, movementVector.x * moveSpeedMultiplier, 10), rb.velocity.y);
-            movementVector.x *= moveSpeedMultiplier;
+            movementVector.x *= maxMoveSpeed;
             rb.velocity = movementVector;
-            movementVector.x /= moveSpeedMultiplier;
+            movementVector.x /= maxMoveSpeed;
 
             if (!isMoving)
             {
@@ -269,17 +276,10 @@ public class PlayerMovement : MonoBehaviour
         }
         
         // **In Air Movement**
-
-        else 
+        
+        else if (!isAirDodging)
         {
-            if (isAirDodging)
-            {
-                t.position = Vector3.Lerp(t.position, (t.position + airDodgePos), dodgeDistance);
-            }
-            if(isHoldingJump && rb.velocity.y > 0f)
-            {
-               // rb.AddForce(new Vector2(0f, 5f), ForceMode2D.Force);
-            }
+            
 
             // If in the air, and velocity + anticipated movement is less than set movement speed
             // change the current velocity by direction multiplied
@@ -292,7 +292,7 @@ public class PlayerMovement : MonoBehaviour
                 tempVector.x = Mathf.Sign(rb.velocity.x) * maxInAirMoveSpeed;
                 tempVector.y = rb.velocity.y;
 
-                rb.velocity = Vector2.Lerp(rb.velocity, tempVector, (moveSpeedMultiplier - maxInAirMoveSpeed)/inAirDeceleractionMultiplier);
+                rb.velocity = Vector2.Lerp(rb.velocity, tempVector, (maxMoveSpeed - maxInAirMoveSpeed)/inAirDeceleractionMultiplier);
             }
             if (Mathf.Abs(rb.velocity.x + movementVector.x) <= maxInAirMoveSpeed || Mathf.Abs(rb.velocity.x + movementVector.x) <= Mathf.Abs(rb.velocity.x))
             {
@@ -302,20 +302,22 @@ public class PlayerMovement : MonoBehaviour
             // If input is triggered for fast fall, and the player is moving down, double gravity scale
             
         }
-        // If not fast falling, reset gravity scale
+        // If fast falling, and not already falling faster than -10f, add downward impulse force
         if (isFastFalling && rb.velocity.y <= 0 && rb.velocity.y > -10f)
         {
-
             rb.AddForce(new Vector2(0f,-3f), ForceMode2D.Impulse);
-            //rb.velocity.Set(rb.velocity.x, -100f);
-            print("Fast Fall");
-            //rb.gravityScale = defaultGravityScale * fastFallMultiplier;
         }
-        else
+        if (isAirDodging && dodgeCounter < dodgeSpeed)
         {
-            //rb.gravityScale = defaultGravityScale;
+            t.position = Vector3.Lerp(t.position, airDodgePos, dodgeCounter / (float)dodgeSpeed);
+            dodgeCounter += 1;
         }
-        
+        else if(isAirDodging && dodgeCounter >= dodgeSpeed)
+        {
+            dodgeCounter = 0;
+            isAirDodging = false;
+            rb.gravityScale = gravityScale;
+        }
         
         
 
@@ -327,7 +329,7 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("isMoving", isMoving || isDashing_);
         anim.SetBool("doubleJumping", doubleJumping);
         anim.SetInteger("Ydir", (int)Mathf.Sign(rb.velocity.y));
-        anim.SetFloat("RunSpeed", Mathf.Abs(rb.velocity.x) / moveSpeedMultiplier);
+        anim.SetFloat("RunSpeed", Mathf.Abs(rb.velocity.x) / maxMoveSpeed);
 
         // Set sprite direction
         if (((Xdir * t.localScale.x) < 0  && !isDashing_ ) || (isDashing_ && (t.localScale.x * dashDir) < 0))
@@ -345,4 +347,32 @@ public class PlayerMovement : MonoBehaviour
         bc2d.size = sr.sprite.bounds.size;
     }
 
+    //Jump coroutine
+    public IEnumerator JumpRoutine()
+    {   
+        jump.y = jumpPowerMultiplier;
+        doubleJumping = !isGrounded;
+        isGrounded = false;
+        isFastFalling = false;
+        cancelledWhileDashing = false;
+        isDashing_ = false;
+        hasDashed = false;
+        isHoldingJump = true;
+        if (rb.velocity.x * movementVector.x < 0)
+        {
+            tempVector.x = 0f;
+        }
+        else
+        {
+            tempVector.x = rb.velocity.x;
+        }
+        tempVector.y = 0f;
+        rb.velocity = tempVector;
+        if (!doubleJumping)
+        { 
+            yield return new WaitForSeconds(4 / 24f); 
+        }
+        
+        rb.AddForce(jump, ForceMode2D.Impulse);
+    }
 }
