@@ -51,7 +51,7 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                     ""id"": ""8e5b4afb-9437-4a82-aa11-da9fcf2835db"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""SingleTap(tapDelay=0.3)"",
                     ""initialStateCheck"": true
                 },
                 {
@@ -60,7 +60,7 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                     ""id"": ""00793eb1-22c9-4cc2-bdac-12291a731632"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""SingleTap(tapDelay=0.15)"",
                     ""initialStateCheck"": false
                 },
                 {
