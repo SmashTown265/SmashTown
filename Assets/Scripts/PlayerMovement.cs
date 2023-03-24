@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 // This Script has the OnMove and OnJump methods, as well as all animation parameters associated with movement
 
@@ -158,7 +158,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if ((isGrounded || !doubleJumping) && context.performed)
+        if ((isGrounded || !doubleJumping) && context.performed) 
         {
             /* Set jump vector y value to jumpPowerMultiplier
             isHoldingJump = true;
@@ -332,7 +332,7 @@ public class PlayerMovement : MonoBehaviour
         anim.SetFloat("RunSpeed", Mathf.Abs(rb.velocity.x) / maxMoveSpeed);
 
         // Set sprite direction
-        if (((Xdir * t.localScale.x) < 0  && !isDashing_ ) || (isDashing_ && (t.localScale.x * dashDir) < 0))
+        if (isGrounded && ((Xdir * t.localScale.x) < 0  && !isDashing_ ) || (isDashing_ && (t.localScale.x * dashDir) < 0))
         {
             // If the direction of input doesn't match the direction facing, switch the direction facing
             // Unless dashing
@@ -370,7 +370,7 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = tempVector;
         if (!doubleJumping)
         { 
-            yield return new WaitForSeconds(4 / 24f); 
+            yield return new WaitForSeconds(2 / 24f); 
         }
         
         rb.AddForce(jump, ForceMode2D.Impulse);
