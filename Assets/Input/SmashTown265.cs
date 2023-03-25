@@ -80,6 +80,15 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Teleport"",
+                    ""type"": ""Button"",
+                    ""id"": ""f92bf7c9-e39c-4488-9bb1-3f16c2948ae7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -300,6 +309,17 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""AirDodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1aa499a5-1b7d-4720-ab13-2d7630047f70"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Teleport"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -893,6 +913,7 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_FastFall = m_Player.FindAction("FastFall", throwIfNotFound: true);
         m_Player_AirDodge = m_Player.FindAction("AirDodge", throwIfNotFound: true);
+        m_Player_Teleport = m_Player.FindAction("Teleport", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -972,6 +993,7 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_FastFall;
     private readonly InputAction m_Player_AirDodge;
+    private readonly InputAction m_Player_Teleport;
     public struct PlayerActions
     {
         private @SmashTown265 m_Wrapper;
@@ -982,6 +1004,7 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @FastFall => m_Wrapper.m_Player_FastFall;
         public InputAction @AirDodge => m_Wrapper.m_Player_AirDodge;
+        public InputAction @Teleport => m_Wrapper.m_Player_Teleport;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1009,6 +1032,9 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
             @AirDodge.started += instance.OnAirDodge;
             @AirDodge.performed += instance.OnAirDodge;
             @AirDodge.canceled += instance.OnAirDodge;
+            @Teleport.started += instance.OnTeleport;
+            @Teleport.performed += instance.OnTeleport;
+            @Teleport.canceled += instance.OnTeleport;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1031,6 +1057,9 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
             @AirDodge.started -= instance.OnAirDodge;
             @AirDodge.performed -= instance.OnAirDodge;
             @AirDodge.canceled -= instance.OnAirDodge;
+            @Teleport.started -= instance.OnTeleport;
+            @Teleport.performed -= instance.OnTeleport;
+            @Teleport.canceled -= instance.OnTeleport;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1219,6 +1248,7 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnFastFall(InputAction.CallbackContext context);
         void OnAirDodge(InputAction.CallbackContext context);
+        void OnTeleport(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

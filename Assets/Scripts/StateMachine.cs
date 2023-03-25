@@ -1,5 +1,6 @@
+using System;
 using System.Collections.Generic;
-
+/*
 
 public class StateMachine
 {
@@ -43,18 +44,22 @@ public class StateMachine
     public void FastFalling() => state_ = State.fastFalling;
     public void Attacking() => state_ = State.attacking;
 }
-public enum State 
+[Flags]
+public enum State
 {
-    none,
-    idle,
-    running,
-    dashing,
-    jumping,
-    doubleJumping,
-    airDodging,
-    fastFalling,
-    attacking,
-    all
+    none = 0,
+    idle = 1,
+    running = 2,
+    dashing = 4,
+    GROUND = idle | running | dashing,
+    jumping = 16,
+    doubleJumping = 32,
+    airDodging = 64,
+    fastFalling = 128,
+    INAIR = jumping | airDodging | fastFalling,
+    attacking = 512,
+    all = 1024,
 
 }
 
+*/
