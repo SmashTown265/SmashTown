@@ -84,11 +84,11 @@ public class PlayerMovement : MonoBehaviour
         inAirSpeedChangeMultiplier = .15f;
         maxInAirMoveSpeed = 6f;
         inAirDeceleractionMultiplier = 75f;
-        maxWalkSpeed = .50f;
+        maxWalkSpeed = .70f;
         dashLength = 2;
         count = 0;
         dashSpeedMultiplier = 1.2f;
-        dodgeDistance = 30;
+        dodgeDistance = 15;
         count = 0;
         dodgeCounter = 0;
         gravityScale = rb.gravityScale;

@@ -71,10 +71,10 @@ public class PlayerAttack : MonoBehaviour
 
             print($"THIS SHOULD BE FALSE ATTACKING: {pM.playerState.HasFlags(State.Attacking)} ");
 		}
-        else if (attackTimer > 0 && attackTimer < .4 || pM.playerState.HasFlags(State.Attacking))
+        else if (attackTimer > 0 && attackTimer < .25 || pM.playerState.HasFlags(State.Attacking))
 		{
 			attackTimer += Time.deltaTime;
-			if (attackTimer >= .4)
+			if (attackTimer >= .25)
 				attackTimer = 0;
 		}
 	}

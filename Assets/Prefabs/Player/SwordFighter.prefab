@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 2242133325842634775}
   - component: {fileID: 2804007998845829214}
   m_Layer: 0
-  m_Name: TestPlayer
+  m_Name: SwordFighter
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 889567004, guid: d2f1dc0c0900214468f735678f84c916, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -104,7 +104,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 1.0125
+  m_Mass: 0.675
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fe0936850f3ce0499f2c6b0e03af31a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Xdir: 0
   jumpPowerMultiplier: 0
   inAirSpeedChangeMultiplier: 0
   dashSpeedMultiplier: 0
@@ -358,6 +359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662b34e265521ab45ae73afa6c64e21f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackTimer: 0
 --- !u!95 &2242133325842634775
 Animator:
   serializedVersion: 5
@@ -442,9 +444,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4220586695232904993, guid: 02e4c1768908db745af4c27258dec2a3, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8014109143116458544, guid: 02e4c1768908db745af4c27258dec2a3, type: 3}
       propertyPath: m_Name
-      value: Attack_and_Damage
+      value: Attack
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02e4c1768908db745af4c27258dec2a3, type: 3}
