@@ -96,7 +96,7 @@ namespace UnityEngine.InputSystem.Composites
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        static void Init() { }
+        private static void Init() { }
 
     }
 }
