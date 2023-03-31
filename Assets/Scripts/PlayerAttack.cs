@@ -1,22 +1,18 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Composites;
-using UnityEngine.InputSystem.Interactions;
 
 public class PlayerAttack : MonoBehaviour
 {
-	private Rigidbody2D rb;
 	private Animator anim;
 	private PlayerInput pI;
 	private PlayerMovement pM;
 	private Vector2 attackDir;
-	private int attackCounter;
+	public float attackTimer = 0;
 
 
 	// Start is called before the first frame update
 	private void Start()
 	{
-		rb = GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator>();
 		pI = GetComponent<PlayerInput>();
 		pM = GetComponent<PlayerMovement>();
@@ -24,17 +20,18 @@ public class PlayerAttack : MonoBehaviour
 
 	public void OnAttack(InputAction.CallbackContext context)
 	{
+		print("Button action");
 		// Attack only if not attacking and not dashing
-		if (context.performed && !pM.playerState.HasFlags(State.Attacking) && pM.playerState != State.Dashing)
+		if (context.performed && attackTimer == 0 && (pM.playerState != State.Dashing || !pM.playerState.HasFlags(State.InAir)))
 		{
 			attackDir = GetDir();
 			pM.playerState.AddFlag(State.Attacking);
-			anim.SetTrigger("attackTrigger");
-			attackCounter = 0;
+            print($"THIS SHOULD BE TRUE ATTACKING: {pM.playerState.HasFlags(State.Attacking)} ");
+            anim.SetTrigger("attackTrigger");
 		}
 	}
 
-	private Vector2 GetDir()
+	public Vector2 GetDir()
 	{
 		// PlayerInput "move" action tracks left stick
 		// so take it from that
@@ -63,12 +60,22 @@ public class PlayerAttack : MonoBehaviour
 	// Update is called once per frame
 	private void Update()
 	{
+
 		anim.SetInteger("AttackX", (int)attackDir.x);
 		anim.SetInteger("AttackY", (int)attackDir.y);
 		anim.SetBool("isAttacking", pM.playerState.HasFlags(State.Attacking));
-		if (attackCounter++ > 24)
+		if (attackTimer > .15 && pM.playerState.HasFlags(State.Attacking))
 		{
 			pM.playerState.RemoveFlag(State.Attacking);
+			pM.movementVector.x = Mathf.Abs(pM.stickPos.x) > .05f ? pM.stickPos.x : 0f;
+
+            print($"THIS SHOULD BE FALSE ATTACKING: {pM.playerState.HasFlags(State.Attacking)} ");
+		}
+        else if (attackTimer > 0 && attackTimer < .4 || pM.playerState.HasFlags(State.Attacking))
+		{
+			attackTimer += Time.deltaTime;
+			if (attackTimer >= .4)
+				attackTimer = 0;
 		}
 	}
 }

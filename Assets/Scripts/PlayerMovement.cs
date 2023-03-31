@@ -20,10 +20,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 jump = Vector2.up;
     private Vector2 tempVector = Vector2.zero;
     private State prevState = State.None;
-    private State someState = State.AirDodging | State.Running;
 
     private float gravityScale;
-    private int Xdir;
+    [HideInInspector] public int Xdir = 1;
     private int dashDir;
 
     [Header("Character Specific Movement Settings")] 
@@ -32,12 +31,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float inAirSpeedChangeMultiplier;
     [SerializeField] private float dashSpeedMultiplier;
     [SerializeField] private float inAirDeceleractionMultiplier;
-    [SerializeField] private float airDodgeDistance = 2f;
+    [SerializeField] private float airDodgeSpeed = 20f;
 
     [Header("Constants")] [SerializeField] private float maxWalkSpeed;
     [SerializeField] private float maxInAirMoveSpeed;
     [SerializeField] private int dashLength;
-    [SerializeField] private int dodgeSpeed;
+    [SerializeField] private int dodgeDistance;
     [SerializeField] private float maxMoveSpeed;
 
     [Header("Counters")] 
@@ -75,6 +74,9 @@ public class PlayerMovement : MonoBehaviour
         bc2d = GetComponent<BoxCollider2D>();
         sr = GetComponent<SpriteRenderer>();
         pa = GetComponent<PlayerAttack>();
+        GameObject player2 = GameObject.FindWithTag("Player 2");
+        BoxCollider2D p2Collider = player2.GetComponent<BoxCollider2D>();
+        Physics2D.IgnoreCollision(bc2d, p2Collider);
 
         // Initialize all serialized variables so they don't change every time we try something new
         maxMoveSpeed = 10f;
@@ -83,10 +85,10 @@ public class PlayerMovement : MonoBehaviour
         maxInAirMoveSpeed = 6f;
         inAirDeceleractionMultiplier = 75f;
         maxWalkSpeed = .50f;
-        dashLength = 5;
+        dashLength = 2;
         count = 0;
         dashSpeedMultiplier = 1.2f;
-        dodgeSpeed = 30;
+        dodgeDistance = 30;
         count = 0;
         dodgeCounter = 0;
         gravityScale = rb.gravityScale;
@@ -94,19 +96,19 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+	    // Get stickPos for non-deadzoned/movement related stuff
+	    stickPos = context.ReadValue<Vector2>();
+
         // context.performed is whenever the input changes to a non-zero value
         if (context.performed)
         {
-            // Get stickPos for non-deadzoned/movement related stuff
-            stickPos = context.ReadValue<Vector2>();
-
             // Read the X value only for the "move" action each event call
             // Set it to 0f if not greater than stick deadzone
             movementVector.x = Mathf.Abs(context.ReadValue<Vector2>().x) > .05f ? context.ReadValue<Vector2>().x : 0f;
 
             // Fastfall if stick is more than halfway actuated down, and vertical velocity is low or downward
             if (context.ReadValue<Vector2>().y < -.5f && rb.velocity.y < 1.5f &&
-                playerState.HasEachFlag(State.InAir | State.Jumping))
+                playerState.HasFlags(State.InAir) && playerState != State.AirDodging)
             {
                 playerState.AddFlag(State.FastFalling);
             }
@@ -122,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             // Initial Dash Logic
-            if (!playerState.HasFlags(State.Dashing) && playerState.HasFlags(State.Ground) &&
+            if (playerState.CheckFlags(State.Ground, State.Dashing) &&
                 Mathf.Abs(movementVector.x) > maxWalkSpeed)
             {
                 playerState = State.Dashing;
@@ -155,15 +157,16 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnAirDodge(InputAction.CallbackContext context)
     {
-        if (context.performed && !playerState.HasFlags(State.Ground | State.AirDodging))
+        if (context.performed && !playerState.HasFlags(State.Ground) && !playerState.HasFlags(State.AirDodging))
         {
             dodgeCounter = 0;
-            airDodgePos = (Vector3)stickPos * airDodgeDistance;
+            airDodgePos = (Vector3)stickPos.normalized * airDodgeSpeed;
             rb.velocity = Vector2.zero;
             rb.gravityScale = 0f;
+            // ! TODO add co-routine for gravity scale
             prevState = playerState;
             playerState = State.AirDodging;
-            rb.AddForce(airDodgePos, ForceMode2D.Impulse);
+            //rb.AddForce(airDodgePos, ForceMode2D.Impulse);
         }
     }
 
@@ -179,8 +182,8 @@ public class PlayerMovement : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         // When it comes in contact with the ground
-        // TODO: add conditional to make sure it is the ground, and not the side of something else
-        if (other.gameObject.tag is "Ground" or "Platform" && !playerState.HasFlags(State.AirDodging))
+
+        if (other.gameObject.tag is "Ground" or "Platform" && playerState != State.AirDodging)
         {
             playerState = playerState.HasFlags(State.Attacking) ? State.Attacking | (rb.velocity.x != 0 ? State.Running : State.Idle) : (rb.velocity.x != 0 ? State.Running : State.Idle);
             rb.gravityScale = gravityScale;
@@ -189,19 +192,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D other)
     {
-        // When it comes in contact with the ground
-        // TODO: add conditional to make sure it is the ground, and not the side of something else
-        if (other.gameObject.tag is "Ground" or "Platform" && playerState != State.Jumping && !playerState.HasFlags(State.AirDodging))
+        // When it Stays in contact with the ground
+
+        if (other.gameObject.tag is "Ground" or "Platform" && playerState != State.Jumping && playerState != State.AirDodging && !playerState.HasFlags(State.Ground))
         {
-            playerState.AddFlag(State.Ground);
+	        playerState = playerState.HasFlags(State.Attacking) ? State.Attacking | (rb.velocity.x != 0 ? State.Running : State.Idle) : (rb.velocity.x != 0 ? State.Running : State.Idle);
             rb.gravityScale = gravityScale;
         }
     }
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        // When it comes in contact with the ground
-        // TODO: add conditional to make sure it is the ground, and not the side of something else
+        // When it Leaves contact with the ground
+
         if (other.gameObject.tag is "Ground" or "Platform")
         {
             print($"{playerState.HasFlags(State.Ground)} This should be false - player is in the air");
@@ -217,9 +220,9 @@ public class PlayerMovement : MonoBehaviour
     public void FixedUpdate()
     {
         // State updates
-        if (playerState.HasFlags(State.Ground) && playerState != State.Dashing)
+        if (playerState.HasFlags(State.Ground) && playerState != State.Dashing && !playerState.HasFlags(State.Attacking) && pa.attackTimer == 0)
         {
-            //&& !playerState.HasFlags(State.attacking)
+            
             if (rb.velocity.x == 0f)
             {
                 playerState.AddFlag(State.Idle);
@@ -231,101 +234,99 @@ public class PlayerMovement : MonoBehaviour
                 playerState.RemoveFlag(State.Idle);
             }
         }
-        // **Dash Movement**
-
-        // Is the dash done yet?
-        // ? Should this be a coroutine?
-        if (count >= dashLength)
+        // Sort of State machine
+	    switch (playerState)
         {
-            count = 0;
-            playerState.AddFlag(State.Running);
+            case State.Idle:
+                anim.SetInteger("playerState", (int)playerState);
+                break;
+            case State.Running or State.Running | State.Dashing:
+                anim.SetInteger("playerState", (int)State.Running);
+                // ** Regular Ground Movement **
+
+                // If grounded and not dashing or attacking
+                // interpolate the velocity to the movementVector multiplied by
+                // the movement speed over ten fixed updates
+                if (Mathf.Abs(rb.velocity.x) < maxMoveSpeed && movementVector.x != 0)
+                {
+                    rb.velocity = Vector2.Lerp(rb.velocity, movementVector * maxMoveSpeed, 4);
+                }
+                // Old movement Code - works well, revert to it if current is buggy
+                /*movementVector.x *= maxMoveSpeed;
+                rb.velocity = movementVector;
+                movementVector.x /= maxMoveSpeed;*/
+
+                break;
+            case State.Dashing:
+                anim.SetInteger("playerState", (int)playerState);
+
+                // **Dash Movement**
+
+                if (count >= dashLength)
+                {
+                    count = 0;
+                    playerState.AddFlag(State.Running);
+                }
+                else
+                {
+                    // Update the velocity to the direction the player is dashing, at the normal moveSpeed with a multiplication modifier of the dash speed
+                    rb.velocity = dashDir * maxMoveSpeed * dashSpeedMultiplier * Vector2.right;
+                    count++;
+                }
+                break;
+            case State.AirDodging:
+                anim.SetInteger("playerState", (int)State.Jumping);
+                if (dodgeCounter < dodgeDistance)
+                {
+	                rb.velocity = Vector2.zero;
+	                rb.AddForce(airDodgePos, ForceMode2D.Impulse);
+                    dodgeCounter += 1;
+                }
+                else if (dodgeCounter == dodgeDistance)
+                {
+                    dodgeCounter = 0;
+                    rb.velocity = Vector2.zero;
+                    playerState.AddFlag(prevState);
+                    rb.gravityScale = gravityScale;
+                }
+                break;
+            case var x when x.HasFlags(State.InAir): //or State.Jumping or State.Jumping | State.DoubleJumping:
+                anim.SetInteger("playerState", (int)State.Jumping);
+                // **In Air Movement**
+
+                // If in the air, and velocity + anticipated movement is less than set movement speed
+                // change the current velocity by direction multiplied
+                // by the default in air movement speed multiplier
+
+                movementVector *= inAirSpeedChangeMultiplier;
+                if (Mathf.Abs(rb.velocity.x) > maxInAirMoveSpeed)
+                {
+                    tempVector.x = Mathf.Sign(rb.velocity.x) * maxInAirMoveSpeed;
+                    tempVector.y = rb.velocity.y;
+
+                    rb.velocity = Vector2.Lerp(rb.velocity, tempVector,
+                        (maxMoveSpeed - maxInAirMoveSpeed) / inAirDeceleractionMultiplier);
+                }
+
+                if (Mathf.Abs(rb.velocity.x + movementVector.x) <= maxInAirMoveSpeed ||
+                    Mathf.Abs(rb.velocity.x + movementVector.x) <= Mathf.Abs(rb.velocity.x))
+                {
+                    rb.velocity += movementVector;
+                }
+
+                movementVector /= inAirSpeedChangeMultiplier;
+                if (playerState.HasFlags(State.FastFalling) && rb.velocity.y is <= 0 and > -10f)
+                {
+	                rb.AddForce(Vector2.down * 3f, ForceMode2D.Impulse);
+                }
+                break;
+            case var x when x.HasFlags(State.Attacking):
+                anim.SetInteger("playerState", (int)playerState);
+                break;
         }
-
-        // If dashing 
-        if (playerState == State.Dashing && count < dashLength)
-        {
-            // Update the velocity to the direction the player is dashing, at the normal moveSpeed with a multiplication modifier of the dash speed
-            rb.velocity = dashDir * maxMoveSpeed * dashSpeedMultiplier * Vector2.right;
-            count++;
-        }
-
-        // **Regular Ground Movement**
-
-        // Stick input should only affect velocity in the X direction
-        // therefore all velocity changes with respect to magnitude of movement input should leave Y value alone
-        else if (playerState.HasFlags(State.Running) && playerState != State.Dashing &&
-                 !playerState.HasFlags(State.Attacking))
-        {
-            // If grounded and not dashing or attacking
-            // interpolate the velocity to the movementVector multiplied by
-            // the movement speed over ten fixed updates
-            if (Mathf.Abs(rb.velocity.x) < maxMoveSpeed && movementVector.x != 0)
-            {
-                rb.velocity = Vector2.Lerp(rb.velocity, movementVector * maxMoveSpeed, 4);
-            }
-            /*movementVector.x *= maxMoveSpeed;
-            rb.velocity = movementVector;
-            movementVector.x /= maxMoveSpeed;*/
-        }
-
-        // **In Air Movement**
-
-        else if (playerState.HasFlags(State.InAir) && playerState != State.AirDodging)
-        {
-            // If in the air, and velocity + anticipated movement is less than set movement speed
-            // change the current velocity by direction multiplied
-            // by the default in air movement speed multiplier
-
-            movementVector *= inAirSpeedChangeMultiplier;
-            if (Mathf.Abs(rb.velocity.x) > maxInAirMoveSpeed)
-            {
-                tempVector.x = Mathf.Sign(rb.velocity.x) * maxInAirMoveSpeed;
-                tempVector.y = rb.velocity.y;
-
-                rb.velocity = Vector2.Lerp(rb.velocity, tempVector,
-                    (maxMoveSpeed - maxInAirMoveSpeed) / inAirDeceleractionMultiplier);
-            }
-
-            if (Mathf.Abs(rb.velocity.x + movementVector.x) <= maxInAirMoveSpeed ||
-                Mathf.Abs(rb.velocity.x + movementVector.x) <= Mathf.Abs(rb.velocity.x))
-            {
-                rb.velocity += movementVector;
-            }
-
-            movementVector /= inAirSpeedChangeMultiplier;
-            // If input is triggered for fast fall, and the player is moving down, double gravity scale
-        }
-
-        // If fast falling, and not already falling faster than -10f, add downward impulse force
-        if (playerState.HasFlags(State.FastFalling) && rb.velocity.y is <= 0 and > -10f)
-        {
-            rb.AddForce(Vector2.down * 3f, ForceMode2D.Impulse);
-        }
-
-        // If airDodging
-        if (playerState == State.AirDodging)
-        {
-            if (dodgeCounter < dodgeSpeed)
-            {
-                // Go to airDodgePos from current position over the course of dodgeSpeed fixedUpdate loops
-                // Position is set to the difference between the two positions multiplied by the percentage of airDodge completed
-                //t.position = Vector3.Lerp(t.position, airDodgePos, dodgeCounter / (float)dodgeSpeed);
-                dodgeCounter += 1;
-            }
-            else if (dodgeCounter == dodgeSpeed)
-            {
-                dodgeCounter = 0;
-                playerState.AddFlag(prevState);
-                rb.gravityScale = gravityScale;
-            }
-        }
-
-        print((int)someState);
-        someState.RemoveFlag(State.AirDodging);
-        //someState &= ~State.airDodging;
-        print((int)someState);
-        someState.AddFlag(State.AirDodging);
-        //someState |= State.airDodging;
+	    
+	    
+	   
         ground = playerState.HasFlags(State.Ground);
         idle = playerState.HasFlags(State.Idle);
         running = playerState.HasFlags(State.Running);
@@ -345,33 +346,7 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("doubleJumping", playerState.HasFlag(State.DoubleJumping)); // ? what does this get used for?
         anim.SetInteger("Ydir", (int)rb.velocity.y);
         anim.SetFloat("RunSpeed", Mathf.Abs(rb.velocity.x) / maxMoveSpeed);
-        switch(playerState)
-        {
-            case State.Idle:
-                anim.SetInteger("playerState", (int)playerState);
-                break;
-            case State.Running or State.Running | State.Dashing:
-                anim.SetInteger("playerState", (int)State.Running);
-                break;
-            case State.Dashing:
-                anim.SetInteger("playerState", (int)playerState);
-                break;
-            case State.Jumping or State.Jumping | State.DoubleJumping:
-                anim.SetInteger("playerState", (int)State.Jumping);
-                break;
-            case State.DoubleJumping:
-                anim.SetInteger("playerState", (int)playerState);
-                break;
-            case State.AirDodging:
-                anim.SetInteger("playerState", (int)playerState);
-                break;
-            case State.FastFalling:
-                anim.SetInteger("playerState", (int)playerState);
-                break;
-            case var x when x.HasFlags(State.Attacking):
-                anim.SetInteger("playerState", (int)playerState);
-                break;
-        }
+
         //anim.SetInteger("playerState", (int)playerState);
         // Set sprite direction
         if ((Xdir * t.localScale.x) < 0  && !playerState.HasFlags(State.InAir) || playerState == State.Dashing && (t.localScale.x * dashDir) < 0)
@@ -382,7 +357,8 @@ public class PlayerMovement : MonoBehaviour
         }
         // Set the size of the collider to the size of the rendered sprite
         // ! TODO: make a better collider system, the swords and capes shouldn't be considered in hit boxes - even if they will be
-        //bc2d.size = sr.sprite.bounds.size;
+        //if(!playerState.HasFlag(State.Attacking))
+			//bc2d.size = sr.sprite.bounds.size;
     }
 
     // Jump coroutine
@@ -447,6 +423,12 @@ public static class Extensions
         else
             return (lhs & (rhs & ~(State.Ground | State.InAir))) != 0;
     }
+
+    public static bool CheckFlags(this State lhs, State hasAnyOfTheseStates, State doesNotHaveAnyOfTheseStates) =>
+	    lhs.HasFlags(hasAnyOfTheseStates) && !lhs.HasFlags(doesNotHaveAnyOfTheseStates);
+
+    public static bool CheckEachFlag(this State lhs, State hasAllOfTheseStates, State doesNotHaveAnyOfTheseStates) =>
+	    lhs.HasEachFlag(hasAllOfTheseStates) && !lhs.HasFlags(doesNotHaveAnyOfTheseStates);
     public static bool HasEachFlag(this State lhs, State rhs) => (lhs & rhs) == rhs;
     public static void AddFlag(this ref State lhs, State rhs) => lhs |= rhs;
     public static void RemoveFlag(this ref State lhs, State rhs)
