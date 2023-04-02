@@ -230,10 +230,10 @@ MonoBehaviour:
   followDampeningX: 0.4
   followDampeningY: 0.6
   multiTargetDampening: 3
-  minZoom: 1
+  minZoom: 4
   maxZoom: 10
   ceilingStopLimit: 11
-  floorStopLimit: -10.5
+  floorStopLimit: -3
   lookAheadAmount: 1
 --- !u!20 &1667855462
 Camera:
