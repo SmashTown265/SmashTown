@@ -64,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
     public bool fastFalling;
     public bool attacking;
 
+   
     // Start is called before the first frame update
     private void Start()
     {
@@ -71,12 +72,9 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         t = GetComponent<Transform>();
-        bc2d = GetComponent<BoxCollider2D>();
         sr = GetComponent<SpriteRenderer>();
         pa = GetComponent<PlayerAttack>();
-        GameObject player2 = GameObject.FindWithTag("Player 2");
-        BoxCollider2D p2Collider = player2.GetComponent<BoxCollider2D>();
-        Physics2D.IgnoreCollision(bc2d, p2Collider);
+        bc2d = GetComponent<BoxCollider2D>();
 
         // Initialize all serialized variables so they don't change every time we try something new
         maxMoveSpeed = 10f;
@@ -93,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
         dodgeCounter = 0;
         gravityScale = rb.gravityScale;
     }
-
+    
     public void OnMove(InputAction.CallbackContext context)
     {
 	    // Get stickPos for non-deadzoned/movement related stuff
@@ -207,7 +205,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (other.gameObject.tag is "Ground" or "Platform")
         {
-            print($"{playerState.HasFlags(State.Ground)} This should be false - player is in the air");
+            playerState = State.Jumping;
         }
     }
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

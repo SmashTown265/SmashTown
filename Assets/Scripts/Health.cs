@@ -24,7 +24,7 @@ public class Health : MonoBehaviour
 	    print(knockBack);
 	    if (damagePercent < 100)
 	    {
-            knockBackDir.x = knockBack + (damagePercent / 10f) * Mathf.Sign(knockBack);
+            knockBackDir.Set(knockBack + (damagePercent / 10f) * Mathf.Sign(knockBack), .1f + (damagePercent / 20f));
             
 	    }
 	    else
