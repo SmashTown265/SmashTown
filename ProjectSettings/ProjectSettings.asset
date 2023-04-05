@@ -756,11 +756,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 
+  cloudProjectId: cc7feb17-6c2f-4774-992b-4ad5f904db53
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: SmashTown
+  organizationId: smashtown265
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 

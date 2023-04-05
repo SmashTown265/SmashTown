@@ -24,7 +24,7 @@ public class LevelManager : MonoBehaviour
 
 	}
 
-
+	
 	public void Respawn(GameObject playerObject, string tag)
 	{
 		if (tag == "Player")

@@ -5,10 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public void PlayGame ()
+    public void PlayLocal()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex +1);
+	    SceneManager.LoadScene("SwordFighterArena");
     }
+
+    public void PlayOnline()
+    {
+	    SceneManager.LoadScene("playerLobby");
+    }
+
     public void QuitGame ()
     {
         Debug.Log("Game has exited");
