@@ -19,22 +19,36 @@ using NetworkEvent = Unity.Networking.Transport.NetworkEvent;
 
 public class NetworkRelay : MonoBehaviour
 {
-
-
+	private NetworkSceneManager networkSM;
     private const string KEY_RELAY_JOIN_CODE = "RelayJoinCode";
     public TMP_InputField inputfield;
-
+    public TMP_InputField joinCodeField;
+    public string relayJoinCode;
     public static NetworkRelay Instance { get; private set; }
     public event EventHandler OnJoinStarted;
     public event EventHandler OnJoinFailed;
 
-    public Allocation allocation;
+    //public Allocation allocation;
 
     private void Awake() 
     {
-        Instance = this;
+        // If there is already an instance of this object running
+        // destroy the new one and keep the old one
+        if(Instance  == null)
+			Instance = this;
+        else if(Instance != this)
+            Destroy(gameObject);
+        // Keep instance of this gameObject running when loading new scenes
         DontDestroyOnLoad(gameObject);
+
+        // Authenticate with Unity to do relay stuff
         InitializeUnityAuthentication();
+        
+    }
+
+    private void Start()
+    { 
+	    networkSM = NetworkManager.Singleton.SceneManager;
     }
 
     private async void InitializeUnityAuthentication() 
@@ -42,7 +56,6 @@ public class NetworkRelay : MonoBehaviour
         if (UnityServices.State != ServicesInitializationState.Initialized) 
         {
             InitializationOptions initializationOptions = new InitializationOptions();
-            //initializationOptions.SetProfile(UnityEngine.Random.Range(0, 10000).ToString());
 
             await UnityServices.InitializeAsync(initializationOptions);
 
@@ -50,54 +63,124 @@ public class NetworkRelay : MonoBehaviour
         }
     }
 
-
-    public async void AllocateRelay() 
+    public void HostGame()
     {
-        try 
-        {
-            allocation = await RelayService.Instance.CreateAllocationAsync(2);
-            GetRelayJoinCode();
-            //return allocation;
-        } 
-        catch (RelayServiceException e) 
-        {
-            Debug.Log(e);
-
-            //return default;
-        }
+        // Start the Relay Server, and output the code
+	    StartCoroutine(ConfigureTransportAndStartNgoAsHost());
+	    
     }
 
-    public async void GetRelayJoinCode() 
+    public void JoinGame()
     {
-        try 
+	    StartCoroutine(ConfigureTransportAndStartNgoAsConnectingPlayer());
+    }
+
+    public void GoToPlayerSelection()
+    {
+	    // Load the Player Selection Scene and wait for players to join
+	    networkSM.LoadScene("PlayerSelection", LoadSceneMode.Single);
+    }
+
+    // Start a relay server and request relay join code
+    public async Task<RelayServerData> AllocateRelayAndGetRelayJoinCode()
+    {
+	    Allocation allocation;
+	    try
+	    { 
+		    allocation = await RelayService.Instance.CreateAllocationAsync(2);
+		    
+	    }
+	    catch (RelayServiceException e)
+	    {
+		    Debug.Log(e);
+		    throw;
+	    }
+
+	    print($"Host: {allocation.AllocationId}");
+
+		try 
         {
-            string relayJoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+            relayJoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
             GUIUtility.systemCopyBuffer = relayJoinCode;
-            print(relayJoinCode);
-            
-        } 
+            // Display the joinCode to the user.
+            joinCodeField.text = relayJoinCode;
+        }
         catch (RelayServiceException e) {
             Debug.Log(e);
-            //return default;
+            throw;
         }
+
+	    return new RelayServerData(allocation, "dtls");
     }
 
-    public async void JoinRelay()
+    public async Task<RelayServerData> JoinRelay()
     {
+	    JoinAllocation joinAllocation;
 	    string joinCode = inputfield.text;
         try
         {
-	        print(joinCode);
-            var joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
-            print(joinAllocation.AllocationId);
-        } 
+	        joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
+        }
         catch (RelayServiceException e) 
         {
             Debug.Log(e);
-            
+            throw;
         }
+
+        Debug.Log($"client: {joinAllocation.ConnectionData[0]} {joinAllocation.ConnectionData[1]}");
+        Debug.Log($"host: {joinAllocation.HostConnectionData[0]} {joinAllocation.HostConnectionData[1]}");
+        Debug.Log($"client: {joinAllocation.AllocationId}");
+
+
+        return new RelayServerData(joinAllocation, "dtls");
     }
 
+    IEnumerator ConfigureTransportAndStartNgoAsHost()
+    {
+	    var serverRelayUtilityTask = AllocateRelayAndGetRelayJoinCode();
+	    while (!serverRelayUtilityTask.IsCompleted)
+	    {
+		    yield return null;
+	    }
+	    if (serverRelayUtilityTask.IsFaulted)
+	    {
+		    Debug.LogError("Exception thrown when attempting to start Relay Server. Server not started. Exception: " + serverRelayUtilityTask.Exception.Message);
+		    yield break;
+	    }
+
+	    var relayServerData = serverRelayUtilityTask.Result;
+
+
+
+	    NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+	    NetworkManager.Singleton.StartHost();
+
+	    yield return null;
+    }
+    
+    IEnumerator ConfigureTransportAndStartNgoAsConnectingPlayer()
+    {
+	    // Populate RelayJoinCode beforehand through the UI
+	    var clientRelayUtilityTask = JoinRelay();
+
+	    while (!clientRelayUtilityTask.IsCompleted)
+	    {
+		    yield return null;
+	    }
+
+	    if (clientRelayUtilityTask.IsFaulted)
+	    {
+		    Debug.LogError("Exception thrown when attempting to connect to Relay Server. Exception: " + clientRelayUtilityTask.Exception.Message);
+		    yield break;
+	    }
+
+	    var relayServerData = clientRelayUtilityTask.Result;
+
+	    NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+	    NetworkManager.Singleton.StartClient();
+
+	    yield return null;
+    }
     //public async void QuickJoin() 
     //{
     //    OnJoinStarted?.Invoke(this, EventArgs.Empty);
