@@ -19,8 +19,7 @@ using NetworkEvent = Unity.Networking.Transport.NetworkEvent;
 
 public class NetworkRelay : MonoBehaviour
 {
-	private NetworkSceneManager networkSM;
-    private const string KEY_RELAY_JOIN_CODE = "RelayJoinCode";
+	private const string KEY_RELAY_JOIN_CODE = "RelayJoinCode";
     public TMP_InputField inputfield;
     public TMP_InputField joinCodeField;
     public string relayJoinCode;
@@ -44,11 +43,6 @@ public class NetworkRelay : MonoBehaviour
         // Authenticate with Unity to do relay stuff
         InitializeUnityAuthentication();
         
-    }
-
-    private void Start()
-    { 
-	    networkSM = NetworkManager.Singleton.SceneManager;
     }
 
     private async void InitializeUnityAuthentication() 
@@ -78,7 +72,7 @@ public class NetworkRelay : MonoBehaviour
     public void GoToPlayerSelection()
     {
 	    // Load the Player Selection Scene and wait for players to join
-	    networkSM.LoadScene("PlayerSelection", LoadSceneMode.Single);
+	    NetworkManager.Singleton.SceneManager.LoadScene("PlayerSelectScene", LoadSceneMode.Single);
     }
 
     // Start a relay server and request relay join code
@@ -101,9 +95,10 @@ public class NetworkRelay : MonoBehaviour
 		try 
         {
             relayJoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            GUIUtility.systemCopyBuffer = relayJoinCode;
-            // Display the joinCode to the user.
+            //GUIUtility.systemCopyBuffer = relayJoinCode;
+            joinCodeField.readOnly = false;
             joinCodeField.text = relayJoinCode;
+            joinCodeField.readOnly = true;
         }
         catch (RelayServiceException e) {
             Debug.Log(e);
