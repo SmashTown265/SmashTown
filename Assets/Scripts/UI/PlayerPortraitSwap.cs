@@ -5,7 +5,7 @@ using Microsoft.Unity.VisualStudio.Editor;
 using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerPortraitSwap : MonoBehaviour
+public class PlayerPortraitSwap : NetworkBehaviour
 {
 	public GameObject p1l, p1r, p2l, p2r;
     private int p1sprite, p2sprite = 0;
