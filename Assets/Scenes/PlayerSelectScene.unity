@@ -1524,7 +1524,7 @@ GameObject:
   - component: {fileID: 2073518052}
   - component: {fileID: 2073518053}
   - component: {fileID: 2073518055}
-  - component: {fileID: 2073518054}
+  - component: {fileID: 2073518056}
   m_Layer: 0
   m_Name: PlayerSelect
   m_TagString: Untagged
@@ -1569,22 +1569,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2073518051}
   m_CullTransparentMesh: 1
---- !u!114 &2073518054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2073518051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1117635553
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!114 &2073518055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1607,3 +1591,19 @@ MonoBehaviour:
   - {fileID: 21300000, guid: aba1d9ee832b67e4ba7053e643e5e936, type: 3}
   p1Portrait: {fileID: 1866569457}
   p2Portrait: {fileID: 1131471923}
+--- !u!114 &2073518056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073518051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1117539559
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1

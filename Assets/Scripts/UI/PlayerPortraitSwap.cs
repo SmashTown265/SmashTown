@@ -66,7 +66,7 @@ public class PlayerPortraitSwap : NetworkBehaviour
     }
 
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void PortraitServerRpc(int val)
     {
 	    p2Portrait.GetComponent<UnityEngine.UI.Image>().sprite = sprite[val];
