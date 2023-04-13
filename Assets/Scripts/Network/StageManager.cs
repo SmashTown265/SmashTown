@@ -31,7 +31,7 @@ public class StageManager : MonoBehaviour
 				break;
 
 			case "PlayerSelectScene":
-				LoadScene("StageSelectScene");
+				LoadScene("SwordFighterArena");
 				break;
 
 			case "StageSelectScene":
