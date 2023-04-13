@@ -309,6 +309,7 @@ GameObject:
   m_Component:
   - component: {fileID: 155185943}
   - component: {fileID: 155185942}
+  - component: {fileID: 155185948}
   - component: {fileID: 155185945}
   - component: {fileID: 155185944}
   - component: {fileID: 155185947}
@@ -456,6 +457,18 @@ MonoBehaviour:
     LoadSceneTimeOut: 120
     SpawnTimeout: 1
     EnableNetworkLogs: 1
+--- !u!114 &155185948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155185941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cdbfa75c4d2d8943b6935f9dcb377e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &224591885
 GameObject:
   m_ObjectHideFlags: 0
@@ -2547,10 +2560,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 155185942}
-        m_TargetAssemblyTypeName: NetworkRelay, Assembly-CSharp
-        m_MethodName: GoToPlayerSelection
-        m_Mode: 1
+      - m_Target: {fileID: 155185948}
+        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
+        m_MethodName: GoToNextScene
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

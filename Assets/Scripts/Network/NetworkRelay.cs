@@ -26,6 +26,11 @@ public class NetworkRelay : MonoBehaviour
     public static NetworkRelay Instance { get; private set; }
     public event EventHandler OnJoinStarted;
     public event EventHandler OnJoinFailed;
+    public const int MAX_PLAYER_AMOUNT = 2;
+    public event EventHandler OnTryingToJoinGame;
+    public event EventHandler OnFailedToJoinGame;
+    public event EventHandler OnPlayerDataNetworkListChanged;
+    private NetworkList<ulong> clientIDNetworkList;
 
     //public Allocation allocation;
 
@@ -42,6 +47,10 @@ public class NetworkRelay : MonoBehaviour
 
         // Authenticate with Unity to do relay stuff
         InitializeUnityAuthentication();
+
+        // Create ClientId list
+        clientIDNetworkList = new NetworkList<ulong>();
+        clientIDNetworkList.OnListChanged += clientIDNetworkList_OnListChanged;
         
     }
 
@@ -61,18 +70,11 @@ public class NetworkRelay : MonoBehaviour
     {
         // Start the Relay Server, and output the code
 	    StartCoroutine(ConfigureTransportAndStartNgoAsHost());
-	    
     }
 
     public void JoinGame()
     {
 	    StartCoroutine(ConfigureTransportAndStartNgoAsConnectingPlayer());
-    }
-
-    public void GoToPlayerSelection()
-    {
-	    // Load the Player Selection Scene and wait for players to join
-	    NetworkManager.Singleton.SceneManager.LoadScene("PlayerSelectScene", LoadSceneMode.Single);
     }
 
     // Start a relay server and request relay join code
@@ -148,6 +150,9 @@ public class NetworkRelay : MonoBehaviour
 
 
 	    NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+	    NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManager_ConnectionApprovalCallback;
+	    NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
+	    NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Server_OnClientDisconnectCallback;
 	    NetworkManager.Singleton.StartHost();
 
 	    yield return null;
@@ -172,44 +177,64 @@ public class NetworkRelay : MonoBehaviour
 	    var relayServerData = clientRelayUtilityTask.Result;
 
 	    NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+	    OnTryingToJoinGame?.Invoke(this, EventArgs.Empty);
+	    NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
+	    NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Client_OnClientDisconnectCallback;
 	    NetworkManager.Singleton.StartClient();
 
 	    yield return null;
     }
-    //public async void QuickJoin() 
-    //{
-    //    OnJoinStarted?.Invoke(this, EventArgs.Empty);
-    //    try 
-    //    {
-    //        joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
+     private void clientIDNetworkList_OnListChanged(NetworkListEvent<ulong> changeEvent)
+    {
+        OnPlayerDataNetworkListChanged?.Invoke(this, EventArgs.Empty);
+    }
 
-    //        string relayJoinCode = joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
+    private void NetworkManager_Server_OnClientDisconnectCallback(ulong clientId)
+    {
+        for (int i = 0; i < clientIDNetworkList.Count; i++)
+        {
 
-    //        JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
+            if (clientIDNetworkList[i] == clientId)
+            {
+                // Disconnected!
+                clientIDNetworkList.RemoveAt(i);
+            }
+        }
+    }
 
-    //        NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
+    private void NetworkManager_OnClientConnectedCallback(ulong clientId)
+    {
+	    clientIDNetworkList.Add(clientId);
+    }
 
-    //        KitchenGameMultiplayer.Instance.StartClient();
-    //    } 
-    //    catch (LobbyServiceException e) {
-    //        Debug.Log(e);
-    //        OnQuickJoinFailed?.Invoke(this, EventArgs.Empty);
-    //    }
-    //}
+    private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
+    {
+        if (SceneManager.GetActiveScene().name != "playerLobby")
+        {
+            connectionApprovalResponse.Approved = false;
+            connectionApprovalResponse.Reason = "Game has already started";
+            return;
+        }
+
+        if (NetworkManager.Singleton.ConnectedClientsIds.Count >= MAX_PLAYER_AMOUNT)
+        {
+            connectionApprovalResponse.Approved = false;
+            connectionApprovalResponse.Reason = "Game is full";
+            return;
+        }
+
+        connectionApprovalResponse.Approved = true;
+    }
+
+    private void NetworkManager_Client_OnClientDisconnectCallback(ulong clientId)
+    {
+        OnFailedToJoinGame?.Invoke(this, EventArgs.Empty);
+    }
 
 
-    //public async void KickPlayer(string playerId) 
-    //{
-    //    if (IsServer) 
-    //    {
-    //        try 
-    //        {
-    //            await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, playerId);
-    //        } 
-    //        catch (LobbyServiceException e) 
-    //        {
-    //            Debug.Log(e);
-    //        }
-    //    }
-    //}
+    public void KickPlayer(ulong clientId)
+    {
+        NetworkManager.Singleton.DisconnectClient(clientId);
+        NetworkManager_Server_OnClientDisconnectCallback(clientId);
+    }
 }
