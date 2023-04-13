@@ -33,7 +33,6 @@ public class NetworkRelay : MonoBehaviour
     public event EventHandler OnPlayerDataNetworkListChanged;
     public event EventHandler OnPlayerConnected;
     public event EventHandler OnCreateGameSuccess;
-    private NetworkList<ulong> clientIDNetworkList;
 
     //public Allocation allocation;
 
@@ -51,9 +50,6 @@ public class NetworkRelay : MonoBehaviour
         // Authenticate with Unity to do relay stuff
         InitializeUnityAuthentication();
 
-        // Create ClientId list
-        clientIDNetworkList = new NetworkList<ulong>();
-        clientIDNetworkList.OnListChanged += clientIDNetworkList_OnListChanged;
         
     }
 
@@ -157,7 +153,6 @@ public class NetworkRelay : MonoBehaviour
 	    NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 	    NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManager_ConnectionApprovalCallback;
 	    NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
-	    NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Server_OnClientDisconnectCallback;
 	    NetworkManager.Singleton.StartHost();
 
 	    yield return null;
@@ -183,8 +178,6 @@ public class NetworkRelay : MonoBehaviour
 
 	    NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 	    OnJoinStarted?.Invoke(this, EventArgs.Empty);
-	    NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
-	    NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Client_OnClientDisconnectCallback;
 	    NetworkManager.Singleton.StartClient();
 
 	    yield return null;
@@ -194,26 +187,12 @@ public class NetworkRelay : MonoBehaviour
         OnPlayerDataNetworkListChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    private void NetworkManager_Server_OnClientDisconnectCallback(ulong clientId)
-    {
-        for (int i = 0; i < clientIDNetworkList.Count; i++)
-        {
-
-            if (clientIDNetworkList[i] == clientId)
-            {
-                // Disconnected!
-                clientIDNetworkList.RemoveAt(i);
-            }
-        }
-    }
 
     private void NetworkManager_OnClientConnectedCallback(ulong clientId)
     {
-	    clientIDNetworkList.Add(clientId);
-        if(!NetworkManager.Singleton.IsServer)
-        {
+        if(clientId != NetworkManager.ServerClientId)
             OnPlayerConnected?.Invoke(this, EventArgs.Empty);
-        }
+
     }
 
     private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
@@ -244,6 +223,5 @@ public class NetworkRelay : MonoBehaviour
     public void KickPlayer(ulong clientId)
     {
         NetworkManager.Singleton.DisconnectClient(clientId);
-        NetworkManager_Server_OnClientDisconnectCallback(clientId);
     }
 }
