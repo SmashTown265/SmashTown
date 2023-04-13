@@ -1,14 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using Unity.Netcode;
 using UnityEngine;
 
 public class PlayerPortraitSwap : NetworkBehaviour
 {
 	public GameObject p1l, p1r, p2l, p2r;
-    private int p1sprite, p2sprite = 0;
+    public static int p1sprite, p2sprite = 0;
 
     public Sprite[] sprite = new Sprite[3];
     public GameObject p1Portrait;

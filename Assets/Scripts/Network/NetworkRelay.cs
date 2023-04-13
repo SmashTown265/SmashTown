@@ -27,9 +27,12 @@ public class NetworkRelay : MonoBehaviour
     public event EventHandler OnJoinStarted;
     public event EventHandler OnJoinFailed;
     public const int MAX_PLAYER_AMOUNT = 2;
-    public event EventHandler OnTryingToJoinGame;
+    public event EventHandler OnCreateGameStarted;
+    public event EventHandler OnCreateGameFailed;
     public event EventHandler OnFailedToJoinGame;
     public event EventHandler OnPlayerDataNetworkListChanged;
+    public event EventHandler OnPlayerConnected;
+    public event EventHandler OnCreateGameSuccess;
     private NetworkList<ulong> clientIDNetworkList;
 
     //public Allocation allocation;
@@ -134,6 +137,7 @@ public class NetworkRelay : MonoBehaviour
 
     IEnumerator ConfigureTransportAndStartNgoAsHost()
     {
+        OnCreateGameStarted?.Invoke(this, EventArgs.Empty);
 	    var serverRelayUtilityTask = AllocateRelayAndGetRelayJoinCode();
 	    while (!serverRelayUtilityTask.IsCompleted)
 	    {
@@ -142,13 +146,14 @@ public class NetworkRelay : MonoBehaviour
 	    if (serverRelayUtilityTask.IsFaulted)
 	    {
 		    Debug.LogError("Exception thrown when attempting to start Relay Server. Server not started. Exception: " + serverRelayUtilityTask.Exception.Message);
+            OnCreateGameFailed?.Invoke(this, EventArgs.Empty);
 		    yield break;
 	    }
 
 	    var relayServerData = serverRelayUtilityTask.Result;
 
 
-
+        OnCreateGameSuccess?.Invoke(this, EventArgs.Empty);
 	    NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 	    NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManager_ConnectionApprovalCallback;
 	    NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
@@ -177,7 +182,7 @@ public class NetworkRelay : MonoBehaviour
 	    var relayServerData = clientRelayUtilityTask.Result;
 
 	    NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
-	    OnTryingToJoinGame?.Invoke(this, EventArgs.Empty);
+	    OnJoinStarted?.Invoke(this, EventArgs.Empty);
 	    NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
 	    NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Client_OnClientDisconnectCallback;
 	    NetworkManager.Singleton.StartClient();
@@ -205,6 +210,10 @@ public class NetworkRelay : MonoBehaviour
     private void NetworkManager_OnClientConnectedCallback(ulong clientId)
     {
 	    clientIDNetworkList.Add(clientId);
+        if(!NetworkManager.Singleton.IsServer)
+        {
+            OnPlayerConnected?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
