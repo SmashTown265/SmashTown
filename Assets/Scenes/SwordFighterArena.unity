@@ -310,10 +310,8 @@ MonoBehaviour:
   player2Respawn: {fileID: 1660101841}
   active:
     m_Handle: 0
-  player1: {fileID: 0}
-  player2: {fileID: 0}
-  player1Choice: 0
-  player2Choice: 0
+  character1: {fileID: 0}
+  character2: {fileID: 0}
 --- !u!4 &449091426
 Transform:
   m_ObjectHideFlags: 0
@@ -704,6 +702,10 @@ PrefabInstance:
     - target: {fileID: 1468236329494031452, guid: 06b41fb4fb9200846abba2f95f3a726a, type: 3}
       propertyPath: m_Name
       value: SwordFighter
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468236329494031452, guid: 06b41fb4fb9200846abba2f95f3a726a, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06b41fb4fb9200846abba2f95f3a726a, type: 3}
