@@ -13,8 +13,8 @@ public class LevelManager : NetworkBehaviour
 	public Scene active;
     public GameObject character1;
     public GameObject character2;
-    public GameObject player1Instance;
-    public GameObject player2Instance;
+    private GameObject player1Instance;
+    private GameObject player2Instance;
 
 
 	private void Awake()
@@ -27,19 +27,19 @@ public class LevelManager : NetworkBehaviour
         {
             if(PlayerPortraitSwap.p1sprite == 0)
             {
-                player1Instance = Instantiate(character1, respawnPoint);
+                player1Instance = Instantiate(character1, respawnPoint.position, Quaternion.identity);
             }
             else
             {
-                player1Instance = Instantiate(character2, respawnPoint);
+                player1Instance = Instantiate(character2, respawnPoint.position, Quaternion.identity);
             }
             if(PlayerPortraitSwap.p2sprite == 0)
             {
-                player2Instance = Instantiate(character1, player2Respawn);
+                player2Instance = Instantiate(character1, player2Respawn.position, Quaternion.identity);
             }
             else
             {
-                player2Instance = Instantiate(character2, player2Respawn);
+                player2Instance = Instantiate(character2, player2Respawn.position, Quaternion.identity);
             }
             player1Instance.tag = "Player 1";
             player2Instance.tag = "Player 2";
