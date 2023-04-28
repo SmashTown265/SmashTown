@@ -13,8 +13,8 @@ public class LevelManager : NetworkBehaviour
 	public Scene active;
     public GameObject character1;
     public GameObject character2;
-    private GameObject player1Instance;
-    private GameObject player2Instance;
+    public GameObject player1Instance;
+    public GameObject player2Instance;
 
 
 	private void Awake()
