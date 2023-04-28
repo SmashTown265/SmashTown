@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 06e7c858c96ecd4439bb86fa0bda6198
+guid: 8af8505b0b36fff48b6144bfb6278468
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -101,15 +101,27 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dtilt_Strip_0
+      name: utilt_strip5_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 6
+        x: 8
+        y: 1
         width: 15
         height: 19
       alignment: 0
@@ -119,40 +131,82 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42bc2f297e73ecd428a94145ae1c388c
-      internalID: -829684485
+      spriteID: b0020e4bf4c777a4e8ed35d35cbb60b4
+      internalID: 319820467
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dtilt_Strip_1
+      name: utilt_strip5_1
       rect:
         serializedVersion: 2
-        x: 38
-        y: 6
-        width: 27
+        x: 40
+        y: 1
+        width: 16
         height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 57647d7f6fca6f4449849277220e35bf
-      internalID: 971877665
+      spriteID: a9f66fb47729ffb44a65fdef1069f812
+      internalID: -239170304
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dtilt_Strip_2
+      name: utilt_strip5_2
       rect:
         serializedVersion: 2
         x: 72
-        y: 6
-        width: 21
+        y: 1
+        width: 17
+        height: 23
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca9bc515d49302047bf23223b17deb22
+      internalID: -1259500391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: utilt_strip5_3
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 1
+        width: 15
+        height: 20
+      alignment: 9
+      pivot: {x: 0.5, y: 0.46}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9cab3859701c5e24b9d800ee90ce0414
+      internalID: -336391724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: utilt_strip5_4
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 1
+        width: 14
         height: 19
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -161,8 +215,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bd39b0b11d4131f4ea4225aa7312693f
-      internalID: -30540977
+      spriteID: 1f67cb86397869b40902533c0a3a6e28
+      internalID: 718496174
       vertices: []
       indices: 
       edges: []
@@ -178,9 +232,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      dtilt_Strip_0: -829684485
-      dtilt_Strip_1: 971877665
-      dtilt_Strip_2: -30540977
+      utilt_strip5_0: 319820467
+      utilt_strip5_1: -239170304
+      utilt_strip5_2: -1259500391
+      utilt_strip5_3: -336391724
+      utilt_strip5_4: 718496174
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 06e7c858c96ecd4439bb86fa0bda6198
+guid: be3ace9b705aa9344b7d24d90dd7d4f6
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -101,68 +101,122 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dtilt_Strip_0
+      name: ftilt_strip5_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 6
-        width: 15
+        x: 6
+        y: 2
+        width: 16
         height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42bc2f297e73ecd428a94145ae1c388c
-      internalID: -829684485
+      spriteID: 5cb4fe3cdf48c134c9869ca71dde2da5
+      internalID: 739820353
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dtilt_Strip_1
+      name: ftilt_strip5_1
       rect:
         serializedVersion: 2
-        x: 38
-        y: 6
-        width: 27
+        x: 37
+        y: 2
+        width: 18
         height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 57647d7f6fca6f4449849277220e35bf
-      internalID: 971877665
+      spriteID: 0cb0a368d96898a42b6fc8c285aa1351
+      internalID: -1578680873
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dtilt_Strip_2
+      name: ftilt_strip5_2
       rect:
         serializedVersion: 2
-        x: 72
-        y: 6
+        x: 64
+        y: 2
+        width: 32
+        height: 19
+      alignment: 9
+      pivot: {x: 0.3125, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 47c85b98fbedc7a4789c35488bf09ea1
+      internalID: 921648384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ftilt_strip5_3
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 2
+        width: 30
+        height: 19
+      alignment: 9
+      pivot: {x: 0.33333334, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa72be74f37b2794f81b77e63a098c52
+      internalID: -1271521571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ftilt_strip5_4
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 2
         width: 21
         height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bd39b0b11d4131f4ea4225aa7312693f
-      internalID: -30540977
+      spriteID: 4611377d86bf38646849be12158e57c8
+      internalID: 1186723859
       vertices: []
       indices: 
       edges: []
@@ -178,9 +232,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      dtilt_Strip_0: -829684485
-      dtilt_Strip_1: 971877665
-      dtilt_Strip_2: -30540977
+      ftilt_strip5_0: 739820353
+      ftilt_strip5_1: -1578680873
+      ftilt_strip5_2: 921648384
+      ftilt_strip5_3: -1271521571
+      ftilt_strip5_4: 1186723859
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
