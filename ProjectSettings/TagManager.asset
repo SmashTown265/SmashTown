@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Ground
   - Player 2
+  - DeathZone
+  - Player 1
   layers:
   - Default
   - TransparentFX
