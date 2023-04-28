@@ -56,7 +56,7 @@ public class LevelManager : NetworkBehaviour
 	
 	public void Respawn(GameObject playerObject, string tag)
 	{
-		if (tag == "Player")
+		if (tag == "Player 1")
 		{
 			StartCoroutine(RespawnCoroutine(playerObject, respawnPoint));
 		}

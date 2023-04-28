@@ -12,7 +12,7 @@ public class PlayerDeath : MonoBehaviour
 	}
 	private void OnEnable()
 	{
-		if (gameObject.CompareTag("Player"))
+		if (gameObject.CompareTag("Player 1"))
 		{
 			GameObject other = GameObject.FindWithTag("Player 2");
 			BoxCollider2D p2Collider = other.GetComponent<BoxCollider2D>();
@@ -20,10 +20,10 @@ public class PlayerDeath : MonoBehaviour
 		}
         else if (gameObject.CompareTag("Player 2"))
 		{
-			GameObject other = GameObject.FindWithTag("Player");
+			GameObject other = GameObject.FindWithTag("Player 1");
 			BoxCollider2D p2Collider = other.GetComponent<BoxCollider2D>();
 			Physics2D.IgnoreCollision(bc2d, p2Collider);
-}
+        }
 	}
     private void OnCollisionEnter2D(Collision2D collision)
     {
