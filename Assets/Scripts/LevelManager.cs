@@ -17,7 +17,7 @@ public class LevelManager : NetworkBehaviour
     private GameObject player2Instance;
 
 
-	private void Awake()
+	private void Start()
 	{
 		instance = this;
 		active = SceneManager.GetActiveScene();
@@ -48,7 +48,7 @@ public class LevelManager : NetworkBehaviour
         }
 	}
     
-	private void Start()
+	private void Awake()
 	{
         print("Level Manager Start");
 	}
