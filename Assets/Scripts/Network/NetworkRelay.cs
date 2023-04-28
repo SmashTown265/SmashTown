@@ -25,7 +25,7 @@ public class NetworkRelay : MonoBehaviour
     public string relayJoinCode;
     public static NetworkRelay Instance { get; private set; }
     public event EventHandler OnJoinStarted;
-    public event EventHandler OnJoinFailed;
+
     public const int MAX_PLAYER_AMOUNT = 2;
     public event EventHandler OnCreateGameStarted;
     public event EventHandler OnCreateGameFailed;

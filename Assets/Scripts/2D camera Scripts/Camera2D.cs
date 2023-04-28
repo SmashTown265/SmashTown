@@ -91,15 +91,7 @@ public class Camera2D : MonoBehaviour
     /// </summary>
     public float lookAheadAmount = 1.0f;
 
-    /// <summary>
-    /// Tells us if we are on a rail or not.
-    /// </summary>
-    private bool isOnRail = false;
 
-    /// <summary>
-    /// The target rail if attached.
-    /// </summary>
-    //private Rail2D targetRail;
 
     void Awake()
     {

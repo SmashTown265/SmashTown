@@ -1,4 +1,6 @@
-﻿
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,7 +21,7 @@ public class StageManager : MonoBehaviour
 		// Keep instance of this gameObject running when loading new scenes
 		DontDestroyOnLoad(gameObject);
 	}
-
+    // TODO: change case 2 loadscene when adding stage selection
 	public void GoToNextScene(int selection = 0)
 	{
 		var sceneName = SceneManager.GetActiveScene().name;

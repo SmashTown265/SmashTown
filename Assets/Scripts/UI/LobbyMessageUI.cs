@@ -1,4 +1,4 @@
-
+using System;
 using System.Collections;
 using TMPro;
 using Unity.Netcode;
@@ -23,7 +23,7 @@ public class LobbyMessageUI : MonoBehaviour
     {
         NetworkRelay.Instance.OnFailedToJoinGame += Multiplayer_OnFailedToJoinGame;
         NetworkRelay.Instance.OnJoinStarted += OnJoinStarted;
-        NetworkRelay.Instance.OnJoinFailed += OnJoinFailed;
+
         NetworkRelay.Instance.OnCreateGameFailed += OnCreateGameFailed;
         NetworkRelay.Instance.OnCreateGameStarted += OnCreateGameStarted;
         NetworkRelay.Instance.OnCreateGameSuccess += OnCreateGameSuccess;
@@ -31,10 +31,7 @@ public class LobbyMessageUI : MonoBehaviour
     }
 
 
-    private void OnJoinFailed(object sender, System.EventArgs e) 
-    {
-        ShowMessage("Failed to join Game!");
-    }
+
 
     private void OnJoinStarted(object sender, System.EventArgs e) 
     {
@@ -88,10 +85,9 @@ public class LobbyMessageUI : MonoBehaviour
     {
         NetworkRelay.Instance.OnFailedToJoinGame -= Multiplayer_OnFailedToJoinGame;
         NetworkRelay.Instance.OnJoinStarted -= OnJoinStarted;
-        NetworkRelay.Instance.OnJoinFailed -= OnJoinFailed;
+
         NetworkRelay.Instance.OnCreateGameFailed -= OnCreateGameFailed;
         NetworkRelay.Instance.OnCreateGameStarted -= OnCreateGameStarted;
-
     }
 
 }
