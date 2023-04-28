@@ -21,7 +21,7 @@ public class LevelManager : NetworkBehaviour
 	{
 		instance = this;
 		active = SceneManager.GetActiveScene();
-
+        print("Level Manager Awake");
         //spawn the players
         if (IsServer)
         {
@@ -50,7 +50,7 @@ public class LevelManager : NetworkBehaviour
     
 	private void Start()
 	{
-
+        print("Level Manager Start");
 	}
 
 	
