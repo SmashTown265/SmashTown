@@ -65,7 +65,8 @@ public class LevelManager : NetworkBehaviour
     [ClientRpc]
     private void EnableMovementClientRpc(ClientRpcParams clientRpcParams = default) 
     {
-        player2Instance.GetComponent<PlayerInput>().enabled = true;
+        if(!IsServer)
+            player2Instance.GetComponent<PlayerInput>().enabled = true;
     }
 	
 	public void Respawn(GameObject playerObject, string tag)
