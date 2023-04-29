@@ -8,6 +8,30 @@ namespace Unity.Netcode.Components
     [DisallowMultipleComponent]
     public class ImprovedNetworkTransform : NetworkTransform
     {
+        Vector3 scale = Vector3.zero;
+
+        private readonly NetworkVariable<NetworkTransformState> m_ReplicatedNetworkStateServer = new NetworkVariable<NetworkTransformState>();
+
+        private readonly NetworkVariable<NetworkTransformState> m_ReplicatedNetworkStateOwner = new NetworkVariable<NetworkTransformState>(default(NetworkTransformState), NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        internal NetworkVariable<NetworkTransformState> ReplicatedNetworkState
+        {
+            get
+            {
+                if (!OnIsServerAuthoritative())
+                {
+                    return m_ReplicatedNetworkStateOwner;
+                }
+
+                return m_ReplicatedNetworkStateServer;
+            }
+        }
+        public void LateUpdate()
+        {
+            scale.Set(ReplicatedNetworkState.Value.ScaleX,ReplicatedNetworkState.Value.ScaleY,ReplicatedNetworkState.Value.ScaleZ);
+            transform.localScale = scale;    
+        }
+        
+        
         internal struct NetworkTransformState : INetworkSerializable
         {
             private const int k_InLocalSpaceBit = 0;
@@ -333,298 +357,6 @@ namespace Unity.Netcode.Components
                     IsDirty = HasPositionChange || HasRotAngleChange || HasScaleChange;
                 }
             }
-        }
-
-        public const float PositionThresholdDefault = 0.001f;
-
-        public const float RotAngleThresholdDefault = 0.01f;
-
-        public const float ScaleThresholdDefault = 0.01f;
-
-        public OnClientRequestChangeDelegate OnClientRequestChange;
-
-        public bool SyncPositionX = true;
-
-        public bool SyncPositionY = true;
-
-        public bool SyncPositionZ = true;
-
-        public bool SyncRotAngleX = true;
-
-        public bool SyncRotAngleY = true;
-
-        public bool SyncRotAngleZ = true;
-
-        public bool SyncScaleX = true;
-
-        public bool SyncScaleY = true;
-
-        public bool SyncScaleZ = true;
-
-        public float PositionThreshold = 0.001f;
-
-        [Range(0.001f, 360f)]
-        public float RotAngleThreshold = 0.01f;
-
-        public float ScaleThreshold = 0.01f;
-
-        [Tooltip("Sets whether this transform should sync in local space or in world space")]
-        public bool InLocalSpace;
-
-        public bool Interpolate = true;
-        
-        [SerializeField]public bool InterpolatePositionX = true;
-
-        [SerializeField]public bool InterpolatePositionY = true;
-
-        [SerializeField]public bool InterpolatePositionZ = true;
-
-        [SerializeField]public bool InterpolateRotAngleX = true;
-
-        [SerializeField] public bool InterpolateRotAngleY = true;
-
-        [SerializeField] public bool InterpolateRotAngleZ = true;
-
-        [SerializeField] public bool InterpolateScaleX = false;
-
-        [SerializeField] public bool InterpolateScaleY = true;
-
-        [SerializeField] public bool InterpolateScaleZ = true;
-
-        protected bool m_CachedIsServer;
-
-        protected NetworkManager m_CachedNetworkManager;
-
-        private readonly NetworkVariable<NetworkTransformState> m_ReplicatedNetworkStateServer = new NetworkVariable<NetworkTransformState>();
-
-        private readonly NetworkVariable<NetworkTransformState> m_ReplicatedNetworkStateOwner = new NetworkVariable<NetworkTransformState>(default(NetworkTransformState), NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-
-        private NetworkTransformState m_LocalAuthoritativeNetworkState;
-
-        private ClientRpcParams m_ClientRpcParams = new ClientRpcParams
-        {
-            Send = default(ClientRpcSendParams)
-        };
-
-        private List<ulong> m_ClientIds = new List<ulong> { 0uL };
-
-        private BufferedLinearInterpolator<float> m_PositionXInterpolator;
-
-        private BufferedLinearInterpolator<float> m_PositionYInterpolator;
-
-        private BufferedLinearInterpolator<float> m_PositionZInterpolator;
-
-        private BufferedLinearInterpolator<Quaternion> m_RotationInterpolator;
-
-        private BufferedLinearInterpolator<float> m_ScaleXInterpolator;
-
-        private BufferedLinearInterpolator<float> m_ScaleYInterpolator;
-
-        private BufferedLinearInterpolator<float> m_ScaleZInterpolator;
-
-        private readonly List<BufferedLinearInterpolator<float>> m_AllFloatInterpolators = new List<BufferedLinearInterpolator<float>>(6);
-
-        private NetworkTransformState m_LastSentState;
-
-        private bool SynchronizePosition
-        {
-            get
-            {
-                if (!SyncPositionX && !SyncPositionY)
-                {
-                    return SyncPositionZ;
-                }
-
-                return true;
-            }
-        }
-
-        private bool SynchronizeRotation
-        {
-            get
-            {
-                if (!SyncRotAngleX && !SyncRotAngleY)
-                {
-                    return SyncRotAngleZ;
-                }
-
-                return true;
-            }
-        }
-
-        private bool SynchronizeScale
-        {
-            get
-            {
-                if (!SyncScaleX && !SyncScaleY)
-                {
-                    return SyncScaleZ;
-                }
-
-                return true;
-            }
-        }
-
-        public bool CanCommitToTransform { get; protected set; }
-
-        internal NetworkVariable<NetworkTransformState> ReplicatedNetworkState
-        {
-            get
-            {
-                if (!IsServerAuthoritative())
-                {
-                    return m_ReplicatedNetworkStateOwner;
-                }
-
-                return m_ReplicatedNetworkStateServer;
-            }
-        }
-
-        internal NetworkTransformState GetLastSentState()
-        {
-            return m_LastSentState;
-        }
-        private void ApplyAuthoritativeState()
-        {
-            NetworkTransformState value = ReplicatedNetworkState.Value;
-            Vector3 vector = (value.InLocalSpace ? base.transform.localPosition : base.transform.position);
-            Vector3 euler = (value.InLocalSpace ? base.transform.localEulerAngles : base.transform.eulerAngles);
-            Vector3 localScale = base.transform.localScale;
-            InLocalSpace = value.InLocalSpace;
-            bool flag = !value.IsTeleportingNextFrame && Interpolate;
-            if (flag)
-            {
-                if (SyncPositionX && InterpolatePositionX)
-                {
-                    vector.x = m_PositionXInterpolator.GetInterpolatedValue();
-                }
-
-                if (SyncPositionY && InterpolatePositionY)
-                {
-                    vector.y = m_PositionYInterpolator.GetInterpolatedValue();
-                }
-
-                if (SyncPositionZ && InterpolatePositionZ)
-                {
-                    vector.z = m_PositionZInterpolator.GetInterpolatedValue();
-                }
-
-                if (SyncScaleX && InterpolateScaleX)
-                {
-                    localScale.x = m_ScaleXInterpolator.GetInterpolatedValue();
-                }
-                else
-                    localScale.x = value.ScaleX;
-
-                if (SyncScaleY)
-                {
-                    localScale.y = m_ScaleYInterpolator.GetInterpolatedValue();
-                }
-
-                if (SyncScaleZ)
-                {
-                    localScale.z = m_ScaleZInterpolator.GetInterpolatedValue();
-                }
-
-                if (SynchronizeRotation)
-                {
-                    Vector3 eulerAngles = m_RotationInterpolator.GetInterpolatedValue().eulerAngles;
-                    if (SyncRotAngleX)
-                    {
-                        euler.x = eulerAngles.x;
-                    }
-
-                    if (SyncRotAngleY)
-                    {
-                        euler.y = eulerAngles.y;
-                    }
-
-                    if (SyncRotAngleZ)
-                    {
-                        euler.z = eulerAngles.z;
-                    }
-                }
-            }
-            else
-            {
-                if (value.HasPositionX)
-                {
-                    vector.x = value.PositionX;
-                }
-
-                if (value.HasPositionY)
-                {
-                    vector.y = value.PositionY;
-                }
-
-                if (value.HasPositionZ)
-                {
-                    vector.z = value.PositionZ;
-                }
-
-                if (value.HasScaleX)
-                {
-                    localScale.x = value.ScaleX;
-                }
-
-                if (value.HasScaleY)
-                {
-                    localScale.y = value.ScaleY;
-                }
-
-                if (value.HasScaleZ)
-                {
-                    localScale.z = value.ScaleZ;
-                }
-
-                if (value.HasRotAngleX)
-                {
-                    euler.x = value.RotAngleX;
-                }
-
-                if (value.HasRotAngleY)
-                {
-                    euler.y = value.RotAngleY;
-                }
-
-                if (value.HasRotAngleZ)
-                {
-                    euler.z = value.RotAngleZ;
-                }
-            }
-
-            if (value.HasPositionChange || (flag && SynchronizePosition))
-            {
-                if (InLocalSpace)
-                {
-                    base.transform.localPosition = vector;
-                }
-                else
-                {
-                    base.transform.position = vector;
-                }
-            }
-
-            if (value.HasRotAngleChange || (flag && SynchronizeRotation))
-            {
-                if (InLocalSpace)
-                {
-                    base.transform.localRotation = Quaternion.Euler(euler);
-                }
-                else
-                {
-                    base.transform.rotation = Quaternion.Euler(euler);
-                }
-            }
-
-            if (value.HasScaleChange || (flag && SynchronizeScale))
-            {
-                base.transform.localScale = localScale;
-            }
-        }
-        internal bool IsServerAuthoritative()
-        {
-            return OnIsServerAuthoritative();
         }
 
         protected override bool OnIsServerAuthoritative()
