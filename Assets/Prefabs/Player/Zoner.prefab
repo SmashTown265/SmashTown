@@ -19,9 +19,9 @@ GameObject:
   - component: {fileID: 2804007998845829214}
   - component: {fileID: 1123358734968440805}
   - component: {fileID: 1507248292}
-  - component: {fileID: 2361611956369792630}
-  - component: {fileID: 3750960999643301699}
   - component: {fileID: -3450873599548926704}
+  - component: {fileID: -5486169477634989083}
+  - component: {fileID: -3286862883103320196}
   m_Layer: 0
   m_Name: Zoner
   m_TagString: Player 1
@@ -426,7 +426,7 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &2361611956369792630
+--- !u!114 &-3450873599548926704
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -435,7 +435,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1468236329494031452}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64bddde163a894c45bd2ad37d8e11cc2, type: 3}
+  m_Script: {fileID: 11500000, guid: dab136ef00e40d64ba7e6a910754a1cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 2242133325842634775}
+--- !u!114 &-5486169477634989083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468236329494031452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b05f9729eca67f947adb0247178317a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SyncPositionX: 1
@@ -451,8 +465,31 @@ MonoBehaviour:
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
   InLocalSpace: 0
-  Interpolate: 0
---- !u!114 &3750960999643301699
+  Interpolate: 1
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  InLocalSpace: 0
+  Interpolate: 1
+  InterpolatePositionX: 1
+  InterpolatePositionY: 1
+  InterpolatePositionZ: 1
+  InterpolateRotAngleX: 1
+  InterpolateRotAngleY: 1
+  InterpolateRotAngleZ: 1
+  InterpolateScaleX: 1
+  InterpolateScaleY: 1
+  InterpolateScaleZ: 1
+--- !u!114 &-3286862883103320196
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -464,20 +501,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-3450873599548926704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1468236329494031452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dab136ef00e40d64ba7e6a910754a1cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TransitionStateInfoList: []
-  m_Animator: {fileID: 2242133325842634775}
 --- !u!1001 &4163560027531520250
 PrefabInstance:
   m_ObjectHideFlags: 0
