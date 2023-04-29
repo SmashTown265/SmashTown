@@ -311,9 +311,7 @@ MonoBehaviour:
   active:
     m_Handle: 0
   character1: {fileID: 1468236329494031452, guid: 06b41fb4fb9200846abba2f95f3a726a, type: 3}
-  character2: {fileID: 1468236329494031452, guid: 63437cd6337e41444a24e909c5aaff44, type: 3}
-  player1Instance: {fileID: 451866016}
-  player2Instance: {fileID: 874413015}
+  character2: {fileID: 1468236329494031452, guid: b89dd2a6f4eeda44ba245a30cc81204d, type: 3}
 --- !u!4 &449091426
 Transform:
   m_ObjectHideFlags: 0
