@@ -45,6 +45,7 @@ public class LevelManager : NetworkBehaviour
             player2Instance.tag = "Player 2";
             foreach(ulong ID in NetworkManager.Singleton.ConnectedClientsIds)
                 print(ID);
+            print("server id: " + NetworkManager.Singleton.LocalClientId);
             player1Instance.GetComponent<NetworkObject>().SpawnAsPlayerObject(NetworkManager.Singleton.ConnectedClientsIds[0], true);
             player2Instance.GetComponent<NetworkObject>().SpawnAsPlayerObject(NetworkManager.Singleton.ConnectedClientsIds[1], true);
         }
