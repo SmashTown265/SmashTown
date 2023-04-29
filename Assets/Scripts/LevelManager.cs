@@ -28,28 +28,30 @@ public class LevelManager : NetworkBehaviour
         {
             if(PlayerPortraitSwap.p1sprite == 0)
             {
+                character1.tag = "Player 1";
                 player1Instance = Instantiate(character1, respawnPoint.position, Quaternion.identity);
             }
             else
             {
+                character2.tag = "Player 1";
                 player1Instance = Instantiate(character2, respawnPoint.position, Quaternion.identity);
             }
             if(PlayerPortraitSwap.p2sprite == 0)
             {
+                character1.tag = "Player 2";
                 player2Instance = Instantiate(character1, player2Respawn.position, Quaternion.identity);
             }
             else
             {
+                character2.tag = "Player 2";
                 player2Instance = Instantiate(character2, player2Respawn.position, Quaternion.identity);
             }
-            player1Instance.tag = "Player 1";
-            player2Instance.tag = "Player 2";
             foreach(ulong ID in NetworkManager.Singleton.ConnectedClientsIds)
                 print(ID);
             print("server id: " + NetworkManager.Singleton.LocalClientId);
             player1Instance.GetComponent<NetworkObject>().SpawnWithOwnership(0, true);
             player2Instance.GetComponent<NetworkObject>().SpawnWithOwnership(1, true);
-            EnableMovementClientRpc(player1Instance, player2Instance);
+            EnableMovementClientRpc();
 
         }
 	}
@@ -59,10 +61,9 @@ public class LevelManager : NetworkBehaviour
 	}
 
     [ClientRpc]
-    private void EnableMovementClientRpc(GameObject player1, GameObject player2, ClientRpcParams clientRpcParams = default) 
+    private void EnableMovementClientRpc( ClientRpcParams clientRpcParams = default) 
     {
-        player1Instance = player1;
-        player2Instance = player2;
+
         EnableMovement();
     }
 	
