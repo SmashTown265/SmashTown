@@ -27,6 +27,7 @@ public class PlayerMovement : NetworkBehaviour
     private float gravityScale;
     [HideInInspector] public int Xdir = 1;
     private int dashDir;
+    private float runSpeed;
 
     [Header("Character Specific Movement Settings")] 
     [Header("Multipliers")] 
@@ -344,16 +345,19 @@ public class PlayerMovement : NetworkBehaviour
     }
     public void Update()
     {   
+        runSpeed = Mathf.Abs(rb.velocity.x) / maxMoveSpeed;
+
         if(IsServer)
-            StateClientRpc((int)playerState);
+            StateClientRpc((int)playerState, runSpeed);
         else if(!IsServer)
-            StateServerRpc((int)playerState);
+            StateServerRpc((int)playerState, runSpeed);
+
         // Set animation state machine parameters
         anim.SetBool("isGrounded", playerState.HasFlag(State.Ground));
         anim.SetBool("isMoving", !playerState.HasFlag(State.Idle | State.Attacking));
         anim.SetBool("doubleJumping", playerState.HasFlag(State.DoubleJumping)); // ? what does this get used for?
         anim.SetInteger("Ydir", (int)rb.velocity.y);
-        anim.SetFloat("RunSpeed", Mathf.Abs(rb.velocity.x) / maxMoveSpeed);
+        anim.SetFloat("RunSpeed", runSpeed);
         
         //anim.SetInteger("playerState", (int)playerState);
         // Set sprite direction
@@ -405,8 +409,9 @@ public class PlayerMovement : NetworkBehaviour
         toFlip.x *= -1;
         return toFlip;
     }
+
     [ServerRpc(RequireOwnership = false)]
-    private void StateServerRpc(int playerState, ServerRpcParams serverRpcParams = default) 
+    private void StateServerRpc(int playerState, float runSpeed, ServerRpcParams serverRpcParams = default) 
     {
         if(IsServer)
         {
@@ -414,11 +419,14 @@ public class PlayerMovement : NetworkBehaviour
             {
                 player2 = GameObject.FindWithTag("Player 2").GetComponent<PlayerMovement>();
             }
+
             player2.playerState = (State)playerState;
+            player2.runSpeed = runSpeed;
         }
     }
+
     [ClientRpc]
-    private void StateClientRpc(int playerState, ClientRpcParams clientRpcParams = default) 
+    private void StateClientRpc(int playerState, float runSpeed,  ClientRpcParams clientRpcParams = default) 
     {
         if(!IsServer)
         {
@@ -426,7 +434,9 @@ public class PlayerMovement : NetworkBehaviour
             {
                 player1 = GameObject.FindWithTag("Player 1").GetComponent<PlayerMovement>();
             }
+
             player1.playerState = (State)playerState;
+            player1.runSpeed = runSpeed;
         }
     }
 }
