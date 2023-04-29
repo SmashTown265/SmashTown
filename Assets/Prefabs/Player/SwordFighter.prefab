@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: -5571910309413418234}
   m_Layer: 0
   m_Name: SwordFighter
-  m_TagString: Player 2
+  m_TagString: Player 1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

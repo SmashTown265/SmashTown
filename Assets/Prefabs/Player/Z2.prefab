@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: -8203393484651851424}
   m_Layer: 0
   m_Name: Z2
-  m_TagString: Player 1
+  m_TagString: Player 2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
