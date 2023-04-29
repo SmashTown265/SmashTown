@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
-
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 
 // This Script has the OnMove and OnJump methods, as well as all animation parameters associated with movement
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
@@ -15,6 +15,9 @@ public class PlayerMovement : MonoBehaviour
     private BoxCollider2D bc2d;
     private SpriteRenderer sr;
     private PlayerAttack pa;
+
+    private PlayerMovement player1 = null;
+    private PlayerMovement player2 = null;
 
     private Vector3 airDodgePos = Vector3.one;
     private Vector2 jump = Vector2.up;
@@ -344,7 +347,10 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("doubleJumping", playerState.HasFlag(State.DoubleJumping)); // ? what does this get used for?
         anim.SetInteger("Ydir", (int)rb.velocity.y);
         anim.SetFloat("RunSpeed", Mathf.Abs(rb.velocity.x) / maxMoveSpeed);
-
+        if(IsServer)
+            StateClientRpc(playerState);
+        else if(!IsServer)
+            StateServerRpc(playerState);
         //anim.SetInteger("playerState", (int)playerState);
         // Set sprite direction
         if ((Xdir * t.localScale.x) < 0  && !playerState.HasFlags(State.InAir) || playerState == State.Dashing && (t.localScale.x * dashDir) < 0)
@@ -394,6 +400,30 @@ public class PlayerMovement : MonoBehaviour
     {
         toFlip.x *= -1;
         return toFlip;
+    }
+    [ServerRpc(RequireOwnership = false)]
+    private void StateServerRpc(State playerState, ServerRpcParams serverRpcParams = default) 
+    {
+        if(IsServer)
+        {
+            if(player2 == null)
+            {
+                player2 = GameObject.FindWithTag("Player 2").GetComponent<PlayerMovement>();
+            }
+            player2.playerState = playerState;
+        }
+    }
+    [ClientRpc]
+    private void StateClientRpc(State playerState, ClientRpcParams clientRpcParams = default) 
+    {
+        if(!IsServer)
+        {
+            if(player1 == null)
+            {
+                player1 = GameObject.FindWithTag("Player 1").GetComponent<PlayerMovement>();
+            }
+            player1.playerState = playerState;
+        }
     }
 }
 // States enum
@@ -445,4 +475,5 @@ public static class Extensions
             lhs &= ~State.Ground;
         }
     }
+    
 }
