@@ -220,7 +220,7 @@ public class PlayerMovement : NetworkBehaviour
 
     public void FixedUpdate()
     {
-        if(!IsOwner) 
+        if(IsOwner) 
         {
             // State updates
             if (playerState.HasFlags(State.Ground) && playerState != State.Dashing && !playerState.HasFlags(State.Attacking) && pa.attackTimer == 0)
