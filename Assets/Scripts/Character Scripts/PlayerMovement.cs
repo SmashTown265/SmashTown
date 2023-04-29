@@ -220,6 +220,8 @@ public class PlayerMovement : NetworkBehaviour
 
     public void FixedUpdate()
     {
+        if(!IsOwner) 
+            return;
         // State updates
         if (playerState.HasFlags(State.Ground) && playerState != State.Dashing && !playerState.HasFlags(State.Attacking) && pa.attackTimer == 0)
         {
@@ -340,17 +342,18 @@ public class PlayerMovement : NetworkBehaviour
         attacking = playerState.HasFlags(State.Attacking);
     }
     public void Update()
-    {
+    {   
+        if(IsServer)
+            StateClientRpc(playerState);
+        else if(!IsServer)
+            StateServerRpc(playerState);
         // Set animation state machine parameters
         anim.SetBool("isGrounded", playerState.HasFlag(State.Ground));
         anim.SetBool("isMoving", !playerState.HasFlag(State.Idle | State.Attacking));
         anim.SetBool("doubleJumping", playerState.HasFlag(State.DoubleJumping)); // ? what does this get used for?
         anim.SetInteger("Ydir", (int)rb.velocity.y);
         anim.SetFloat("RunSpeed", Mathf.Abs(rb.velocity.x) / maxMoveSpeed);
-        if(IsServer)
-            StateClientRpc(playerState);
-        else if(!IsServer)
-            StateServerRpc(playerState);
+        
         //anim.SetInteger("playerState", (int)playerState);
         // Set sprite direction
         if ((Xdir * t.localScale.x) < 0  && !playerState.HasFlags(State.InAir) || playerState == State.Dashing && (t.localScale.x * dashDir) < 0)
