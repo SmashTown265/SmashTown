@@ -46,8 +46,9 @@ public class LevelManager : NetworkBehaviour
             foreach(ulong ID in NetworkManager.Singleton.ConnectedClientsIds)
                 print(ID);
             print("server id: " + NetworkManager.Singleton.LocalClientId);
-            player1Instance.GetComponent<NetworkObject>().SpawnAsPlayerObject(NetworkManager.Singleton.ConnectedClientsIds[0], true);
-            player2Instance.GetComponent<NetworkObject>().SpawnAsPlayerObject(NetworkManager.Singleton.ConnectedClientsIds[1], true);
+            player1Instance.GetComponent<NetworkObject>().SpawnAsPlayerObject(0, true);
+            player2Instance.GetComponent<NetworkObject>().SpawnAsPlayerObject(1, true);
+            player2Instance.GetComponent<NetworkObject>().ChangeOwnership(1);
         }
 	}
     
