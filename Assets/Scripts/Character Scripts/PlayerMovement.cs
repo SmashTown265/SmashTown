@@ -221,20 +221,21 @@ public class PlayerMovement : NetworkBehaviour
     public void FixedUpdate()
     {
         if(!IsOwner) 
-            return;
-        // State updates
-        if (playerState.HasFlags(State.Ground) && playerState != State.Dashing && !playerState.HasFlags(State.Attacking) && pa.attackTimer == 0)
         {
+            // State updates
+            if (playerState.HasFlags(State.Ground) && playerState != State.Dashing && !playerState.HasFlags(State.Attacking) && pa.attackTimer == 0)
+            {
             
-            if (rb.velocity.x == 0f)
-            {
-                playerState.AddFlag(State.Idle);
-                playerState.RemoveFlag(State.Running | State.Dashing);
-            }
-            else
-            {
-                playerState.AddFlag(State.Running);
-                playerState.RemoveFlag(State.Idle);
+                if (rb.velocity.x == 0f)
+                {
+                    playerState.AddFlag(State.Idle);
+                    playerState.RemoveFlag(State.Running | State.Dashing);
+                }
+                else
+                {
+                    playerState.AddFlag(State.Running);
+                    playerState.RemoveFlag(State.Idle);
+                }
             }
         }
         // Sort of State machine
@@ -344,9 +345,9 @@ public class PlayerMovement : NetworkBehaviour
     public void Update()
     {   
         if(IsServer)
-            StateClientRpc(playerState);
+            StateClientRpc((int)playerState);
         else if(!IsServer)
-            StateServerRpc(playerState);
+            StateServerRpc((int)playerState);
         // Set animation state machine parameters
         anim.SetBool("isGrounded", playerState.HasFlag(State.Ground));
         anim.SetBool("isMoving", !playerState.HasFlag(State.Idle | State.Attacking));
@@ -405,7 +406,7 @@ public class PlayerMovement : NetworkBehaviour
         return toFlip;
     }
     [ServerRpc(RequireOwnership = false)]
-    private void StateServerRpc(State playerState, ServerRpcParams serverRpcParams = default) 
+    private void StateServerRpc(int playerState, ServerRpcParams serverRpcParams = default) 
     {
         if(IsServer)
         {
@@ -413,11 +414,11 @@ public class PlayerMovement : NetworkBehaviour
             {
                 player2 = GameObject.FindWithTag("Player 2").GetComponent<PlayerMovement>();
             }
-            player2.playerState = playerState;
+            player2.playerState = (State)playerState;
         }
     }
     [ClientRpc]
-    private void StateClientRpc(State playerState, ClientRpcParams clientRpcParams = default) 
+    private void StateClientRpc(int playerState, ClientRpcParams clientRpcParams = default) 
     {
         if(!IsServer)
         {
@@ -425,7 +426,7 @@ public class PlayerMovement : NetworkBehaviour
             {
                 player1 = GameObject.FindWithTag("Player 1").GetComponent<PlayerMovement>();
             }
-            player1.playerState = playerState;
+            player1.playerState = (State)playerState;
         }
     }
 }
