@@ -19,11 +19,11 @@ GameObject:
   - component: {fileID: 2804007998845829214}
   - component: {fileID: 1123358734968440805}
   - component: {fileID: 1507248292}
-  - component: {fileID: 2361611956369792630}
-  - component: {fileID: 3750960999643301699}
+  - component: {fileID: 419202794483454508}
+  - component: {fileID: 3688080356421683879}
   m_Layer: 0
-  m_Name: Zoner
-  m_TagString: Player 1
+  m_Name: SF2
+  m_TagString: Player 2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -374,7 +374,7 @@ Animator:
   m_GameObject: {fileID: 1468236329494031452}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ff92625b9991bce469d30279ecad9f07, type: 2}
+  m_Controller: {fileID: 9100000, guid: af7900c5441256b4493791c27e5ecacb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -425,7 +425,7 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &2361611956369792630
+--- !u!114 &419202794483454508
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -451,7 +451,7 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 0
---- !u!114 &3750960999643301699
+--- !u!114 &3688080356421683879
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -12,8 +12,11 @@ public class LevelManager : NetworkBehaviour
 	public Transform respawnPoint;
 	public Transform player2Respawn;
 	public Scene active;
-    public GameObject character1;
-    public GameObject character2;
+
+    public GameObject sf1;
+    public GameObject z1;
+    public GameObject sf2;
+    public GameObject z2;
     private GameObject player1Instance;
     private GameObject player2Instance;
 
@@ -28,27 +31,21 @@ public class LevelManager : NetworkBehaviour
         {
             if(PlayerPortraitSwap.p1sprite == 0)
             {
-                character1.tag = "Player 1";
-                player1Instance = Instantiate(character1, respawnPoint.position, Quaternion.identity);
+                player1Instance = Instantiate(sf1, respawnPoint.position, Quaternion.identity);
             }
             else
             {
-                character2.tag = "Player 1";
-                player1Instance = Instantiate(character2, respawnPoint.position, Quaternion.identity);
+                player1Instance = Instantiate(z1, respawnPoint.position, Quaternion.identity);
             }
             if(PlayerPortraitSwap.p2sprite == 0)
             {
-                character1.tag = "Player 2";
-                player2Instance = Instantiate(character1, player2Respawn.position, Quaternion.identity);
+                player2Instance = Instantiate(sf2, player2Respawn.position, Quaternion.identity);
             }
             else
             {
-                character2.tag = "Player 2";
-                player2Instance = Instantiate(character2, player2Respawn.position, Quaternion.identity);
+                player2Instance = Instantiate(z2, player2Respawn.position, Quaternion.identity);
             }
-            foreach(ulong ID in NetworkManager.Singleton.ConnectedClientsIds)
-                print(ID);
-            print("server id: " + NetworkManager.Singleton.LocalClientId);
+
             player1Instance.GetComponent<NetworkObject>().SpawnWithOwnership(0, true);
             player2Instance.GetComponent<NetworkObject>().SpawnWithOwnership(1, true);
             EnableMovementClientRpc();

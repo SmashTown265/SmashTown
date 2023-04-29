@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 2361611956369792630}
   - component: {fileID: 3750960999643301699}
   m_Layer: 0
-  m_Name: Zoner
+  m_Name: Z2
   m_TagString: Player 1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

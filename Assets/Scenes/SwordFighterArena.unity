@@ -310,8 +310,10 @@ MonoBehaviour:
   player2Respawn: {fileID: 1660101841}
   active:
     m_Handle: 0
-  character1: {fileID: 1468236329494031452, guid: 06b41fb4fb9200846abba2f95f3a726a, type: 3}
-  character2: {fileID: 1468236329494031452, guid: b89dd2a6f4eeda44ba245a30cc81204d, type: 3}
+  sf1: {fileID: 1468236329494031452, guid: 06b41fb4fb9200846abba2f95f3a726a, type: 3}
+  z1: {fileID: 1468236329494031452, guid: b89dd2a6f4eeda44ba245a30cc81204d, type: 3}
+  sf2: {fileID: 1468236329494031452, guid: d3ddd0c0179e0644aa1ac6c3bd99e5c9, type: 3}
+  z2: {fileID: 1468236329494031452, guid: 6eb5870fdc062e049a8bb1b20be890fd, type: 3}
 --- !u!4 &449091426
 Transform:
   m_ObjectHideFlags: 0
