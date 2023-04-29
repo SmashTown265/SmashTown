@@ -22,7 +22,7 @@ public class LevelManager : NetworkBehaviour
 	{
 		instance = this;
 		active = SceneManager.GetActiveScene();
-        print("Level Manager Awake");
+
         //spawn the players
         if (IsServer)
         {
@@ -49,17 +49,13 @@ public class LevelManager : NetworkBehaviour
             print("server id: " + NetworkManager.Singleton.LocalClientId);
             player1Instance.GetComponent<NetworkObject>().SpawnWithOwnership(0, true);
             player2Instance.GetComponent<NetworkObject>().SpawnWithOwnership(1, true);
-            // Player 1 movement enable
-            player1Instance.GetComponent<PlayerInput>().enabled = true;
-            // Player 2 movement enable
-            EnableMovementClientRpc();
-            
+            StartCoroutine(EnableMovementCoroutine());
+
         }
 	}
     
 	private void Awake()
 	{
-        print("Level Manager Start");
 	}
 
     [ClientRpc]
@@ -91,4 +87,13 @@ public class LevelManager : NetworkBehaviour
         playerObject.transform.localScale = respawn.localScale;
         playerObject.SetActive(true);
 	}
+    public IEnumerator EnableMovementCoroutine()
+    {
+        yield return new WaitForSeconds(1f);
+        // Player 1 movement enable
+        player1Instance.GetComponent<PlayerInput>().enabled = true;
+        // Player 2 movement enable
+        EnableMovementClientRpc();
+    }
+
 }
