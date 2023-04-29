@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 1507248292}
   - component: {fileID: 419202794483454508}
   - component: {fileID: 3688080356421683879}
+  - component: {fileID: 6875684545713936691}
   m_Layer: 0
   m_Name: SF2
   m_TagString: Player 2
@@ -463,6 +464,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6875684545713936691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468236329494031452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab136ef00e40d64ba7e6a910754a1cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 2242133325842634775}
 --- !u!1001 &4163560027531520250
 PrefabInstance:
   m_ObjectHideFlags: 0
