@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
+using UnityEngine.InputSystem;
 
 public class LevelManager : NetworkBehaviour
 {
@@ -48,6 +49,10 @@ public class LevelManager : NetworkBehaviour
             print("server id: " + NetworkManager.Singleton.LocalClientId);
             player1Instance.GetComponent<NetworkObject>().SpawnWithOwnership(0, true);
             player2Instance.GetComponent<NetworkObject>().SpawnWithOwnership(1, true);
+            // Player 1 movement enable
+            player1Instance.GetComponent<PlayerInput>().enabled = true;
+            // Player 2 movement enable
+            EnableMovementClientRpc();
             
         }
 	}
@@ -57,6 +62,11 @@ public class LevelManager : NetworkBehaviour
         print("Level Manager Start");
 	}
 
+    [ClientRpc]
+    private void EnableMovementClientRpc(ClientRpcParams clientRpcParams = default) 
+    {
+        player2Instance.GetComponent<PlayerInput>().enabled = true;
+    }
 	
 	public void Respawn(GameObject playerObject, string tag)
 	{
@@ -72,7 +82,7 @@ public class LevelManager : NetworkBehaviour
 		UnityEngine.Debug.Log("Player Respawned");
 	}
 
-public IEnumerator RespawnCoroutine(GameObject playerObject, Transform respawn)
+    public IEnumerator RespawnCoroutine(GameObject playerObject, Transform respawn)
 	{
         playerObject.SetActive(false);
 		yield return new WaitForSeconds(.2f);
