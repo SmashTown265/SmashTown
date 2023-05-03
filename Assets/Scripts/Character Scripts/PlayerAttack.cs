@@ -24,14 +24,14 @@ public class PlayerAttack : MonoBehaviour
 		// Attack only if not attacking and not dashing
 		if (context.performed && attackTimer == 0 && (pM.playerState != State.Dashing || !pM.playerState.HasFlags(State.InAir)))
 		{
-			attackDir = GetDir();
+			GetDir();
 			pM.playerState.AddFlag(State.Attacking);
             print($"THIS SHOULD BE TRUE ATTACKING: {pM.playerState.HasFlags(State.Attacking)} ");
             anim.SetTrigger("attackTrigger");
 		}
 	}
 
-	public Vector2 GetDir()
+	public void GetDir()
 	{
 		// PlayerInput "move" action tracks left stick
 		// so take it from that
@@ -54,13 +54,12 @@ public class PlayerAttack : MonoBehaviour
 			attackDir.Set(0, 0);
 		}
 
-		return attackDir;
 	}
 
 	// Update is called once per frame
 	private void Update()
 	{
-
+        GetDir();
 		anim.SetInteger("AttackX", (int)attackDir.x);
 		anim.SetInteger("AttackY", (int)attackDir.y);
 		anim.SetBool("isAttacking", pM.playerState.HasFlags(State.Attacking));

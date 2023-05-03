@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
-
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 
 // This Script has the OnMove and OnJump methods, as well as all animation parameters associated with movement
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
@@ -15,6 +15,9 @@ public class PlayerMovement : MonoBehaviour
     private BoxCollider2D bc2d;
     private SpriteRenderer sr;
     private PlayerAttack pa;
+
+    private PlayerMovement player1 = null;
+    private PlayerMovement player2 = null;
 
     private Vector3 airDodgePos = Vector3.one;
     private Vector2 jump = Vector2.up;
@@ -24,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     private float gravityScale;
     [HideInInspector] public int Xdir = 1;
     private int dashDir;
+    private float runSpeed;
 
     [Header("Character Specific Movement Settings")] 
     [Header("Multipliers")] 
@@ -217,19 +221,22 @@ public class PlayerMovement : MonoBehaviour
 
     public void FixedUpdate()
     {
-        // State updates
-        if (playerState.HasFlags(State.Ground) && playerState != State.Dashing && !playerState.HasFlags(State.Attacking) && pa.attackTimer == 0)
+        if(IsOwner) 
         {
+            // State updates
+            if (playerState.HasFlags(State.Ground) && playerState != State.Dashing && !playerState.HasFlags(State.Attacking) && pa.attackTimer == 0)
+            {
             
-            if (rb.velocity.x == 0f)
-            {
-                playerState.AddFlag(State.Idle);
-                playerState.RemoveFlag(State.Running | State.Dashing);
-            }
-            else
-            {
-                playerState.AddFlag(State.Running);
-                playerState.RemoveFlag(State.Idle);
+                if (rb.velocity.x == 0f)
+                {
+                    playerState.AddFlag(State.Idle);
+                    playerState.RemoveFlag(State.Running | State.Dashing);
+                }
+                else
+                {
+                    playerState.AddFlag(State.Running);
+                    playerState.RemoveFlag(State.Idle);
+                }
             }
         }
         // Sort of State machine
@@ -337,14 +344,21 @@ public class PlayerMovement : MonoBehaviour
         attacking = playerState.HasFlags(State.Attacking);
     }
     public void Update()
-    {
+    {   
+        runSpeed = Mathf.Abs(rb.velocity.x) / maxMoveSpeed;
+
+        if(IsServer)
+            StateClientRpc((int)playerState, runSpeed);
+        else if(!IsServer)
+            StateServerRpc((int)playerState, runSpeed);
+
         // Set animation state machine parameters
         anim.SetBool("isGrounded", playerState.HasFlag(State.Ground));
         anim.SetBool("isMoving", !playerState.HasFlag(State.Idle | State.Attacking));
         anim.SetBool("doubleJumping", playerState.HasFlag(State.DoubleJumping)); // ? what does this get used for?
         anim.SetInteger("Ydir", (int)rb.velocity.y);
-        anim.SetFloat("RunSpeed", Mathf.Abs(rb.velocity.x) / maxMoveSpeed);
-
+        anim.SetFloat("RunSpeed", runSpeed);
+        
         //anim.SetInteger("playerState", (int)playerState);
         // Set sprite direction
         if ((Xdir * t.localScale.x) < 0  && !playerState.HasFlags(State.InAir) || playerState == State.Dashing && (t.localScale.x * dashDir) < 0)
@@ -394,6 +408,36 @@ public class PlayerMovement : MonoBehaviour
     {
         toFlip.x *= -1;
         return toFlip;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void StateServerRpc(int playerState, float runSpeed, ServerRpcParams serverRpcParams = default) 
+    {
+        if(IsServer)
+        {
+            if(player2 == null)
+            {
+                player2 = GameObject.FindWithTag("Player 2").GetComponent<PlayerMovement>();
+            }
+
+            player2.playerState = (State)playerState;
+            player2.runSpeed = runSpeed;
+        }
+    }
+
+    [ClientRpc]
+    private void StateClientRpc(int playerState, float runSpeed,  ClientRpcParams clientRpcParams = default) 
+    {
+        if(!IsServer)
+        {
+            if(player1 == null)
+            {
+                player1 = GameObject.FindWithTag("Player 1").GetComponent<PlayerMovement>();
+            }
+
+            player1.playerState = (State)playerState;
+            player1.runSpeed = runSpeed;
+        }
     }
 }
 // States enum
@@ -445,4 +489,5 @@ public static class Extensions
             lhs &= ~State.Ground;
         }
     }
+    
 }
