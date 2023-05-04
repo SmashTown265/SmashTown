@@ -463,32 +463,9 @@ MonoBehaviour:
   SyncScaleZ: 1
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
+  ScaleThreshold: 0
   InLocalSpace: 0
   Interpolate: 1
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  InLocalSpace: 0
-  Interpolate: 1
-  InterpolatePositionX: 1
-  InterpolatePositionY: 1
-  InterpolatePositionZ: 1
-  InterpolateRotAngleX: 1
-  InterpolateRotAngleY: 1
-  InterpolateRotAngleZ: 1
-  InterpolateScaleX: 1
-  InterpolateScaleY: 1
-  InterpolateScaleZ: 1
 --- !u!114 &-7883776512239466178
 MonoBehaviour:
   m_ObjectHideFlags: 0
