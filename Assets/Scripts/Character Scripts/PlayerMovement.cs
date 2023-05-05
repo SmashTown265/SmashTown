@@ -15,7 +15,7 @@ public class PlayerMovement : NetworkBehaviour
     private BoxCollider2D bc2d;
     private SpriteRenderer sr;
     private PlayerAttack pa;
-    private bool online;
+    private bool online = false;
     private PlayerMovement player1 = null;
     private PlayerMovement player2 = null;
 
@@ -79,7 +79,8 @@ public class PlayerMovement : NetworkBehaviour
         sr = GetComponent<SpriteRenderer>();
         pa = GetComponent<PlayerAttack>();
         bc2d = GetComponent<BoxCollider2D>();
-        online = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkRelay>().online;
+        if(GameObject.FindWithTag("NetworkManager") != null)
+            online = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkRelay>().online;
         if (!online) EnableMovement(); //Enable movement if playing offline
         // Initialize all serialized variables so they don't change every time we try something new
         maxMoveSpeed = 10f;
