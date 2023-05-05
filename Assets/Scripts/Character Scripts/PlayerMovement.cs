@@ -15,7 +15,7 @@ public class PlayerMovement : NetworkBehaviour
     private BoxCollider2D bc2d;
     private SpriteRenderer sr;
     private PlayerAttack pa;
-
+    private bool online;
     private PlayerMovement player1 = null;
     private PlayerMovement player2 = null;
 
@@ -79,7 +79,8 @@ public class PlayerMovement : NetworkBehaviour
         sr = GetComponent<SpriteRenderer>();
         pa = GetComponent<PlayerAttack>();
         bc2d = GetComponent<BoxCollider2D>();
-
+        online = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkRelay>().online;
+        if (!online) EnableMovement(); //Enable movement if playing offline
         // Initialize all serialized variables so they don't change every time we try something new
         maxMoveSpeed = 10f;
         jumpPowerMultiplier = 4.5f;
@@ -95,7 +96,12 @@ public class PlayerMovement : NetworkBehaviour
         dodgeCounter = 0;
         gravityScale = rb.gravityScale;
     }
-    
+
+    public override void OnNetworkSpawn()
+    {
+        EnableMovement();
+    }
+
     public void OnMove(InputAction.CallbackContext context)
     {
 	    // Get stickPos for non-deadzoned/movement related stuff
@@ -437,6 +443,17 @@ public class PlayerMovement : NetworkBehaviour
 
             player1.playerState = (State)playerState;
             player1.runSpeed = runSpeed;
+        }
+    }
+    private void EnableMovement()
+    {
+        if(IsServer)
+        {
+            GameObject.FindWithTag("Player 1").GetComponent<PlayerInput>().enabled = true;
+        }
+        else if(!IsServer)
+        {
+            GameObject.FindWithTag("Player 2").GetComponent<PlayerInput>().enabled = true;
         }
     }
 }

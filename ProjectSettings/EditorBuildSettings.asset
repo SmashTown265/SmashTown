@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PlayerSelectScene.unity
     guid: 04fb93d5dcbb92545b292c5a31a3816b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/StageSelectScene.unity
     guid: fc19f4f2b25433b4997675fe3b6722b7
   - enabled: 1
@@ -23,7 +23,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/attackTest.unity
     guid: 335af9379cf85e74aabd74068f539cd5
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/movementTest.unity
     guid: 14ea12b0499aa7c4199ba89a226a2ecf
   m_configObjects:

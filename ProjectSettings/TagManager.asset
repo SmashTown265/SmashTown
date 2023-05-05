@@ -8,6 +8,7 @@ TagManager:
   - Player 2
   - DeathZone
   - Player 1
+  - NetworkManager
   layers:
   - Default
   - TransparentFX

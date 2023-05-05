@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 1420783971865985709}
   m_Layer: 0
   m_Name: NetworkManager
-  m_TagString: Untagged
+  m_TagString: NetworkManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,6 +52,7 @@ MonoBehaviour:
   inputfield: {fileID: 0}
   joinCodeField: {fileID: 0}
   relayJoinCode: 
+  online: 0
 --- !u!114 &1420783971865985707
 MonoBehaviour:
   m_ObjectHideFlags: 0

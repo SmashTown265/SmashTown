@@ -48,7 +48,8 @@ public class LevelManager : NetworkBehaviour
 
             player1Instance.GetComponent<NetworkObject>().SpawnWithOwnership(0, true);
             player2Instance.GetComponent<NetworkObject>().SpawnWithOwnership(1, true);
-            EnableMovementClientRpc();
+            EnableDeathClientRpc();
+            // EnableMovement Moved to PlayerMovement Script OnNetworkSpawn()
 
         }
 	}
@@ -58,10 +59,10 @@ public class LevelManager : NetworkBehaviour
 	}
 
     [ClientRpc]
-    private void EnableMovementClientRpc( ClientRpcParams clientRpcParams = default) 
+    private void EnableDeathClientRpc( ClientRpcParams clientRpcParams = default) 
     {
 
-        EnableMovement();
+        EnablePlayerDeathScript();
     }
 	
 	public void Respawn(GameObject playerObject, string tag)
@@ -87,15 +88,15 @@ public class LevelManager : NetworkBehaviour
         playerObject.SetActive(true);
 	}
 
-    public void EnableMovement()
+    public void EnablePlayerDeathScript()
     {
         if(IsServer)
         {
-            GameObject.FindWithTag("Player 1").GetComponent<PlayerInput>().enabled = true;
+            GameObject.FindWithTag("Player 1").GetComponent<PlayerDeath>().enabled = true;
         }
         else if(!IsServer)
         {
-            GameObject.FindWithTag("Player 2").GetComponent<PlayerInput>().enabled = true;
+            GameObject.FindWithTag("Player 2").GetComponent<PlayerDeath>().enabled = true;
         }
     }
 
