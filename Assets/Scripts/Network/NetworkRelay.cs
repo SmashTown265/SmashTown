@@ -33,7 +33,7 @@ public class NetworkRelay : MonoBehaviour
     public event EventHandler OnPlayerDataNetworkListChanged;
     public event EventHandler OnPlayerConnected;
     public event EventHandler OnCreateGameSuccess;
-
+    [HideInInspector] public bool online = false;
     //public Allocation allocation;
 
     private void Awake() 
@@ -68,11 +68,13 @@ public class NetworkRelay : MonoBehaviour
     public void HostGame()
     {
         // Start the Relay Server, and output the code
+        online = true;
 	    StartCoroutine(ConfigureTransportAndStartNgoAsHost());
     }
 
     public void JoinGame()
     {
+        online = true;
 	    StartCoroutine(ConfigureTransportAndStartNgoAsConnectingPlayer());
     }
 

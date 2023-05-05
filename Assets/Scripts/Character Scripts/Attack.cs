@@ -8,18 +8,18 @@ public class Attack : MonoBehaviour
 	public float attackDamage = 5f;
 	private Transform t;
 	public float knockBack = 3f;
-    private string tag;
+    private string playerTag;
 
 	// Start is called before the first frame update
     void Start()
     {
         t = GetComponentsInParent<Transform>(true)[1];
-        tag = gameObject.transform.parent.tag;
+        playerTag = gameObject.transform.parent.tag;
     }
 
     private void OnTriggerEnter2D(Collider2D other) 
     {
-	    if (!other.gameObject.CompareTag(tag))
+	    if (!other.gameObject.CompareTag(playerTag))
 	    {
             if(knockBack * t.localScale.x < 0)
 				knockBack *= -1;
