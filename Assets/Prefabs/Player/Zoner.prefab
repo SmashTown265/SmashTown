@@ -86,7 +86,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 889567004, guid: d2f1dc0c0900214468f735678f84c916, type: 3}
+  m_Sprite: {fileID: 19822279, guid: c3b5de8950ea4104caa0878c0deac4ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -173,7 +173,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.46875, y: 0.59375}
+    oldSize: {x: 0.375, y: 0.5}
     newSize: {x: 0.46875, y: 0.59375}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -466,29 +466,6 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  InLocalSpace: 0
-  Interpolate: 1
-  InterpolatePositionX: 1
-  InterpolatePositionY: 1
-  InterpolatePositionZ: 1
-  InterpolateRotAngleX: 1
-  InterpolateRotAngleY: 1
-  InterpolateRotAngleZ: 1
-  InterpolateScaleX: 1
-  InterpolateScaleY: 1
-  InterpolateScaleZ: 1
 --- !u!114 &-3286862883103320196
 MonoBehaviour:
   m_ObjectHideFlags: 0
