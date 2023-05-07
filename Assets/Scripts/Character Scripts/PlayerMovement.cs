@@ -471,6 +471,11 @@ public class PlayerMovement : NetworkBehaviour
                 break;
         }
         anim.SetFloat("RunSpeed", runSpeed);
+        anim.SetBool("isGrounded", playerState.HasFlag(State.Ground));
+        anim.SetBool("isMoving", !playerState.HasFlag(State.Idle | State.Attacking));
+        anim.SetBool("doubleJumping", playerState.HasFlag(State.DoubleJumping)); // ? what does this get used for?
+        anim.SetInteger("Ydir", (int)rb.velocity.y);
+    
     }
     private void EnableMovement()
     {
