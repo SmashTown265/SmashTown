@@ -431,8 +431,7 @@ public class PlayerMovement : NetworkBehaviour
                 player2 = GameObject.FindWithTag("Player 2").GetComponent<PlayerMovement>();
             }
 
-            player2.playerState = (State)playerState;
-            player2.runSpeed = runSpeed;
+            player2.SetAnim((State)playerState, runSpeed);
         }
     }
 
@@ -446,9 +445,32 @@ public class PlayerMovement : NetworkBehaviour
                 player1 = GameObject.FindWithTag("Player 1").GetComponent<PlayerMovement>();
             }
 
-            player1.playerState = (State)playerState;
-            player1.runSpeed = runSpeed;
+            player1.SetAnim((State)playerState, runSpeed);
         }
+    }
+    private void SetAnim(State playerState, float runSpeed)
+    {
+        switch (playerState)
+        {
+            case State.Idle:
+                anim.SetInteger("playerState", (int)playerState);
+                break;
+            case State.Running or State.Running | State.Dashing:
+                anim.SetInteger("playerState", (int)State.Running);
+                break;
+            case State.Dashing:
+                anim.SetInteger("playerState", (int)playerState);
+                break;
+            case State.AirDodging:
+                break;
+            case var x when x.HasFlags(State.InAir):
+                anim.SetInteger("playerState", (int)State.Jumping);
+                break;
+            case var x when x.HasFlags(State.Attacking):
+                anim.SetInteger("playerState", (int)playerState);
+                break;
+        }
+        anim.SetFloat("RunSpeed", runSpeed);
     }
     private void EnableMovement()
     {
