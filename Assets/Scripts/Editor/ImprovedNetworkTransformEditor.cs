@@ -202,10 +202,10 @@ namespace Unity.Netcode.Editor
 #endif // COM_UNITY_MODULES_PHYSICS
 
 #if COM_UNITY_MODULES_PHYSICS2D
-            if (go.TryGetComponent<Rigidbody2D>(out _) && go.TryGetComponent<NetworkRigidbody2D>(out _) == false)
+            if (go.TryGetComponent<Rigidbody2D>(out _) && go.TryGetComponent<ImprovedNetworkRigidbody2D>(out _) == false)
             {
-                EditorGUILayout.HelpBox("This GameObject contains a Rigidbody2D but no NetworkRigidbody2D.\n" +
-                    "Add a NetworkRigidbody2D component to improve Rigidbody2D synchronization.", MessageType.Warning);
+                EditorGUILayout.HelpBox("This GameObject contains a Rigidbody2D but no ImprovedNetworkRigidbody2D.\n" +
+                    "Add an ImprovedNetworkRigidbody2D component to improve Rigidbody2D synchronization.", MessageType.Warning);
             }
 #endif // COM_UNITY_MODULES_PHYSICS2D
 
