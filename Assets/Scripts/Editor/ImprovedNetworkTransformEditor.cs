@@ -33,7 +33,7 @@ namespace Unity.Netcode.Editor
         private SerializedProperty m_InterpolateScaleXProperty;
         private SerializedProperty m_InterpolateScaleYProperty;
         private SerializedProperty m_InterpolateScaleZProperty;
-        private SerializedProperty m_ClientAuth;
+        private SerializedProperty m_ServerAuth;
 
         private static int s_ToggleOffset = 45;
         private static float s_MaxRowWidth = EditorGUIUtility.labelWidth + EditorGUIUtility.fieldWidth + 5;
@@ -67,7 +67,7 @@ namespace Unity.Netcode.Editor
             m_InterpolateScaleXProperty = serializedObject.FindProperty(nameof(ImprovedNetworkTransform.InterpolateScaleX));
             m_InterpolateScaleYProperty = serializedObject.FindProperty(nameof(ImprovedNetworkTransform.InterpolateScaleY));
             m_InterpolateScaleZProperty = serializedObject.FindProperty(nameof(ImprovedNetworkTransform.InterpolateScaleZ));
-            m_ClientAuth = serializedObject.FindProperty(nameof(ImprovedNetworkTransform.IsClientAuthoritative));
+            m_ServerAuth = serializedObject.FindProperty(nameof(ImprovedNetworkTransform.ServerAuthoritative));
         }
 
         /// <inheritdoc/>
@@ -189,7 +189,7 @@ namespace Unity.Netcode.Editor
             EditorGUILayout.LabelField("Configurations", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(m_InLocalSpaceProperty);
             EditorGUILayout.PropertyField(m_InterpolateProperty);
-            EditorGUILayout.PropertyField(m_ClientAuth);
+            EditorGUILayout.PropertyField(m_ServerAuth);
 
 #if COM_UNITY_MODULES_PHYSICS
             // if rigidbody is present but network rigidbody is not present

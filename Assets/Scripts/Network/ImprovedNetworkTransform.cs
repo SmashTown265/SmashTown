@@ -424,9 +424,9 @@ namespace Unity.Netcode.Components
 
         // TODO: Update this summary
         /// <summary>
-        /// When enabled client can apply network transform
+        /// When disabled client can apply network transform
         /// </summary>
-        public bool IsClientAuthoritative = false;
+        public bool ServerAuthoritative = false;
 
         /// <summary>
         /// Used to determine who can write to this transform. Server only for this transform.
@@ -1345,7 +1345,7 @@ namespace Unity.Netcode.Components
         /// <returns>(<see cref="true"/> or <see cref="false"/>) where when false it runs as owner-client authoritative</returns>
         protected virtual bool OnIsServerAuthoritative()
         {
-            return IsClientAuthoritative;
+            return ServerAuthoritative;
         }
 
         /// <summary>
