@@ -20,8 +20,8 @@ GameObject:
   - component: {fileID: 1123358734968440805}
   - component: {fileID: 1507248292}
   - component: {fileID: -5571910309413418234}
-  - component: {fileID: -4519052386843584000}
-  - component: {fileID: -8539060296651719291}
+  - component: {fileID: 6440129715424427869}
+  - component: {fileID: 8708900893259531810}
   m_Layer: 0
   m_Name: SwordFighter
   m_TagString: Player 1
@@ -440,7 +440,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
   m_Animator: {fileID: 2242133325842634775}
---- !u!114 &-4519052386843584000
+--- !u!114 &6440129715424427869
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -449,7 +449,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1468236329494031452}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b05f9729eca67f947adb0247178317a7, type: 3}
+  m_Script: {fileID: 11500000, guid: b632dae54fa4b6b46abdf4822ced9269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SyncPositionX: 1
@@ -461,21 +461,31 @@ MonoBehaviour:
   SyncScaleX: 1
   SyncScaleY: 0
   SyncScaleZ: 0
+  InterpolatePositionX: 1
+  InterpolatePositionY: 1
+  InterpolatePositionZ: 1
+  InterpolateRotationX: 0
+  InterpolateRotationY: 0
+  InterpolateRotationZ: 0
+  InterpolateScaleX: 0
+  InterpolateScaleY: 0
+  InterpolateScaleZ: 0
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
-  ScaleThreshold: 0.001
+  ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
---- !u!114 &-8539060296651719291
+  IsClientAuthoritative: 1
+--- !u!114 &8708900893259531810
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1468236329494031452}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
+  m_Script: {fileID: 11500000, guid: ee35a11c3c5b4974a9ecda7501b28385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &4163560027531520250
