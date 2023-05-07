@@ -27,7 +27,7 @@ public class PlayerMovement : NetworkBehaviour
     private float gravityScale;
     [HideInInspector] public int Xdir = 1;
     private int dashDir;
-    private float runSpeed;
+    public float runSpeed;
 
     [Header("Character Specific Movement Settings")] 
     [Header("Multipliers")] 

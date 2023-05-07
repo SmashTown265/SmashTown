@@ -14,22 +14,26 @@ public class OwnerNetworkAnimator : NetworkBehaviour {
     {
         if (IsServer)
         {
-            PlayerStateClientRpc(player1.playerState);
+            PlayerStateClientRpc(player1.playerState, player1.runSpeed);
         }
         if (IsClient)
         {
-            PlayerStateServerRpc(player2.playerState);
+            PlayerStateServerRpc(player2.playerState, player2.runSpeed);
         }
     }
     [ClientRpc]
-    void PlayerStateClientRpc(State playerState)
+    void PlayerStateClientRpc(State playerState, float runspeed)
     {
         if(!IsServer)
+        {
             player1.playerState = playerState;
+            player1.runSpeed = runspeed;
+        }
     }
     [ServerRpc(RequireOwnership = false)]
-    void PlayerStateServerRpc(State playerState)
+    void PlayerStateServerRpc(State playerState, float runspeed)
     {
         player2.playerState = playerState;
+        player2.runSpeed = runspeed;
     }
 }
