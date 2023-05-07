@@ -245,139 +245,143 @@ public class PlayerMovement : NetworkBehaviour
                     playerState.RemoveFlag(State.Idle);
                 }
             }
-        }
-        // Sort of State machine
-	    switch (playerState)
-        {
-            case State.Idle:
-                anim.SetInteger("playerState", (int)playerState);
-                break;
-            case State.Running or State.Running | State.Dashing:
-                anim.SetInteger("playerState", (int)State.Running);
-                // ** Regular Ground Movement **
+        
+            // Sort of State machine
+	        switch (playerState)
+            {
+                case State.Idle:
+                    anim.SetInteger("playerState", (int)playerState);
+                    break;
+                case State.Running or State.Running | State.Dashing:
+                    anim.SetInteger("playerState", (int)State.Running);
+                    // ** Regular Ground Movement **
 
-                // If grounded and not dashing or attacking
-                // interpolate the velocity to the movementVector multiplied by
-                // the movement speed over ten fixed updates
-                if (Mathf.Abs(rb.velocity.x) < maxMoveSpeed && movementVector.x != 0)
-                {
-                    rb.velocity = Vector2.Lerp(rb.velocity, movementVector * maxMoveSpeed, 4);
-                }
-                // Old movement Code - works well, revert to it if current is buggy
-                /*movementVector.x *= maxMoveSpeed;
-                rb.velocity = movementVector;
-                movementVector.x /= maxMoveSpeed;*/
+                    // If grounded and not dashing or attacking
+                    // interpolate the velocity to the movementVector multiplied by
+                    // the movement speed over ten fixed updates
+                    if (Mathf.Abs(rb.velocity.x) < maxMoveSpeed && movementVector.x != 0)
+                    {
+                        rb.velocity = Vector2.Lerp(rb.velocity, movementVector * maxMoveSpeed, 4);
+                    }
+                    // Old movement Code - works well, revert to it if current is buggy
+                    /*movementVector.x *= maxMoveSpeed;
+                    rb.velocity = movementVector;
+                    movementVector.x /= maxMoveSpeed;*/
 
-                break;
-            case State.Dashing:
-                anim.SetInteger("playerState", (int)playerState);
+                    break;
+                case State.Dashing:
+                    anim.SetInteger("playerState", (int)playerState);
 
-                // **Dash Movement**
+                    // **Dash Movement**
 
-                if (count >= dashLength)
-                {
-                    count = 0;
-                    playerState.AddFlag(State.Running);
-                }
-                else
-                {
-                    // Update the velocity to the direction the player is dashing, at the normal moveSpeed with a multiplication modifier of the dash speed
-                    rb.velocity = dashDir * maxMoveSpeed * dashSpeedMultiplier * Vector2.right;
-                    count++;
-                }
-                break;
-            case State.AirDodging:
-                anim.SetInteger("playerState", (int)State.Jumping);
-                if (dodgeCounter < dodgeDistance)
-                {
-	                rb.velocity = Vector2.zero;
-	                rb.AddForce(airDodgePos, ForceMode2D.Impulse);
-                    dodgeCounter += 1;
-                }
-                else if (dodgeCounter == dodgeDistance)
-                {
-                    dodgeCounter = 0;
-                    rb.velocity = Vector2.zero;
-                    playerState.AddFlag(prevState);
-                    rb.gravityScale = gravityScale;
-                }
-                break;
-            case var x when x.HasFlags(State.InAir): //or State.Jumping or State.Jumping | State.DoubleJumping:
-                anim.SetInteger("playerState", (int)State.Jumping);
-                // **In Air Movement**
+                    if (count >= dashLength)
+                    {
+                        count = 0;
+                        playerState.AddFlag(State.Running);
+                    }
+                    else
+                    {
+                        // Update the velocity to the direction the player is dashing, at the normal moveSpeed with a multiplication modifier of the dash speed
+                        rb.velocity = dashDir * maxMoveSpeed * dashSpeedMultiplier * Vector2.right;
+                        count++;
+                    }
+                    break;
+                case State.AirDodging:
+                    anim.SetInteger("playerState", (int)State.Jumping);
+                    if (dodgeCounter < dodgeDistance)
+                    {
+	                    rb.velocity = Vector2.zero;
+	                    rb.AddForce(airDodgePos, ForceMode2D.Impulse);
+                        dodgeCounter += 1;
+                    }
+                    else if (dodgeCounter == dodgeDistance)
+                    {
+                        dodgeCounter = 0;
+                        rb.velocity = Vector2.zero;
+                        playerState.AddFlag(prevState);
+                        rb.gravityScale = gravityScale;
+                    }
+                    break;
+                case var x when x.HasFlags(State.InAir): //or State.Jumping or State.Jumping | State.DoubleJumping:
+                    anim.SetInteger("playerState", (int)State.Jumping);
+                    // **In Air Movement**
 
-                // If in the air, and velocity + anticipated movement is less than set movement speed
-                // change the current velocity by direction multiplied
-                // by the default in air movement speed multiplier
+                    // If in the air, and velocity + anticipated movement is less than set movement speed
+                    // change the current velocity by direction multiplied
+                    // by the default in air movement speed multiplier
 
-                movementVector *= inAirSpeedChangeMultiplier;
-                if (Mathf.Abs(rb.velocity.x) > maxInAirMoveSpeed)
-                {
-                    tempVector.x = Mathf.Sign(rb.velocity.x) * maxInAirMoveSpeed;
-                    tempVector.y = rb.velocity.y;
+                    movementVector *= inAirSpeedChangeMultiplier;
+                    if (Mathf.Abs(rb.velocity.x) > maxInAirMoveSpeed)
+                    {
+                        tempVector.x = Mathf.Sign(rb.velocity.x) * maxInAirMoveSpeed;
+                        tempVector.y = rb.velocity.y;
 
-                    rb.velocity = Vector2.Lerp(rb.velocity, tempVector,
-                        (maxMoveSpeed - maxInAirMoveSpeed) / inAirDeceleractionMultiplier);
-                }
+                        rb.velocity = Vector2.Lerp(rb.velocity, tempVector,
+                            (maxMoveSpeed - maxInAirMoveSpeed) / inAirDeceleractionMultiplier);
+                    }
 
-                if (Mathf.Abs(rb.velocity.x + movementVector.x) <= maxInAirMoveSpeed ||
-                    Mathf.Abs(rb.velocity.x + movementVector.x) <= Mathf.Abs(rb.velocity.x))
-                {
-                    rb.velocity += movementVector;
-                }
+                    if (Mathf.Abs(rb.velocity.x + movementVector.x) <= maxInAirMoveSpeed ||
+                        Mathf.Abs(rb.velocity.x + movementVector.x) <= Mathf.Abs(rb.velocity.x))
+                    {
+                        rb.velocity += movementVector;
+                    }
 
-                movementVector /= inAirSpeedChangeMultiplier;
-                if (playerState.HasFlags(State.FastFalling) && rb.velocity.y is <= 0 and > -10f)
-                {
-	                rb.AddForce(Vector2.down * 3f, ForceMode2D.Impulse);
-                }
-                break;
-            case var x when x.HasFlags(State.Attacking):
-                anim.SetInteger("playerState", (int)playerState);
-                break;
-        }
+                    movementVector /= inAirSpeedChangeMultiplier;
+                    if (playerState.HasFlags(State.FastFalling) && rb.velocity.y is <= 0 and > -10f)
+                    {
+	                    rb.AddForce(Vector2.down * 3f, ForceMode2D.Impulse);
+                    }
+                    break;
+                case var x when x.HasFlags(State.Attacking):
+                    anim.SetInteger("playerState", (int)playerState);
+                    break;
+            }
 	    
 	    
 	   
-        ground = playerState.HasFlags(State.Ground);
-        idle = playerState.HasFlags(State.Idle);
-        running = playerState.HasFlags(State.Running);
-        dashing = playerState.HasFlags(State.Dashing);
-        inAir = playerState.HasFlags(State.InAir);
-        jumping = playerState.HasFlags(State.Jumping);
-        doubleJumping = playerState.HasFlags(State.DoubleJumping);
-        airDodging = playerState.HasFlags(State.AirDodging);
-        fastFalling = playerState.HasFlags(State.FastFalling);
-        attacking = playerState.HasFlags(State.Attacking);
+            ground = playerState.HasFlags(State.Ground);
+            idle = playerState.HasFlags(State.Idle);
+            running = playerState.HasFlags(State.Running);
+            dashing = playerState.HasFlags(State.Dashing);
+            inAir = playerState.HasFlags(State.InAir);
+            jumping = playerState.HasFlags(State.Jumping);
+            doubleJumping = playerState.HasFlags(State.DoubleJumping);
+            airDodging = playerState.HasFlags(State.AirDodging);
+            fastFalling = playerState.HasFlags(State.FastFalling);
+            attacking = playerState.HasFlags(State.Attacking);
+        }
     }
     public void Update()
     {   
-        runSpeed = Mathf.Abs(rb.velocity.x) / maxMoveSpeed;
-
-        if(IsServer)
-            StateClientRpc((int)playerState, runSpeed);
-        else if(!IsServer)
-            StateServerRpc((int)playerState, runSpeed);
-
-        // Set animation state machine parameters
-        anim.SetBool("isGrounded", playerState.HasFlag(State.Ground));
-        anim.SetBool("isMoving", !playerState.HasFlag(State.Idle | State.Attacking));
-        anim.SetBool("doubleJumping", playerState.HasFlag(State.DoubleJumping)); // ? what does this get used for?
-        anim.SetInteger("Ydir", (int)rb.velocity.y);
-        anim.SetFloat("RunSpeed", runSpeed);
-        
-        //anim.SetInteger("playerState", (int)playerState);
-        // Set sprite direction
-        if ((Xdir * t.localScale.x) < 0  && !playerState.HasFlags(State.InAir) || playerState == State.Dashing && (t.localScale.x * dashDir) < 0)
+        if(IsOwner)
         {
-            // If the direction of input doesn't match the direction facing, switch the direction facing
-            // Unless dashing
-            t.localScale = FlipX(t.localScale);
-        }
+            runSpeed = Mathf.Abs(rb.velocity.x) / maxMoveSpeed;
+
+            if(IsServer)
+                StateClientRpc((int)playerState, runSpeed);
+            else if(!IsServer)
+                StateServerRpc((int)playerState, runSpeed);
+
+            // Set animation state machine parameters
+            anim.SetBool("isGrounded", playerState.HasFlag(State.Ground));
+            anim.SetBool("isMoving", !playerState.HasFlag(State.Idle | State.Attacking));
+            anim.SetBool("doubleJumping", playerState.HasFlag(State.DoubleJumping)); // ? what does this get used for?
+            anim.SetInteger("Ydir", (int)rb.velocity.y);
+            anim.SetFloat("RunSpeed", runSpeed);
+        
+            //anim.SetInteger("playerState", (int)playerState);
+            // Set sprite direction
+            if ((Xdir * t.localScale.x) < 0  && !playerState.HasFlags(State.InAir) || playerState == State.Dashing && (t.localScale.x * dashDir) < 0)
+            {
+                // If the direction of input doesn't match the direction facing, switch the direction facing
+                // Unless dashing
+                t.localScale = FlipX(t.localScale);
+            }
         // Set the size of the collider to the size of the rendered sprite
         // ! TODO: make a better collider system, the swords and capes shouldn't be considered in hit boxes - even if they will be
         //if(!playerState.HasFlag(State.Attacking))
-			//bc2d.size = sr.sprite.bounds.size;
+        //bc2d.size = sr.sprite.bounds.size;
+        }
     }
 
     // Jump coroutine
