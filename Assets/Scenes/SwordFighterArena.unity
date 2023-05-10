@@ -314,6 +314,7 @@ MonoBehaviour:
   z1: {fileID: 1468236329494031452, guid: b89dd2a6f4eeda44ba245a30cc81204d, type: 3}
   sf2: {fileID: 1468236329494031452, guid: d3ddd0c0179e0644aa1ac6c3bd99e5c9, type: 3}
   z2: {fileID: 1468236329494031452, guid: 6eb5870fdc062e049a8bb1b20be890fd, type: 3}
+  cam2d: {fileID: 551871990}
 --- !u!4 &449091426
 Transform:
   m_ObjectHideFlags: 0
