@@ -285,11 +285,11 @@ MonoBehaviour:
       - m_Target: {fileID: 2073518055}
         m_TargetAssemblyTypeName: PlayerPortraitSwap, Assembly-CSharp
         m_MethodName: PlayerSwapLeft
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -390,24 +390,24 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: VS
+  m_text: vS
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9ccb298acf51e4148a6c3eb5d7e49eac, type: 2}
+  m_sharedMaterial: {fileID: 8852542183905656998, guid: 9ccb298acf51e4148a6c3eb5d7e49eac, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286282066
-  m_fontColor: {r: 0.32156864, g: 0.47450984, b: 0.48235297, a: 1}
-  m_enableVertexGradient: 0
+    rgba: 4292143469
+  m_fontColor: {r: 0.42733178, g: 0.9150943, b: 0.8321902, a: 1}
+  m_enableVertexGradient: 1
   m_colorMode: 3
   m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+    topLeft: {r: 0, g: 1, b: 0.0867517, a: 1}
+    topRight: {r: 0.990566, g: 0.990566, b: 0.990566, a: 1}
+    bottomLeft: {r: 0, g: 0.20616484, b: 1, a: 1}
+    bottomRight: {r: 0.5223748, g: 0.8867924, b: 0.46431112, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -417,8 +417,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80
-  m_fontSizeBase: 80
+  m_fontSize: 120
+  m_fontSizeBase: 120
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -553,11 +553,11 @@ MonoBehaviour:
       - m_Target: {fileID: 2073518055}
         m_TargetAssemblyTypeName: PlayerPortraitSwap, Assembly-CSharp
         m_MethodName: PlayerSwapRight
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -660,15 +660,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Continue
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 277e1a1c24807fc45b251dacb909fbc1, type: 2}
+  m_sharedMaterial: {fileID: 1208132910850299571, guid: 277e1a1c24807fc45b251dacb909fbc1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4291455600
+  m_fontColor: {r: 0.43825096, g: 0.41491634, b: 0.7924528, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -685,8 +685,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -747,7 +747,6 @@ GameObject:
   - component: {fileID: 626597668}
   - component: {fileID: 626597667}
   - component: {fileID: 626597666}
-  - component: {fileID: 626597670}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -784,7 +783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -839,19 +838,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &626597670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626597665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb1314fd27f80c2499bc442a9e4872c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  continueButton: {fileID: 1463217724}
 --- !u!1 &1065510236
 GameObject:
   m_ObjectHideFlags: 0
@@ -1090,11 +1076,11 @@ MonoBehaviour:
       - m_Target: {fileID: 2073518055}
         m_TargetAssemblyTypeName: PlayerPortraitSwap, Assembly-CSharp
         m_MethodName: PlayerSwapLeft
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1661,11 +1647,11 @@ MonoBehaviour:
       - m_Target: {fileID: 2073518055}
         m_TargetAssemblyTypeName: PlayerPortraitSwap, Assembly-CSharp
         m_MethodName: PlayerSwapRight
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1720,6 +1706,7 @@ GameObject:
   - component: {fileID: 2073518053}
   - component: {fileID: 2073518055}
   - component: {fileID: 2073518056}
+  - component: {fileID: 2073518057}
   m_Layer: 0
   m_Name: PlayerSelect
   m_TagString: Untagged
@@ -1781,8 +1768,8 @@ MonoBehaviour:
   p2l: {fileID: 292915462}
   p2r: {fileID: 361934761}
   sprite:
-  - {fileID: 21300000, guid: 87b99c9fb580dfb469559c8870a09294, type: 3}
-  - {fileID: 21300000, guid: bdd0578e8cc37b940bba6dab955425f9, type: 3}
+  - {fileID: 889567004, guid: 1d1b1a27bda39a0429d67d5ef5250b3f, type: 3}
+  - {fileID: 19822279, guid: c3b5de8950ea4104caa0878c0deac4ee, type: 3}
   p1Portrait: {fileID: 1866569457}
   p2Portrait: {fileID: 1131471923}
 --- !u!114 &2073518056
@@ -1801,3 +1788,16 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &2073518057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073518051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb1314fd27f80c2499bc442a9e4872c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  continueButton: {fileID: 1463217724}

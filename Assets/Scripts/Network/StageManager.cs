@@ -77,6 +77,9 @@ public class StageManager : MonoBehaviour
 
 	private static void LoadScene(string sceneName)
 	{
-		NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        if(NetworkRelay.Instance.online)
+		    NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        else
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
 	}
 }

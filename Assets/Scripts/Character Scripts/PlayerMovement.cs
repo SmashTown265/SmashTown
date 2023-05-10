@@ -228,7 +228,7 @@ public class PlayerMovement : NetworkBehaviour
 
     public void FixedUpdate()
     {
-        if(IsOwner) 
+        if(IsOwner || !online) 
         {
             // State updates
             if (playerState.HasFlags(State.Ground) && playerState != State.Dashing && !playerState.HasFlags(State.Attacking) && pa.attackTimer == 0)
@@ -353,13 +353,13 @@ public class PlayerMovement : NetworkBehaviour
     }
     public void Update()
     {   
-        if(IsOwner)
+        if(IsOwner || !online)
         {
             runSpeed = Mathf.Abs(rb.velocity.x) / maxMoveSpeed;
 
-            if(IsServer)
+            if(IsServer && online)
                 StateClientRpc((int)playerState, runSpeed);
-            else if(!IsServer)
+            else if(!IsServer && online)
                 StateServerRpc((int)playerState, runSpeed);
 
             // Set animation state machine parameters
@@ -479,11 +479,11 @@ public class PlayerMovement : NetworkBehaviour
     }
     private void EnableMovement()
     {
-        if(IsServer)
+        if(IsServer || !online)
         {
             GameObject.FindWithTag("Player 1").GetComponent<PlayerInput>().enabled = true;
         }
-        else if(!IsServer)
+        if(!IsServer || !online)
         {
             GameObject.FindWithTag("Player 2").GetComponent<PlayerInput>().enabled = true;
         }
