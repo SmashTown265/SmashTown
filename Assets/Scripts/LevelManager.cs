@@ -46,10 +46,7 @@ public class LevelManager : NetworkBehaviour
             {
                 player2Instance = Instantiate(z2, player2Respawn.position, Quaternion.identity);
             }
-            // Add players to 2D camera targets
-            targets.Add(new Target2D(player1Instance, false));
-            targets.Add(new Target2D(player2Instance, false));
-            cam2d.AddTargets(targets);
+            
             // Spawn players
             player1Instance.GetComponent<NetworkObject>().SpawnWithOwnership(0, true);
             player2Instance.GetComponent<NetworkObject>().SpawnWithOwnership(1, true);
@@ -61,7 +58,10 @@ public class LevelManager : NetworkBehaviour
                 player1Instance.GetComponent<PlayerDeath>().enabled = true;
                 player2Instance.GetComponent<PlayerDeath>().enabled = true;
             }
-
+            // Add players to 2D camera targets
+            targets.Add(new Target2D(player1Instance, false));
+            targets.Add(new Target2D(player2Instance, false));
+            cam2d.AddTargets(targets);
 
             
         }
