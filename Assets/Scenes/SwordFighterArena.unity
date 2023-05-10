@@ -689,6 +689,8 @@ GameObject:
   - component: {fileID: 1179166926}
   - component: {fileID: 1179166928}
   - component: {fileID: 1179166927}
+  - component: {fileID: 1179166930}
+  - component: {fileID: 1179166929}
   m_Layer: 0
   m_Name: Castleground
   m_TagString: Ground
@@ -2369,16 +2371,6 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: -41, y: -4, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
   - first: {x: -16, y: -4, z: 0}
     second:
       serializedVersion: 2
@@ -3341,7 +3333,7 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 2
+  - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: b2d03e5601d557c4ca3154c931c45f7b, type: 2}
   - m_RefCount: 30
     m_Data: {fileID: 11400000, guid: a8826592e0ab06448a8e8770b816600b, type: 2}
@@ -3354,7 +3346,7 @@ Tilemap:
   - m_RefCount: 37
     m_Data: {fileID: 11400000, guid: 22233c82f5be0c14b96bcc7a62cf252b, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 2
+  - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: 6ad8c930c26f84b4f82ad6e063687d7d, type: 3}
   - m_RefCount: 30
     m_Data: {fileID: 21300000, guid: 90e7d7c3176872d4fb68066be5d468f9, type: 3}
@@ -3367,7 +3359,7 @@ Tilemap:
   - m_RefCount: 37
     m_Data: {fileID: 21300000, guid: 74359c02ccee966418a787102338dfbc, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 257
+  - m_RefCount: 256
     m_Data:
       e00: 1
       e01: 0
@@ -3386,7 +3378,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 257
+  - m_RefCount: 256
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -3412,6 +3404,53 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!50 &1179166929
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179166925}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
+--- !u!61 &1179166930
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179166925}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.022949219, y: -5.006447}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 31.954094, y: 7.987106}
+  m_EdgeRadius: 0
 --- !u!1 &1326326164
 GameObject:
   m_ObjectHideFlags: 0
