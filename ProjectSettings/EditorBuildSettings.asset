@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/StageSelectScene.unity
     guid: fc19f4f2b25433b4997675fe3b6722b7
   - enabled: 1
-    path: Assets/Scenes/SwordFighterArena.unity
+    path: Assets/Scenes/SwordFighterArenatemp.unity
     guid: ac512558a1acd794f8eb1312ee75b652
   - enabled: 0
     path: Assets/Scenes/attackTest.unity
@@ -29,5 +29,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PlayerSelectScene.unity
     guid: 8af60e6076f7f124a832b8a60af9aee6
+  - enabled: 1
+    path: Assets/Scenes/SwordFighterArena.unity
+    guid: 58c984bf9e7f783428835b5f627361a3
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: d0db4310f6dc21348924857b373f4864, type: 2}
