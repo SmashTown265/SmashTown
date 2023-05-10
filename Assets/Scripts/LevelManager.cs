@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using UnityEngine.InputSystem;
+using Unity.Netcode.Components;
+using Unity.VisualScripting;
 
 public class LevelManager : NetworkBehaviour
 {
@@ -21,6 +23,7 @@ public class LevelManager : NetworkBehaviour
     private GameObject player2Instance;
     public Camera2D cam2d;
     private List<Target2D> targets = new List<Target2D>();
+    public GameObject inputManager;
 
 	private void Start()
 	{
@@ -28,7 +31,7 @@ public class LevelManager : NetworkBehaviour
 		active = SceneManager.GetActiveScene();
         online = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkRelay>().online;
         //spawn the players
-        if (IsServer)
+        if (IsServer || !online)
         {
             if(PlayerPortraitSwap.p1sprite == 0)
             {
@@ -47,14 +50,33 @@ public class LevelManager : NetworkBehaviour
                 player2Instance = Instantiate(z2, player2Respawn.position, Quaternion.identity);
             }
             
-            // Spawn players
-            player1Instance.GetComponent<NetworkObject>().SpawnWithOwnership(0, true);
-            player2Instance.GetComponent<NetworkObject>().SpawnWithOwnership(1, true);
-            // Enable death scripts - enabled after spawn to prevent null reference
+            
+            
             if (online)
+            {
+                // Spawn players
+                player1Instance.GetComponent<NetworkObject>().SpawnWithOwnership(0, true);
+                player2Instance.GetComponent<NetworkObject>().SpawnWithOwnership(1, true);
+                
+                // Enable death scripts on both host and client through RPC
                 EnableDeathClientRpc();
+
+            }
             else
             {
+                
+                // Enable Input Manager
+                inputManager.GetComponent<PlayerInputManager>().enabled = true;
+
+                // Disable netcode only conponents if local
+                player1Instance.GetComponent<OwnerNetworkAnimator>().enabled = false;
+                player2Instance.GetComponent<OwnerNetworkAnimator>().enabled = false;
+                player1Instance.GetComponent<ImprovedNetworkRigidbody2D>().enabled = false;
+                player2Instance.GetComponent<ImprovedNetworkRigidbody2D>().enabled = false;
+                player1Instance.GetComponent<ImprovedNetworkTransform>().enabled = false;
+                player2Instance.GetComponent<ImprovedNetworkTransform>().enabled = false;
+
+                // Enable Death Scripts
                 player1Instance.GetComponent<PlayerDeath>().enabled = true;
                 player2Instance.GetComponent<PlayerDeath>().enabled = true;
             }
@@ -67,9 +89,7 @@ public class LevelManager : NetworkBehaviour
         }
 	}
     
-	private void Awake()
-	{
-	}
+
 
     [ClientRpc]
     private void EnableDeathClientRpc( ClientRpcParams clientRpcParams = default) 
@@ -103,14 +123,9 @@ public class LevelManager : NetworkBehaviour
 
     public void EnablePlayerDeathScript()
     {
-        if(IsServer)
-        {
             GameObject.FindWithTag("Player 1").GetComponent<PlayerDeath>().enabled = true;
-        }
-        else if(!IsServer)
-        {
             GameObject.FindWithTag("Player 2").GetComponent<PlayerDeath>().enabled = true;
-        }
+
     }
 
 }

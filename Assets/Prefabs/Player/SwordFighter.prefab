@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: -5571910309413418234}
   - component: {fileID: 6440129715424427869}
   - component: {fileID: 8708900893259531810}
+  - component: {fileID: -4559425966461701890}
   m_Layer: 0
   m_Name: SwordFighter
   m_TagString: Player 1
@@ -485,6 +486,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee35a11c3c5b4974a9ecda7501b28385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-4559425966461701890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468236329494031452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eaed5587eb11445798b906cc9e3fca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &4163560027531520250

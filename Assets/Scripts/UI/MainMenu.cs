@@ -7,7 +7,7 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayLocal()
     {
-	    SceneManager.LoadScene("SwordFighterArena");
+	    SceneManager.LoadScene("PlayerSelectScene");
     }
 
     public void PlayOnline()
