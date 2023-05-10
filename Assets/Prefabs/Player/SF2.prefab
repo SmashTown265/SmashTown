@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Xdir: 0
+  runSpeed: 0
   jumpPowerMultiplier: 0
   inAirSpeedChangeMultiplier: 0
   dashSpeedMultiplier: 0
@@ -438,8 +439,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab136ef00e40d64ba7e6a910754a1cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransitionStateInfoList: []
-  m_Animator: {fileID: 2242133325842634775}
 --- !u!114 &6135859015881072327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,7 +474,7 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
-  IsClientAuthoritative: 1
+  ServerAuthoritative: 0
 --- !u!114 &-5508292235015470170
 MonoBehaviour:
   m_ObjectHideFlags: 0

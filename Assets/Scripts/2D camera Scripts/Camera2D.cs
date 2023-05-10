@@ -101,8 +101,8 @@ public class Camera2D : MonoBehaviour
         // Create the camera target to follow
         cameraTarget = new GameObject("Camera Target").AddComponent<CameraTarget2D>();
 
-        // Default target
-        InitDefaultTarget();
+        // Init Targets
+        //InitDefaultTarget();
 
         targetOffsetDefault = targetOffset;
 

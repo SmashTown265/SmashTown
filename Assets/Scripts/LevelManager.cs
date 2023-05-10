@@ -12,20 +12,21 @@ public class LevelManager : NetworkBehaviour
 	public Transform respawnPoint;
 	public Transform player2Respawn;
 	public Scene active;
-
+    private bool online;
     public GameObject sf1;
     public GameObject z1;
     public GameObject sf2;
     public GameObject z2;
     private GameObject player1Instance;
     private GameObject player2Instance;
-
+    public Camera2D cam2d;
+    private List<Target2D> targets = new List<Target2D>();
 
 	private void Start()
 	{
 		instance = this;
 		active = SceneManager.GetActiveScene();
-
+        online = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkRelay>().online;
         //spawn the players
         if (IsServer)
         {
@@ -45,12 +46,24 @@ public class LevelManager : NetworkBehaviour
             {
                 player2Instance = Instantiate(z2, player2Respawn.position, Quaternion.identity);
             }
-
+            // Add players to 2D camera targets
+            targets.Add(new Target2D(player1Instance, false));
+            targets.Add(new Target2D(player2Instance, false));
+            cam2d.AddTargets(targets);
+            // Spawn players
             player1Instance.GetComponent<NetworkObject>().SpawnWithOwnership(0, true);
             player2Instance.GetComponent<NetworkObject>().SpawnWithOwnership(1, true);
-            EnableDeathClientRpc();
-            // EnableMovement Moved to PlayerMovement Script OnNetworkSpawn()
+            // Enable death scripts - enabled after spawn to prevent null reference
+            if (online)
+                EnableDeathClientRpc();
+            else
+            {
+                player1Instance.GetComponent<PlayerDeath>().enabled = true;
+                player2Instance.GetComponent<PlayerDeath>().enabled = true;
+            }
 
+
+            
         }
 	}
     
@@ -61,7 +74,6 @@ public class LevelManager : NetworkBehaviour
     [ClientRpc]
     private void EnableDeathClientRpc( ClientRpcParams clientRpcParams = default) 
     {
-
         EnablePlayerDeathScript();
     }
 	
@@ -81,6 +93,7 @@ public class LevelManager : NetworkBehaviour
 
     public IEnumerator RespawnCoroutine(GameObject playerObject, Transform respawn)
 	{
+        print("respawn");
         playerObject.SetActive(false);
 		yield return new WaitForSeconds(.2f);
 		playerObject.transform.position = respawn.position;
