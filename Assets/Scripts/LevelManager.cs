@@ -30,8 +30,6 @@ public class LevelManager : NetworkBehaviour
     private SpriteRenderer Player2LifeCounter;
     public int DeathCounterPlayer1 = 0;
     public int DeathCounterPlayer2 = 0;
-    private int lifecount1 = 3;
-    private int lifecount2 = 3;
     public Sprite lifezero;
     public Sprite lifetwo;
     public Sprite lifeone;
