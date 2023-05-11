@@ -133,16 +133,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Xdir: 0
   runSpeed: 0
-  jumpPowerMultiplier: 0
-  inAirSpeedChangeMultiplier: 0
-  dashSpeedMultiplier: 0
-  inAirDeceleractionMultiplier: 0
+  jumpPowerMultiplier: 4.5
+  inAirSpeedChangeMultiplier: 0.15
+  dashSpeedMultiplier: 1.2
+  inAirDeceleractionMultiplier: 75
   airDodgeSpeed: 20
-  maxWalkSpeed: 0
-  maxInAirMoveSpeed: 0
-  dashLength: 0
-  dodgeDistance: 0
-  maxMoveSpeed: 0
+  maxWalkSpeed: 0.7
+  maxInAirMoveSpeed: 6
+  dashLength: 2
+  dodgeDistance: 15
+  maxMoveSpeed: 10
   count: 0
   dodgeCounter: 0
   stickPos: {x: 0, y: 0}

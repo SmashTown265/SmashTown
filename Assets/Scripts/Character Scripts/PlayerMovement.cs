@@ -31,17 +31,18 @@ public class PlayerMovement : NetworkBehaviour
 
     [Header("Character Specific Movement Settings")] 
     [Header("Multipliers")] 
-    [SerializeField] private float jumpPowerMultiplier;
-    [SerializeField] private float inAirSpeedChangeMultiplier;
-    [SerializeField] private float dashSpeedMultiplier;
-    [SerializeField] private float inAirDeceleractionMultiplier;
+    [SerializeField] private float jumpPowerMultiplier = 4.5f;
+    [SerializeField] private float inAirSpeedChangeMultiplier = .15f;
+    [SerializeField] private float dashSpeedMultiplier = 1.2f;
+    [SerializeField] private float inAirDeceleractionMultiplier = 75f;
     [SerializeField] private float airDodgeSpeed = 20f;
 
-    [Header("Constants")] [SerializeField] private float maxWalkSpeed;
-    [SerializeField] private float maxInAirMoveSpeed;
-    [SerializeField] private int dashLength;
-    [SerializeField] private int dodgeDistance;
-    [SerializeField] private float maxMoveSpeed;
+    [Header("Constants")] 
+    [SerializeField] private float maxWalkSpeed = .70f;
+    [SerializeField] private float maxInAirMoveSpeed = 6f;
+    [SerializeField] private int dashLength = 2;
+    [SerializeField] private int dodgeDistance = 15;
+    [SerializeField] private float maxMoveSpeed = 10f;
 
     [Header("Counters")] 
     public int count;
@@ -82,17 +83,6 @@ public class PlayerMovement : NetworkBehaviour
         if(GameObject.FindWithTag("NetworkManager") != null)
             online = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkRelay>().online;
         if (!online) EnableMovement(); //Enable movement if playing offline
-        // Initialize all serialized variables so they don't change every time we try something new
-        maxMoveSpeed = 10f;
-        jumpPowerMultiplier = 4.5f;
-        inAirSpeedChangeMultiplier = .15f;
-        maxInAirMoveSpeed = 6f;
-        inAirDeceleractionMultiplier = 75f;
-        maxWalkSpeed = .70f;
-        dashLength = 2;
-        count = 0;
-        dashSpeedMultiplier = 1.2f;
-        dodgeDistance = 15;
         count = 0;
         dodgeCounter = 0;
         gravityScale = rb.gravityScale;
@@ -219,12 +209,7 @@ public class PlayerMovement : NetworkBehaviour
             playerState = State.Jumping;
         }
     }
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    public void OnTeleport(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-            t.position = new Vector3(0, 0, 0);
-    }
+
 
     public void FixedUpdate()
     {
@@ -336,9 +321,9 @@ public class PlayerMovement : NetworkBehaviour
                     anim.SetInteger("playerState", (int)playerState);
                     break;
             }
-	    
-	    
-	   
+
+
+            #if UNITY_EDITOR
             ground = playerState.HasFlags(State.Ground);
             idle = playerState.HasFlags(State.Idle);
             running = playerState.HasFlags(State.Running);
@@ -349,6 +334,7 @@ public class PlayerMovement : NetworkBehaviour
             airDodging = playerState.HasFlags(State.AirDodging);
             fastFalling = playerState.HasFlags(State.FastFalling);
             attacking = playerState.HasFlags(State.Attacking);
+            #endif
         }
     }
     public void Update()
@@ -387,8 +373,16 @@ public class PlayerMovement : NetworkBehaviour
     // Jump coroutine
     public IEnumerator JumpRoutine()
     {
+        bool airDodge = false;
         jump.y = jumpPowerMultiplier;
-
+        // Slow them down and reset gravity if air Dodging
+        if (playerState == State.AirDodging)
+        {
+            rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxMoveSpeed);
+            rb.gravityScale = gravityScale;
+            airDodge = true;
+        }
+        
         // Set jump state
         if (playerState.HasFlags(State.Jumping))
         {
@@ -406,12 +400,14 @@ public class PlayerMovement : NetworkBehaviour
         tempVector.y = 0f;
         rb.velocity = tempVector;
 
-        // If not doubleJumping, wait for jumpSquat
-        if (!playerState.HasFlags(State.DoubleJumping))
+        // If not doubleJumping and also not airdodging, wait for jumpSquat
+        if (!playerState.HasFlags(State.DoubleJumping) && !airDodge)
         {
             yield return new WaitForSeconds(2 / 24f);
         }
-
+        
+        // Reset airDodge bool
+        airDodge = false;
         // Jump Force
         rb.AddForce(jump, ForceMode2D.Impulse);
     }
