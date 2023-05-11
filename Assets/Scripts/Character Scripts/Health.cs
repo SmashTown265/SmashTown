@@ -26,7 +26,11 @@ public class Health : MonoBehaviour
 		    knockBackDir.Set(knockBack + ((damagePercent / 10f) * Mathf.Sign(knockBack)), .3f + (damagePercent / 10f));
 
 	    }
-	    
+	    if (Random.Range(0, 2) == 0) {
+            FindObjectOfType<AudioManager>().Play("Sword1");
+        } else {
+            FindObjectOfType<AudioManager>().Play("Sword2");
+        }
         rb.AddForce(knockBackDir, ForceMode2D.Impulse);
     }
 

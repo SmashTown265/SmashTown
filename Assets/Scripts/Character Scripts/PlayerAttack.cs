@@ -8,7 +8,6 @@ public class PlayerAttack : MonoBehaviour
 	private PlayerMovement pM;
 	private Vector2 attackDir;
 	public float attackTimer = 0;
-    bool nope = false;
 
 	// Start is called before the first frame update
 	private void Start()
@@ -24,8 +23,6 @@ public class PlayerAttack : MonoBehaviour
 		// Attack only if not attacking and not dashing
 		if (context.performed && attackTimer == 0 && (pM.playerState != State.Dashing || !pM.playerState.HasFlags(State.InAir)))
 		{
-            if(nope)
-                nope = false;
 			GetDir();
 			pM.playerState.AddFlag(State.Attacking);
             print($"THIS SHOULD BE TRUE ATTACKING: {pM.playerState.HasFlags(State.Attacking)} ");
@@ -72,10 +69,10 @@ public class PlayerAttack : MonoBehaviour
 
             print($"THIS SHOULD BE FALSE ATTACKING: {pM.playerState.HasFlags(State.Attacking)} ");
 		}
-        else if (attackTimer > 0 && attackTimer < .25 || pM.playerState.HasFlags(State.Attacking))
+        else if (attackTimer > 0 && attackTimer < 0.5f || pM.playerState.HasFlags(State.Attacking))
 		{
 			attackTimer += Time.deltaTime;
-			if (attackTimer >= .25)
+			if (attackTimer >= 0.5f)
 				attackTimer = 0;
 		}
 	}

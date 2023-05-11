@@ -405,7 +405,8 @@ public class PlayerMovement : NetworkBehaviour
         {
             yield return new WaitForSeconds(2 / 24f);
         }
-        
+        // Play the jumping sound
+        FindObjectOfType<AudioManager>().Play("Jump");
         // Reset airDodge bool
         airDodge = false;
         // Jump Force
