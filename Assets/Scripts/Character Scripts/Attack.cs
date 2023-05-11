@@ -1,11 +1,11 @@
 
 using Unity.Netcode;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 
 public class Attack : NetworkBehaviour
 {
-	public float attackDamage = 5f;
+	public float attackDamage = 10f;
 	private Transform t;
 	public float knockBack = 3f;
     private string playerTag;
@@ -14,6 +14,8 @@ public class Attack : NetworkBehaviour
 	// Start is called before the first frame update
     void Start()
     {
+        attackDamage = 10f;
+        knockBack = 2f;
         t = GetComponentsInParent<Transform>(true)[1];
         playerTag = gameObject.tag;
         player1 = GameObject.FindWithTag("Player 1").GetComponent<Health>();
@@ -22,10 +24,12 @@ public class Attack : NetworkBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        if(other.GetType() == typeof(BoxCollider2D))
-            print("Testing colliderType");
-	    if (!other.gameObject.CompareTag(playerTag))
+        if(other.GetType() != typeof(BoxCollider2D))
+            print(other.GetType());
+        print(other.gameObject.tag);
+	    if (!other.gameObject.CompareTag(playerTag) && !other.gameObject.CompareTag("Ground"))
 	    {
+            
             if(knockBack * t.localScale.x < 0)
 				knockBack *= -1;
 		    print($"knockback {knockBack}");

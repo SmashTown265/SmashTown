@@ -15,4 +15,7 @@ public class Sound {
     public bool loop;
     [HideInInspector]
     public AudioSource source;
+    [HideInInspector]
+    public float origVol = 1f;
+
 }

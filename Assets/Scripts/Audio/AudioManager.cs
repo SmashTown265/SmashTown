@@ -27,7 +27,7 @@ public class AudioManager : MonoBehaviour {
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
-          
+            s.origVol = 1 * s.volume;
         }
         foreach (Sound s in soundEffects) {
             s.source = gameObject.AddComponent<AudioSource>();
@@ -35,7 +35,7 @@ public class AudioManager : MonoBehaviour {
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
-            
+            s.origVol = 1 * s.volume;
         }
         
     }
@@ -55,18 +55,29 @@ public class AudioManager : MonoBehaviour {
         }
         s.source.Play();
     }
+    public void Stop (string name) {
+        Sound s = Array.Find(music, sound => sound.name == name);
+        if (s == null)
+            s = Array.Find(soundEffects, sound => sound.name == name); 
+        if (s == null)
+        {
+            print("Nope");
+            return;
+        }
+        s.source.Stop();
+    }
     public void OnMusicVolChange(float musicVol)
     {
         foreach (Sound s in music)
         {
-            s.source.volume =  musicVol;
+            s.source.volume =  s.origVol * musicVol;
         }
     }
     public void OnSoundEffectVolChange(float sfxVol)
     {
         foreach (Sound s in soundEffects)
         {
-            s.source.volume = sfxVol;
+            s.source.volume = s.origVol * sfxVol;
         }
     }
 }

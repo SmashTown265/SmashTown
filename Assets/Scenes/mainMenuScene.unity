@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &13068033
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1248,7 +1248,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &408622712
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2218,8 +2218,8 @@ RectTransform:
   m_Father: {fileID: 1153860829}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0.25, y: 0}
+  m_AnchorMax: {x: 0.25, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2391,12 +2391,68 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: sounds.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: music.Array.data[0].name
       value: Theme
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[1].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: a24c83c5aaa2f3c47bd8c287c93fa626, type: 3}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[1].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[1].name
+      value: Battle
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[2].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: ecc88425cab8d8549a0ee7be60e339ed, type: 3}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[2].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[2].name
+      value: WinSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[3].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: a24c83c5aaa2f3c47bd8c287c93fa626, type: 3}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[3].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[3].name
+      value: WinSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[1].pitch
+      value: 1.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[2].pitch
+      value: 1.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[3].pitch
+      value: 1.12
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: sounds.Array.data[0].clip
@@ -2428,6 +2484,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: music.Array.data[0].volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[1].volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[2].volume
+      value: 0.217
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[3].volume
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
@@ -2463,12 +2531,44 @@ PrefabInstance:
       value: button click
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[2].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 0ac9ed76f13315543b1a5d44041bbf0a, type: 3}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[2].name
+      value: WinStart
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[3].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 67f615a718f5c2c49b3efd50f20b2295, type: 3}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[3].name
+      value: BattleStart
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[2].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[3].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: soundEffects.Array.data[0].volume
       value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: soundEffects.Array.data[1].volume
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[2].volume
+      value: 0.101
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[3].volume
+      value: 0.116
       objectReference: {fileID: 0}
     - target: {fileID: 706974044784603585, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: m_Name
@@ -2664,15 +2764,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.019191489, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 1484796305, guid: c9412697430e4c246bbf9b0caf155b0f, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -3548,7 +3648,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1525695524}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 2
   m_WholeNumbers: 0
   m_Value: 0.5
   m_OnValueChanged:
@@ -3600,7 +3700,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.25, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3889,8 +3989,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 14.900002, y: -0.0000038146973}
+  m_SizeDelta: {x: -41.08, y: -21.32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1735161501
 MonoBehaviour:
@@ -3914,15 +4014,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Return
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 277e1a1c24807fc45b251dacb909fbc1, type: 2}
+  m_sharedMaterial: {fileID: 1208132910850299571, guid: 277e1a1c24807fc45b251dacb909fbc1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4279697586
-  m_fontColor: {r: 0.69803923, g: 0, b: 0.09019608, a: 1}
+    rgba: 4288401876
+  m_fontColor: {r: 0.8301887, g: 0.8194754, b: 0.6069776, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3939,10 +4039,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.4
-  m_fontSizeBase: 24
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -4285,7 +4385,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 975001160}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 2
   m_WholeNumbers: 0
   m_Value: 0.25
   m_OnValueChanged:

@@ -28,15 +28,12 @@ public class FirstSelectedOnInput : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(null);
         if(navigation.phase != InputActionPhase.Waiting && (!input || EventSystem.current.currentSelectedGameObject == null))
         {
-            print(navigation.activeControl);
-            print(navigation.phase);
             EventSystem.current.SetSelectedGameObject(firstSel);
             input = true;
         }
     }
     private void SceneLoaded(Scene current, Scene next)
     {
-        print("Helloo");
         input = false;
         firstSel = EventSystem.current.firstSelectedGameObject;
         EventSystem.current.SetSelectedGameObject(null);

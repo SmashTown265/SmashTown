@@ -11,13 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/playerLobby.unity
     guid: 61b82fbea4e774e4b8a1fe99a8ba8fb5
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PlayerSelectScene_old.unity
     guid: 04fb93d5dcbb92545b292c5a31a3816b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/StageSelectScene.unity
     guid: fc19f4f2b25433b4997675fe3b6722b7
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SwordFighterArenatemp.unity
     guid: ac512558a1acd794f8eb1312ee75b652
   - enabled: 0
@@ -26,11 +26,17 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/movementTest.unity
     guid: 14ea12b0499aa7c4199ba89a226a2ecf
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PlayerSelectScene New.unity
     guid: 8af60e6076f7f124a832b8a60af9aee6
   - enabled: 1
     path: Assets/Scenes/SwordFighterArena.unity
     guid: 58c984bf9e7f783428835b5f627361a3
+  - enabled: 1
+    path: Assets/Scenes/PlayerSelectScene.unity
+    guid: b9a8a2cbbff347b4c8bb7f0a76715779
+  - enabled: 1
+    path: Assets/Scenes/WinLose.unity
+    guid: ef6fae58d7fcb02429c4bb223a3303df
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: d0db4310f6dc21348924857b373f4864, type: 2}

@@ -99,7 +99,7 @@ public class PlayerMovement : NetworkBehaviour
 	    stickPos = context.ReadValue<Vector2>();
 
         // context.performed is whenever the input changes to a non-zero value
-        if (context.performed)
+        if (stickPos != Vector2.zero)
         {
             // Read the X value only for the "move" action each event call
             // Set it to 0f if not greater than stick deadzone
@@ -143,7 +143,7 @@ public class PlayerMovement : NetworkBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         if (!playerState.HasEachFlag(State.Jumping | State.DoubleJumping) && !playerState.HasFlag(State.Attacking) &&
-            context.performed)
+            context.performed && playerState != State.AirDodging)
         {
             StartCoroutine(JumpRoutine());
         }
@@ -379,10 +379,10 @@ public class PlayerMovement : NetworkBehaviour
         if (playerState == State.AirDodging)
         {
             rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxMoveSpeed);
-            rb.gravityScale = gravityScale;
+            
             airDodge = true;
         }
-        
+        rb.gravityScale = gravityScale;
         // Set jump state
         if (playerState.HasFlags(State.Jumping))
         {

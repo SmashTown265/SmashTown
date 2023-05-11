@@ -25,7 +25,7 @@ public class StageManager : MonoBehaviour
 	public void GoToNextScene(int selection = 0)
 	{
 		var sceneName = SceneManager.GetActiveScene().name;
-
+        print(sceneName);
 		switch (sceneName)
 		{
 			case "playerLobby":
@@ -55,15 +55,19 @@ public class StageManager : MonoBehaviour
 				break;
 			}
 
-			case var _ when sceneName.Contains("Arena"):
+			case var _ when sceneName.Contains("Arena") || sceneName.Contains("WinLose"):
 			{
 				switch (selection)
 				{
+                    case 0:
+                        LoadScene("WinLose");
+                        break;
 					case 1:
-						LoadScene("PlayerSelectScene");
+                        // Change this to stage select when another stage is added
+						LoadScene("SwordFighterArena");
 						break;
 					case 2:
-						LoadScene("StageSelectScene");
+						LoadScene("PlayerSelectScene");
 						break;
 					case 3:
 						LoadScene(sceneName);
@@ -77,9 +81,14 @@ public class StageManager : MonoBehaviour
 
 	private static void LoadScene(string sceneName)
 	{
-        if(NetworkRelay.Instance.online)
-		    NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        LoadSceneMode load = LoadSceneMode.Single;
+        if(sceneName == "WinLose")
+            load = LoadSceneMode.Additive;
         else
-            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+            load = LoadSceneMode.Single;
+        if(NetworkRelay.Instance.online)
+		    NetworkManager.Singleton.SceneManager.LoadScene(sceneName, load);
+        else
+            SceneManager.LoadScene(sceneName, load);
 	}
 }

@@ -80,15 +80,6 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Teleport"",
-                    ""type"": ""Button"",
-                    ""id"": ""f92bf7c9-e39c-4488-9bb1-3f16c2948ae7"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -161,24 +152,13 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""WASD"",
                     ""id"": ""00ca640b-d935-4593-8157-c05846ea39b3"",
-                    ""path"": ""Dpad"",
+                    ""path"": ""Dpad(mode=1)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""e2062cb9-1b15-46a2-838c-2f8d72a0bdd9"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""up"",
@@ -192,9 +172,9 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""down"",
-                    ""id"": ""320bffee-a40b-4347-ac70-c210eb8bc73a"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""name"": ""up"",
+                    ""id"": ""b7a76321-a218-4811-a5f3-658c51dc50e7"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -206,6 +186,17 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                     ""name"": ""down"",
                     ""id"": ""1c5327b5-f71c-4f60-99c7-4e737386f1d1"",
                     ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""64259845-bf19-426d-869a-354580627a2c"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -292,11 +283,33 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""74eac67f-1de6-4ac7-95a2-54e24b54736b"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""b5f28150-9715-46ca-88ef-32dd645956e3"",
                     ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": ""Tap"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
+                    ""action"": ""FastFall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d2840045-91a3-4439-8153-b2b6fb7ded3d"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""FastFall"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -325,12 +338,23 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1aa499a5-1b7d-4720-ab13-2d7630047f70"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""id"": ""6875053c-2503-4a43-8393-17927c7fac2c"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Teleport"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""AirDodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""83cd4016-64f9-4a07-8857-e6d8ce0f9a67"",
+                    ""path"": ""<Keyboard>/rightCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""AirDodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -342,12 +366,12 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Navigate"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""5b266d79-782c-4b0b-9b22-deed967a3c9e"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""StickDeadzone"",
+                    ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Submit"",
@@ -437,7 +461,7 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                     ""id"": ""809f371f-c5e2-4e7a-83a1-d867598f40dd"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
-                    ""processors"": ""StickDeadzone"",
+                    ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Navigate"",
                     ""isComposite"": true,
@@ -946,7 +970,6 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_FastFall = m_Player.FindAction("FastFall", throwIfNotFound: true);
         m_Player_AirDodge = m_Player.FindAction("AirDodge", throwIfNotFound: true);
-        m_Player_Teleport = m_Player.FindAction("Teleport", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1026,7 +1049,6 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_FastFall;
     private readonly InputAction m_Player_AirDodge;
-    private readonly InputAction m_Player_Teleport;
     public struct PlayerActions
     {
         private @SmashTown265 m_Wrapper;
@@ -1037,7 +1059,6 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @FastFall => m_Wrapper.m_Player_FastFall;
         public InputAction @AirDodge => m_Wrapper.m_Player_AirDodge;
-        public InputAction @Teleport => m_Wrapper.m_Player_Teleport;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1065,9 +1086,6 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
             @AirDodge.started += instance.OnAirDodge;
             @AirDodge.performed += instance.OnAirDodge;
             @AirDodge.canceled += instance.OnAirDodge;
-            @Teleport.started += instance.OnTeleport;
-            @Teleport.performed += instance.OnTeleport;
-            @Teleport.canceled += instance.OnTeleport;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1090,9 +1108,6 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
             @AirDodge.started -= instance.OnAirDodge;
             @AirDodge.performed -= instance.OnAirDodge;
             @AirDodge.canceled -= instance.OnAirDodge;
-            @Teleport.started -= instance.OnTeleport;
-            @Teleport.performed -= instance.OnTeleport;
-            @Teleport.canceled -= instance.OnTeleport;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1281,7 +1296,6 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnFastFall(InputAction.CallbackContext context);
         void OnAirDodge(InputAction.CallbackContext context);
-        void OnTeleport(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
