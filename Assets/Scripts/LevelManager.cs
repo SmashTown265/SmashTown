@@ -7,6 +7,8 @@ using Unity.Netcode;
 using UnityEngine.InputSystem;
 using Unity.Netcode.Components;
 using Unity.VisualScripting;
+using Microsoft.Unity.VisualStudio.Editor;
+using TMPro;
 
 public class LevelManager : NetworkBehaviour
 {
@@ -24,15 +26,19 @@ public class LevelManager : NetworkBehaviour
     public Camera2D cam2d;
     private List<Target2D> targets = new List<Target2D>();
     public GameObject inputManager;
-    public GameObject Player1LivesFull;
-    public GameObject Player2LivesFull;
-    public GameObject Player1LivesTwo;
-    public GameObject Player2LivesTwo;
-    public GameObject Player1LivesOne;
-    public GameObject Player2LivesOne;
+    private SpriteRenderer Player1LifeCounter;
+    private SpriteRenderer Player2LifeCounter;
     public int DeathCounterPlayer1 = 0;
     public int DeathCounterPlayer2 = 0;
-
+    private int lifecount1 = 3;
+    private int lifecount2 = 3;
+    public Sprite lifezero;
+    public Sprite lifetwo;
+    public Sprite lifeone;
+    [HideInInspector]
+    public string player1Text;
+    [HideInInspector]
+    public string player2Text;
 
 
     private void Start()
@@ -94,7 +100,8 @@ public class LevelManager : NetworkBehaviour
             targets.Add(new Target2D(player1Instance, false));
             targets.Add(new Target2D(player2Instance, false));
             cam2d.AddTargets(targets);
-
+            Player1LifeCounter = GameObject.Find("Player1 Lives").GetComponentInChildren<SpriteRenderer>();
+            Player2LifeCounter = GameObject.Find("Player2 Lives").GetComponentInChildren<SpriteRenderer>();
             
         }
 	}
@@ -107,14 +114,13 @@ public class LevelManager : NetworkBehaviour
             case 0:
                 break;
             case 1:
-                Player1LivesFull.SetActive(false);
-                Player1LivesTwo.SetActive(true);
+                Player1LifeCounter.sprite = lifetwo;
                 break;
             case 2: 
-                Player1LivesTwo.SetActive(false);
-                Player2LivesOne.SetActive(true);
+                Player1LifeCounter.sprite = lifeone;
                 break;
             case 3:
+                Player1LifeCounter.sprite = lifezero;
                 break; // Put Death Screen Loss transition here and Winner for Player 2
         }
         switch (DeathCounterPlayer2)
@@ -122,14 +128,13 @@ public class LevelManager : NetworkBehaviour
             case 0:
                 break;
             case 1:
-                Player2LivesFull.SetActive(false);
-                Player2LivesTwo.SetActive(true);
+                Player2LifeCounter.sprite = lifetwo;
                 break;
             case 2:
-                Player2LivesTwo.SetActive(false);
-                Player2LivesOne.SetActive(true);
+                Player2LifeCounter.sprite = lifeone;
                 break;
             case 3:
+                Player2LifeCounter.sprite = lifezero;
                 break; // Put Death Screen Loss transition here and Winner for Player 2
         }
 
@@ -155,6 +160,7 @@ public class LevelManager : NetworkBehaviour
 			StartCoroutine(RespawnCoroutine(playerObject, player2Respawn));
             DeathCounterPlayer2++;
 		}
+        UpdateLives();
 		UnityEngine.Debug.Log("Player Respawned");
 	}
 
@@ -173,6 +179,70 @@ public class LevelManager : NetworkBehaviour
             GameObject.FindWithTag("Player 1").GetComponent<PlayerDeath>().enabled = true;
             GameObject.FindWithTag("Player 2").GetComponent<PlayerDeath>().enabled = true;
 
+    }
+
+    public void UpdateLives()
+    {
+        print(DeathCounterPlayer1);
+        print(DeathCounterPlayer2);
+         switch (DeathCounterPlayer1)
+        {
+            case 0:
+                break;
+            case 1:
+                Player1LifeCounter.sprite = lifetwo;
+                break;
+            case 2: 
+                Player1LifeCounter.sprite = lifeone;
+                break;
+            case 3:
+                Player1LifeCounter.sprite = lifezero;
+                WinLose();
+                break; // Put Death Screen Loss transition here and Winner for Player 2
+        }
+        switch (DeathCounterPlayer2)
+        {
+            case 0:
+                break;
+            case 1:
+                Player2LifeCounter.sprite = lifetwo;
+                break;
+            case 2:
+                Player2LifeCounter.sprite = lifeone;
+                break;
+            case 3:
+                Player2LifeCounter.sprite = lifezero;
+                WinLose();
+                break; // Put Death Screen Loss transition here and Winner for Player 2
+        }
+    }
+    public void WinLose()
+    {
+
+        StageManager.Instance.GoToNextScene(0);
+        
+        if(!online)
+        {
+            if(DeathCounterPlayer1 < DeathCounterPlayer2)
+                player1Text= "Player 1 Wins!";
+            else
+                player1Text= "Player 2 Wins!";
+            
+        }
+        else
+        {
+            if(DeathCounterPlayer1 < DeathCounterPlayer2)
+            {
+                player1Text= "You Wins";
+                player2Text = "You Lose";
+            }
+            else
+            {
+                player2Text = "You Wins";
+                player1Text= "You Lose";
+            }
+
+        }
     }
 
 }

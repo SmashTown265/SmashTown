@@ -223,6 +223,8 @@ GameObject:
   - component: {fileID: 8478506453455521429}
   - component: {fileID: 8478506453455521428}
   - component: {fileID: 8478506453455521435}
+  - component: {fileID: 3690893148833480671}
+  - component: {fileID: 4324497680205055497}
   m_Layer: 0
   m_Name: WinLose
   m_TagString: Untagged
@@ -316,6 +318,36 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3690893148833480671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8478506453455521433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c3b0f6632572d44ebdae5ee21306405, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  winText: {fileID: 8478506453538679587}
+  player2PlayAgain: 0
+--- !u!114 &4324497680205055497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8478506453455521433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &8478506453538679585
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,7 +742,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3690893148833480671}
+        m_TargetAssemblyTypeName: WinScreenUpdate, Assembly-CSharp
+        m_MethodName: PlayAgain
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1001 &8478506453925353484
 PrefabInstance:
