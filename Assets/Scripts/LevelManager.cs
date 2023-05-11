@@ -45,7 +45,12 @@ public class LevelManager : NetworkBehaviour
 	{
 		instance = this;
 		active = SceneManager.GetActiveScene();
-        online = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkRelay>().online;
+        online = NetworkRelay.Instance.online;
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Stop("Theme");
+            AudioManager.instance.Play("Battle");
+        }
         //spawn the players
         if (IsServer || !online)
         {

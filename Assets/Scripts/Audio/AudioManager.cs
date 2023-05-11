@@ -55,6 +55,17 @@ public class AudioManager : MonoBehaviour {
         }
         s.source.Play();
     }
+    public void Stop (string name) {
+        Sound s = Array.Find(music, sound => sound.name == name);
+        if (s == null)
+            s = Array.Find(soundEffects, sound => sound.name == name); 
+        if (s == null)
+        {
+            print("Nope");
+            return;
+        }
+        s.source.Stop();
+    }
     public void OnMusicVolChange(float musicVol)
     {
         foreach (Sound s in music)

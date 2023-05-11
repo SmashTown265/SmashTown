@@ -371,6 +371,7 @@ GameObject:
   - component: {fileID: 449091426}
   - component: {fileID: 449091425}
   - component: {fileID: 449091427}
+  - component: {fileID: 449091428}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -438,6 +439,14 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!81 &449091428
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449091424}
+  m_Enabled: 1
 --- !u!1 &535700670
 GameObject:
   m_ObjectHideFlags: 0

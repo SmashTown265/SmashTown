@@ -2391,12 +2391,32 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: sounds.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: music.Array.data[0].name
       value: Theme
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[1].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: a24c83c5aaa2f3c47bd8c287c93fa626, type: 3}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[1].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[1].name
+      value: Battle
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[1].pitch
+      value: 1.12
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: sounds.Array.data[0].clip
@@ -2428,6 +2448,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: music.Array.data[0].volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[1].volume
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
