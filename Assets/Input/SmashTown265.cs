@@ -342,12 +342,12 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Navigate"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""5b266d79-782c-4b0b-9b22-deed967a3c9e"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
+                    ""processors"": ""StickDeadzone"",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Submit"",
@@ -437,7 +437,7 @@ public partial class @SmashTown265: IInputActionCollection2, IDisposable
                     ""id"": ""809f371f-c5e2-4e7a-83a1-d867598f40dd"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""StickDeadzone"",
                     ""groups"": """",
                     ""action"": ""Navigate"",
                     ""isComposite"": true,
