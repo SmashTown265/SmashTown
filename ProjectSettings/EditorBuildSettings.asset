@@ -26,11 +26,14 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/movementTest.unity
     guid: 14ea12b0499aa7c4199ba89a226a2ecf
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PlayerSelectScene New.unity
     guid: 8af60e6076f7f124a832b8a60af9aee6
   - enabled: 1
     path: Assets/Scenes/SwordFighterArena.unity
     guid: 58c984bf9e7f783428835b5f627361a3
+  - enabled: 1
+    path: Assets/Scenes/PlayerSelectScene.unity
+    guid: b9a8a2cbbff347b4c8bb7f0a76715779
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: d0db4310f6dc21348924857b373f4864, type: 2}
