@@ -2427,6 +2427,10 @@ PrefabInstance:
       value: button click
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[0].volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: sounds.Array.data[0].pitch
       value: 1.12
       objectReference: {fileID: 0}
@@ -2440,7 +2444,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: sounds.Array.data[0].volume
-      value: 0.5
+      value: 0.138
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: sounds.Array.data[1].volume
@@ -2457,6 +2461,14 @@ PrefabInstance:
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: soundEffects.Array.data[1].name
       value: button click
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[0].volume
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[1].volume
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 706974044784603585, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: m_Name
@@ -3536,15 +3548,15 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1525695524}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 2
+  m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1056812819}
         m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: ChangedMusicVol
+        m_MethodName: OnMusicVolChange
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4273,15 +4285,15 @@ MonoBehaviour:
   m_HandleRect: {fileID: 975001160}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 2
+  m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.25
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1056812819}
         m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: ChangedSFXVol
+        m_MethodName: OnSoundEffectVolChange
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
