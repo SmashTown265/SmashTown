@@ -44,11 +44,7 @@ public class LevelManager : NetworkBehaviour
 		instance = this;
 		active = SceneManager.GetActiveScene();
         online = NetworkRelay.Instance.online;
-        if (AudioManager.instance != null)
-        {
-            AudioManager.instance.Stop("Theme");
-            AudioManager.instance.Play("Battle");
-        }
+        StartCoroutine(LevelStartSoundCoroutine());
         //spawn the players
         if (IsServer || !online)
         {
@@ -219,9 +215,30 @@ public class LevelManager : NetworkBehaviour
                 break; // Put Death Screen Loss transition here and Winner for Player 2
         }
     }
+    public IEnumerator LevelEndSoundCoroutine()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Stop("Battle");
+            AudioManager.instance.Play("WinStart");
+            yield return new WaitForSeconds(2f);
+            AudioManager.instance.Play("WinSound");
+        }
+    }
+    public IEnumerator LevelStartSoundCoroutine()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Stop("WinSound");
+            AudioManager.instance.Stop("Theme");
+            AudioManager.instance.Play("BattleStart");
+            yield return new WaitForSeconds(1.5f);
+            AudioManager.instance.Play("Battle");
+        }
+    }
     public void WinLose()
     {
-
+        StartCoroutine(LevelEndSoundCoroutine());
         StageManager.Instance.GoToNextScene(0);
         
         if(!online)

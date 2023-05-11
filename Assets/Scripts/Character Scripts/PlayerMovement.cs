@@ -99,7 +99,7 @@ public class PlayerMovement : NetworkBehaviour
 	    stickPos = context.ReadValue<Vector2>();
 
         // context.performed is whenever the input changes to a non-zero value
-        if (context.performed)
+        if (stickPos != Vector2.zero)
         {
             // Read the X value only for the "move" action each event call
             // Set it to 0f if not greater than stick deadzone

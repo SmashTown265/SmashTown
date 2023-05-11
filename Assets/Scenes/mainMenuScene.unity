@@ -2392,11 +2392,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: music.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: sounds.Array.size
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.size
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: music.Array.data[0].name
@@ -2415,7 +2419,39 @@ PrefabInstance:
       value: Battle
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[2].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: ecc88425cab8d8549a0ee7be60e339ed, type: 3}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[2].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[2].name
+      value: WinSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[3].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: a24c83c5aaa2f3c47bd8c287c93fa626, type: 3}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[3].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[3].name
+      value: WinSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: music.Array.data[1].pitch
+      value: 1.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[2].pitch
+      value: 1.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[3].pitch
       value: 1.12
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
@@ -2455,6 +2491,14 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[2].volume
+      value: 0.217
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: music.Array.data[3].volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: sounds.Array.data[0].pitch
       value: 1.12
       objectReference: {fileID: 0}
@@ -2487,12 +2531,44 @@ PrefabInstance:
       value: button click
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[2].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 0ac9ed76f13315543b1a5d44041bbf0a, type: 3}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[2].name
+      value: WinStart
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[3].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 67f615a718f5c2c49b3efd50f20b2295, type: 3}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[3].name
+      value: BattleStart
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[2].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[3].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: soundEffects.Array.data[0].volume
       value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: soundEffects.Array.data[1].volume
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[2].volume
+      value: 0.101
+      objectReference: {fileID: 0}
+    - target: {fileID: 613300244151736634, guid: 799878433f4448847b54612e5492aa14, type: 3}
+      propertyPath: soundEffects.Array.data[3].volume
+      value: 0.116
       objectReference: {fileID: 0}
     - target: {fileID: 706974044784603585, guid: 799878433f4448847b54612e5492aa14, type: 3}
       propertyPath: m_Name
@@ -3572,7 +3648,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1525695524}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 2
   m_WholeNumbers: 0
   m_Value: 0.5
   m_OnValueChanged:
@@ -4309,7 +4385,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 975001160}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 2
   m_WholeNumbers: 0
   m_Value: 0.25
   m_OnValueChanged:

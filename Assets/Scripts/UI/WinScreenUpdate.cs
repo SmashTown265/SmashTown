@@ -28,7 +28,25 @@ public class WinScreenUpdate : NetworkBehaviour
     public void PlayAgainServerRpc()
     {
         if(IsServer)
+        {
             player2PlayAgain = true;
+            GameObject.Find("Other Player Text").SetActive(true);
+        }
+    }
+    [ClientRpc]
+    public void PlayAgainClientRpc()
+    {
+        if(IsServer)
+        {
+            GameObject.Find("Other Player Text").SetActive(true);
+            GameObject.Find("Other Player Text").GetComponent<TMP_Text>().text = "Waiting For Other Player";
+        }
+        else
+        {
+            GameObject.Find("Other Player Text").SetActive(true);
+            GameObject.Find("Other Player Text").GetComponent<TMP_Text>().text = "Player 1 Wants To Play Again!";
+        }
+
     }
     public void PlayAgain()
     {
@@ -41,6 +59,7 @@ public class WinScreenUpdate : NetworkBehaviour
             else if(!IsServer)
                 PlayAgainServerRpc();
         }
+        StartCoroutine(LevelManager.instance.LevelStartSoundCoroutine());
     }
 
 }
