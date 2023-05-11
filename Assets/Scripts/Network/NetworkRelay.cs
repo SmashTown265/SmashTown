@@ -65,8 +65,12 @@ public class NetworkRelay : MonoBehaviour
 
     public void HostGame()
     {
-
-        joinCodeField = GameObject.Find("Join Code Output").GetComponentInChildren<TMP_InputField>();
+        TMP_InputField[] temp = GameObject.FindObjectsOfType<TMP_InputField>(true);
+        foreach (TMP_InputField tempItem in temp)
+        {
+            if (tempItem.gameObject.CompareTag("JoinOutput"))
+                joinCodeField = tempItem;
+        }
         // Start the Relay Server, and output the code
         online = true;
 	    StartCoroutine(ConfigureTransportAndStartNgoAsHost());
@@ -74,7 +78,12 @@ public class NetworkRelay : MonoBehaviour
 
     public void JoinGame()
     {
-        inputfield = GameObject.Find("Join Code Input").GetComponentInChildren<TMP_InputField>();
+        TMP_InputField[] temp = GameObject.FindObjectsOfType<TMP_InputField>(true);
+        foreach (TMP_InputField tempItem in temp)
+        {
+            if (tempItem.gameObject.CompareTag("JoinInput"))
+                inputfield = tempItem;
+        }
 
         online = true;
 	    StartCoroutine(ConfigureTransportAndStartNgoAsConnectingPlayer());

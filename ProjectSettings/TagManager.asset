@@ -10,6 +10,8 @@ TagManager:
   - Player 1
   - NetworkManager
   - WinLoseText
+  - JoinOutput
+  - JoinInput
   layers:
   - Default
   - TransparentFX
