@@ -24,8 +24,18 @@ public class LevelManager : NetworkBehaviour
     public Camera2D cam2d;
     private List<Target2D> targets = new List<Target2D>();
     public GameObject inputManager;
+    public GameObject Player1LivesFull;
+    public GameObject Player2LivesFull;
+    public GameObject Player1LivesTwo;
+    public GameObject Player2LivesTwo;
+    public GameObject Player1LivesOne;
+    public GameObject Player2LivesOne;
+    public int DeathCounterPlayer1 = 0;
+    public int DeathCounterPlayer2 = 0;
 
-	private void Start()
+
+
+    private void Start()
 	{
 		instance = this;
 		active = SceneManager.GetActiveScene();
@@ -89,6 +99,41 @@ public class LevelManager : NetworkBehaviour
         }
 	}
     
+    [ServerRpc(RequireOwnership = false)] 
+    public void DeathCounterServerRPC(ServerRpcParams rpcParams = default)
+    {
+        switch (DeathCounterPlayer1)
+        {
+            case 0:
+                break;
+            case 1:
+                Player1LivesFull.SetActive(false);
+                Player1LivesTwo.SetActive(true);
+                break;
+            case 2: 
+                Player1LivesTwo.SetActive(false);
+                Player2LivesOne.SetActive(true);
+                break;
+            case 3:
+                break; // Put Death Screen Loss transition here and Winner for Player 2
+        }
+        switch (DeathCounterPlayer2)
+        {
+            case 0:
+                break;
+            case 1:
+                Player2LivesFull.SetActive(false);
+                Player2LivesTwo.SetActive(true);
+                break;
+            case 2:
+                Player2LivesTwo.SetActive(false);
+                Player2LivesOne.SetActive(true);
+                break;
+            case 3:
+                break; // Put Death Screen Loss transition here and Winner for Player 2
+        }
+
+    }
 
 
     [ClientRpc]
@@ -102,11 +147,13 @@ public class LevelManager : NetworkBehaviour
 		if (tag == "Player 1")
 		{
 			StartCoroutine(RespawnCoroutine(playerObject, respawnPoint));
+            DeathCounterPlayer1++;
 		}
 
 		if (tag == "Player 2")
 		{
 			StartCoroutine(RespawnCoroutine(playerObject, player2Respawn));
+            DeathCounterPlayer2++;
 		}
 		UnityEngine.Debug.Log("Player Respawned");
 	}
