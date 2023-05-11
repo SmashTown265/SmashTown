@@ -11,7 +11,7 @@ public class LobbyMessageUI : MonoBehaviour
 
 
     [SerializeField] private TMP_Text messageText;
-
+    public NetworkRelay nRelay;
 
 
     private void Awake() 
@@ -30,10 +30,19 @@ public class LobbyMessageUI : MonoBehaviour
         NetworkRelay.Instance.OnPlayerConnected += OnPlayerConnecting;
 
         NetworkManager.Singleton.gameObject.GetComponent<FirstSelectedOnInput>().enabled = false;
+        nRelay = NetworkManager.Singleton.gameObject.GetComponent<NetworkRelay>();
+        
     }
 
 
-
+    public void CreateGamePass()
+    {
+        nRelay.HostGame();
+    }
+    public void JoinGamePass()
+    {
+        nRelay.JoinGame();
+    }
 
     private void OnJoinStarted(object sender, System.EventArgs e) 
     {
