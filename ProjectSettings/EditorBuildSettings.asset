@@ -27,7 +27,7 @@ EditorBuildSettings:
     path: Assets/Scenes/movementTest.unity
     guid: 14ea12b0499aa7c4199ba89a226a2ecf
   - enabled: 1
-    path: Assets/Scenes/PlayerSelectScene.unity
+    path: Assets/Scenes/PlayerSelectScene New.unity
     guid: 8af60e6076f7f124a832b8a60af9aee6
   - enabled: 1
     path: Assets/Scenes/SwordFighterArena.unity
