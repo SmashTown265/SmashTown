@@ -28,6 +28,8 @@ public class LobbyMessageUI : MonoBehaviour
         NetworkRelay.Instance.OnCreateGameStarted += OnCreateGameStarted;
         NetworkRelay.Instance.OnCreateGameSuccess += OnCreateGameSuccess;
         NetworkRelay.Instance.OnPlayerConnected += OnPlayerConnecting;
+
+        NetworkManager.Singleton.gameObject.GetComponent<FirstSelectedOnInput>().enabled = false;
     }
 
 

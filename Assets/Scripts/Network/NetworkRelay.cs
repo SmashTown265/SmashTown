@@ -13,9 +13,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using TMPro;
-using Unity.Services.Relay.Http;
-using UnityEngine.UI;
-using NetworkEvent = Unity.Networking.Transport.NetworkEvent;
+
 
 public class NetworkRelay : MonoBehaviour
 {
@@ -67,6 +65,12 @@ public class NetworkRelay : MonoBehaviour
 
     public void HostGame()
     {
+        TMP_InputField[] temp = GameObject.FindObjectsOfType<TMP_InputField>(true);
+        foreach (TMP_InputField tempItem in temp)
+        {
+            if (tempItem.gameObject.CompareTag("JoinOutput"))
+                joinCodeField = tempItem;
+        }
         // Start the Relay Server, and output the code
         online = true;
 	    StartCoroutine(ConfigureTransportAndStartNgoAsHost());
@@ -74,6 +78,13 @@ public class NetworkRelay : MonoBehaviour
 
     public void JoinGame()
     {
+        TMP_InputField[] temp = GameObject.FindObjectsOfType<TMP_InputField>(true);
+        foreach (TMP_InputField tempItem in temp)
+        {
+            if (tempItem.gameObject.CompareTag("JoinInput"))
+                inputfield = tempItem;
+        }
+
         online = true;
 	    StartCoroutine(ConfigureTransportAndStartNgoAsConnectingPlayer());
     }

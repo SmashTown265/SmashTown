@@ -333,6 +333,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 32deae9e-b4b4-4897-a32a-c0649604b2ba
     m_ActionName: Player/AirDodge[/XInputControllerWindows/leftTrigger,/XInputControllerWindows/rightTrigger]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3588333370684356817, guid: f1686ae943e758b45a8f65327406d63d, type: 3}
+        m_TargetAssemblyTypeName: ReturnToMainMenu, Assembly-CSharp
+        m_MethodName: OnReturn
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ba909fc3-33f7-4d65-8427-0a56f27b909c
+    m_ActionName: Player/Return[/Keyboard/escape,/XInputControllerWindows/start]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
