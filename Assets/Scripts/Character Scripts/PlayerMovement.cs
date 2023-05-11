@@ -143,7 +143,7 @@ public class PlayerMovement : NetworkBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         if (!playerState.HasEachFlag(State.Jumping | State.DoubleJumping) && !playerState.HasFlag(State.Attacking) &&
-            context.performed)
+            context.performed && playerState != State.AirDodging)
         {
             StartCoroutine(JumpRoutine());
         }
@@ -379,10 +379,10 @@ public class PlayerMovement : NetworkBehaviour
         if (playerState == State.AirDodging)
         {
             rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxMoveSpeed);
-            rb.gravityScale = gravityScale;
+            
             airDodge = true;
         }
-        
+        rb.gravityScale = gravityScale;
         // Set jump state
         if (playerState.HasFlags(State.Jumping))
         {
