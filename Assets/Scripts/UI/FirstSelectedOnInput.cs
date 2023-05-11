@@ -28,7 +28,7 @@ public class FirstSelectedOnInput : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(null);
         if(navigation.phase != InputActionPhase.Waiting && (!input || EventSystem.current.currentSelectedGameObject == null))
         {
-            EventSystem.current.SetSelectedGameObject(firstSel);
+            EventSystem.current.SetSelectedGameObject(FindAnyObjectByType<Selectable>().gameObject);
             input = true;
         }
     }

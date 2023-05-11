@@ -36,13 +36,14 @@ public class LevelManager : NetworkBehaviour
     [HideInInspector]
     public string player2Text;
 
-
+    
     private void Start()
 	{
 		instance = this;
 		active = SceneManager.GetActiveScene();
         online = NetworkRelay.Instance.online;
         StartCoroutine(LevelStartSoundCoroutine());
+        GameObject.Find("NetworkManager").GetComponent<PlayerInput>().enabled = false;
         //spawn the players
         if (IsServer || !online)
         {
