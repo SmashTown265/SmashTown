@@ -66,7 +66,7 @@ public class LevelManager : NetworkBehaviour
 
         }
             
-        if (online)
+        if (online && IsServer)
         {
             // Spawn players
             player1Instance.GetComponent<NetworkObject>().SpawnWithOwnership(0, true);
@@ -105,37 +105,17 @@ public class LevelManager : NetworkBehaviour
 	}
     
     [ServerRpc(RequireOwnership = false)] 
-    public void DeathCounterServerRPC(ServerRpcParams rpcParams = default)
+    public void DeathCounterServerRPC(ulong clientID, int deaths1, int deaths2)
     {
-        switch (DeathCounterPlayer1)
+        if (clientID == 0) 
         {
-            case 0:
-                break;
-            case 1:
-                Player1LifeCounter.sprite = lifetwo;
-                break;
-            case 2: 
-                Player1LifeCounter.sprite = lifeone;
-                break;
-            case 3:
-                Player1LifeCounter.sprite = lifezero;
-                break; // Put Death Screen Loss transition here and Winner for Player 2
+            DeathCounterPlayer1 = deaths1;
         }
-        switch (DeathCounterPlayer2)
+        else
         {
-            case 0:
-                break;
-            case 1:
-                Player2LifeCounter.sprite = lifetwo;
-                break;
-            case 2:
-                Player2LifeCounter.sprite = lifeone;
-                break;
-            case 3:
-                Player2LifeCounter.sprite = lifezero;
-                break; // Put Death Screen Loss transition here and Winner for Player 2
+            DeathCounterPlayer2 = deaths2;
         }
-
+        UpdateLives();
     }
 
 
@@ -158,7 +138,10 @@ public class LevelManager : NetworkBehaviour
 			StartCoroutine(RespawnCoroutine(playerObject, player2Respawn));
             DeathCounterPlayer2++;
 		}
-        UpdateLives();
+        if(!online)
+            UpdateLives();
+        else
+            DeathCounterServerRPC(OwnerClientId, DeathCounterPlayer1, DeathCounterPlayer2);
 		UnityEngine.Debug.Log("Player Respawned");
 	}
 

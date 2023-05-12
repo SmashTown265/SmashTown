@@ -476,12 +476,17 @@ public class PlayerMovement : NetworkBehaviour
     }
     private void EnableMovement()
     {
-        if(IsServer || !online)
+        if(IsServer && online)
+        {
+            gameObject.GetComponent<PlayerInput>().enabled = true;
+        }
+        else
+        {
+            gameObject.GetComponent<PlayerInput>().enabled = true;
+        }
+        if(!online)
         {
             GameObject.FindWithTag("Player 1").GetComponent<PlayerInput>().enabled = true;
-        }
-        if(!IsServer || !online)
-        {
             GameObject.FindWithTag("Player 2").GetComponent<PlayerInput>().enabled = true;
         }
     }
