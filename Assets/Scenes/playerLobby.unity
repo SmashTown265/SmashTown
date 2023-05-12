@@ -1016,9 +1016,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 155185942}
-        m_TargetAssemblyTypeName: NetworkRelay, Assembly-CSharp
-        m_MethodName: HostGame
+      - m_Target: {fileID: 626597670}
+        m_TargetAssemblyTypeName: LobbyMessageUI, Assembly-CSharp
+        m_MethodName: CreateGamePass
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1183,6 +1183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   messageText: {fileID: 782477667}
+  nRelay: {fileID: 0}
 --- !u!1 &716368121
 GameObject:
   m_ObjectHideFlags: 0
@@ -1291,9 +1292,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 155185942}
-        m_TargetAssemblyTypeName: NetworkRelay, Assembly-CSharp
-        m_MethodName: JoinGame
+      - m_Target: {fileID: 626597670}
+        m_TargetAssemblyTypeName: LobbyMessageUI, Assembly-CSharp
+        m_MethodName: JoinGamePass
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

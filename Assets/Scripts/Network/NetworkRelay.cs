@@ -65,12 +65,15 @@ public class NetworkRelay : MonoBehaviour
 
     public void HostGame()
     {
+        print("Host before foreach");
         TMP_InputField[] temp = GameObject.FindObjectsOfType<TMP_InputField>(true);
         foreach (TMP_InputField tempItem in temp)
         {
+            print("Host in foreach");
             if (tempItem.gameObject.CompareTag("JoinOutput"))
                 joinCodeField = tempItem;
         }
+        print("Host after foreach");
         // Start the Relay Server, and output the code
         online = true;
 	    StartCoroutine(ConfigureTransportAndStartNgoAsHost());

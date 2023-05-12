@@ -49,7 +49,6 @@ public class buttonAudio : MonoBehaviour, IPointerEnterHandler
             }
             else
             {
-                print("Should be adding componenets...");
                 button.gameObject.AddComponent<EventTrigger>();
                 button.gameObject.GetComponent<EventTrigger>().triggers.Add(entry);
             }
