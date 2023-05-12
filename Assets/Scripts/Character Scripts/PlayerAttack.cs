@@ -19,7 +19,7 @@ public class PlayerAttack : MonoBehaviour
 
 	public void OnAttack(InputAction.CallbackContext context)
 	{
-		print("Button action");
+
 		// Attack only if not attacking and not dashing
 		if (context.performed && attackTimer == 0 && (pM.playerState != State.Dashing || !pM.playerState.HasFlags(State.InAir)))
 		{
