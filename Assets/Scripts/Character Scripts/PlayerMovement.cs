@@ -80,8 +80,8 @@ public class PlayerMovement : NetworkBehaviour
         sr = GetComponent<SpriteRenderer>();
         pa = GetComponent<PlayerAttack>();
         bc2d = GetComponent<BoxCollider2D>();
-        if(GameObject.FindWithTag("NetworkManager") != null)
-            online = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkRelay>().online;
+        if(NetworkRelay.Instance != null)
+            online = NetworkRelay.Instance.online;
         if (!online) EnableMovement(); //Enable movement if playing offline
         count = 0;
         dodgeCounter = 0;
@@ -441,8 +441,8 @@ public class PlayerMovement : NetworkBehaviour
             {
                 player1 = GameObject.FindWithTag("Player 1").GetComponent<PlayerMovement>();
             }
-
-            player1.SetAnim((State)playerState, runSpeed);
+            if(player1 != null)
+                player1.SetAnim((State)playerState, runSpeed);
         }
     }
     private void SetAnim(State playerState, float runSpeed)

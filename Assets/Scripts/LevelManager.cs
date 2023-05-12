@@ -63,45 +63,45 @@ public class LevelManager : NetworkBehaviour
             {
                 player2Instance = Instantiate(z2, player2Respawn.position, Quaternion.identity);
             }
-            
-            
-            
-            if (online)
-            {
-                // Spawn players
-                player1Instance.GetComponent<NetworkObject>().SpawnWithOwnership(0, true);
-                player2Instance.GetComponent<NetworkObject>().SpawnWithOwnership(1, true);
-                
-                // Enable death scripts on both host and client through RPC
-                EnableDeathClientRpc();
 
-            }
-            else
-            {
-                
-                // Enable Input Manager
-                inputManager.GetComponent<PlayerInputManager>().enabled = true;
-
-                // Disable netcode only conponents if local
-                player1Instance.GetComponent<OwnerNetworkAnimator>().enabled = false;
-                player2Instance.GetComponent<OwnerNetworkAnimator>().enabled = false;
-                player1Instance.GetComponent<ImprovedNetworkRigidbody2D>().enabled = false;
-                player2Instance.GetComponent<ImprovedNetworkRigidbody2D>().enabled = false;
-                player1Instance.GetComponent<ImprovedNetworkTransform>().enabled = false;
-                player2Instance.GetComponent<ImprovedNetworkTransform>().enabled = false;
-
-                // Enable Death Scripts
-                player1Instance.GetComponent<PlayerDeath>().enabled = true;
-                player2Instance.GetComponent<PlayerDeath>().enabled = true;
-            }
-            // Add players to 2D camera targets
-            targets.Add(new Target2D(player1Instance, false));
-            targets.Add(new Target2D(player2Instance, false));
-            cam2d.AddTargets(targets);
-            Player1LifeCounter = GameObject.Find("Player1 Lives").GetComponentInChildren<SpriteRenderer>();
-            Player2LifeCounter = GameObject.Find("Player2 Lives").GetComponentInChildren<SpriteRenderer>();
-            
         }
+            
+        if (online)
+        {
+            // Spawn players
+            player1Instance.GetComponent<NetworkObject>().SpawnWithOwnership(0, true);
+            player2Instance.GetComponent<NetworkObject>().SpawnWithOwnership(1, true);
+                
+            // Enable death scripts on both host and client through RPC
+            EnableDeathClientRpc();
+
+        }
+        else
+        {
+                
+            // Enable Input Manager
+            inputManager.GetComponent<PlayerInputManager>().enabled = true;
+
+            // Disable netcode only conponents if local
+            player1Instance.GetComponent<OwnerNetworkAnimator>().enabled = false;
+            player2Instance.GetComponent<OwnerNetworkAnimator>().enabled = false;
+            player1Instance.GetComponent<ImprovedNetworkRigidbody2D>().enabled = false;
+            player2Instance.GetComponent<ImprovedNetworkRigidbody2D>().enabled = false;
+            player1Instance.GetComponent<ImprovedNetworkTransform>().enabled = false;
+            player2Instance.GetComponent<ImprovedNetworkTransform>().enabled = false;
+
+            // Enable Death Scripts
+            player1Instance.GetComponent<PlayerDeath>().enabled = true;
+            player2Instance.GetComponent<PlayerDeath>().enabled = true;
+        }
+        // Add players to 2D camera targets
+        targets.Add(new Target2D(player1Instance, false));
+        targets.Add(new Target2D(player2Instance, false));
+        cam2d.AddTargets(targets);
+        Player1LifeCounter = GameObject.Find("Player1 Lives").GetComponentInChildren<SpriteRenderer>();
+        Player2LifeCounter = GameObject.Find("Player2 Lives").GetComponentInChildren<SpriteRenderer>();
+            
+        
 	}
     
     [ServerRpc(RequireOwnership = false)] 
